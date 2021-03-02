@@ -35,6 +35,18 @@ const userSchema = new Schema({
             lowercase: true
         }
     },
+    Name: {
+        type: String,
+        required: true,
+    },
+    Profile: {
+        link: {
+            type: Boolean
+        },
+        img: {
+            Type: String
+        }
+    }
 })
 
 userSchema.pre('save', async function (next) {

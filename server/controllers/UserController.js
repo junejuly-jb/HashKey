@@ -2,16 +2,6 @@ const { registerValidation } = require('../helpers/RouteHelpers')
 const User = require('../models/User')
 const JWT = require('jsonwebtoken')
 
-signToken = user => {
-    return JWT.sign({
-        iss: 'June Amante',
-        sub: user.id,
-        iat: new Date().getTime(),
-        exp: new Date().setDate(new Date().getDate() + 1)
-    }, process.env.PASS_PHRASE)
-}
-
-
 const register = async (req, res) => {
 
     const { error } = registerValidation(req.body)
@@ -33,7 +23,6 @@ const register = async (req, res) => {
     try {
         await newUser.save()
         const token = signToken(newUser)
-
         return res.status(200).json({ msg: 'user created successfully', token })
     } catch (err) {
         return res.status(500).json({ error: err})
@@ -42,18 +31,65 @@ const register = async (req, res) => {
 }
 
 const login = (req, res) => {
-    const token = signToken(req.user)
-    return res.status(200).json({ token })
+    
+    if (!req.body.remember) {
+        const token = JWT.sign(
+            {
+                iss: 'June Amante',
+                sub: req.user._id,  
+            },
+            process.env.PASS_PHRASE,
+            {
+                expiresIn: '2h'
+            })
+        const exp = JWT.decode(token)
+        return res.status(200).json({ token, exp: exp.exp })
+    }
+    else {
+        const token = JWT.sign({
+            iss: "June Amante",
+            sub: req.user._id
+        }, process.env.PASS_PHRASE, { expiresIn: '7d'})
+        const exp = JWT.decode(token)
+        return res.status(200).json({ token, exp: exp.exp })
+    }
 }
 
 
-const googleAuth = (req, res) => {
-    const token = signToken(req.user)
-    return res.status(200).json({ token })
+const googleAuth = async (req, res) => {
+
+    try {
+        const user = new User({
+            method: 'google',
+            google: {
+                id: req.body.id,
+                email: req.body.email,
+            }
+        })
+
+        const userExists = await User.find({ "google.id": user.google.id })
+
+        if (userExists) {
+            const token = signToken(user)
+            return res.status(200).json({token, user, msg: 'user exists'})
+        }
+        else {
+            await user.save()
+        }
+    } catch (error) {
+        return res.status(400).send(err)
+    }
+    
 }
 
 const facebookAuth = (req, res) => {
-    const token = signToken(req.user)
+    const user = new User({
+        method: 'google',
+        google: {
+            id: req.body.id,
+            email: req.body.email,
+        }
+    })
     return res.status(200).json({ token, user: req.user })
 }
 

@@ -16,6 +16,9 @@ export default {
     },
     loginFacebook(payload) {
         return apiClient.post('/oauth/facebook', payload)
+    },
+    loginGoogle(payload) {
+        return apiClient.post('/oauth/googleplus', payload)
     }
 
 }

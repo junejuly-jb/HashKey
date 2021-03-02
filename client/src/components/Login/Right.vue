@@ -193,7 +193,13 @@ export default {
         },
 
         onSuccess(googleUser) {
-            console.log(googleUser);
+            console.log(googleUser.getBasicProfile())
+            console.log('id', googleUser.getBasicProfile().kR);
+            console.log('email', googleUser.getBasicProfile().nt);
+            HashKeyServices.loginGoogle({id: googleUser.getBasicProfile().kR, email: googleUser.getBasicProfile().nt})
+            .then(res => {
+                console.log('Vue Response', res)
+            })
         },
 
         onFailure(err){
