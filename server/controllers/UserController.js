@@ -59,13 +59,18 @@ const login = (req, res) => {
 const googleAuth = async (req, res) => {
 
     try {
-       const user = new User({
+        const user = new User({
             method: 'google',
             google: {
                 id: req.body.id,
                 email: req.body.email,
+            },
+            name: req.body.name,
+            profile: {
+                link: true,
+                profile_photo: req.body.img
             }
-       })
+        })
         
         const token = JWT.sign({
             iss: "June Amante",
@@ -76,9 +81,11 @@ const googleAuth = async (req, res) => {
         const userExists = await User.findOne({ "google.id": user.google.id })
         console.log(userExists)
         if (userExists) {
+            console.log('exists!')
             return res.status(200).json({token, user, exp: exp})
         }
         else {
+            console.log('not exists!')
             await user.save()
             return res.status(200).json({token, user, exp: exp})
         }
@@ -93,7 +100,7 @@ const facebookAuth = (req, res) => {
         sub: req.user._id
     }, process.env.PASS_PHRASE, { expiresIn: '7d'})
     const exp = JWT.decode(token)
-    return res.status(200).json({ token, exp })
+    return res.status(200).json({ token, exp: exp.exp, user: req.user })
 }
 
 const protectedRoute = (req, res) => {
