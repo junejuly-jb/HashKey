@@ -216,7 +216,10 @@ export default {
             console.log('on success login', val)
             this.FB.getLoginStatus( (res) => {
                 HashKeyServices.loginFacebook({access_token: res.authResponse.accessToken})
-                .then(() => {
+                .then((res) => {
+                    console.log(res.data)
+                    this.$auth.setToken(res.data.token, res.data.exp)
+                    this.$store.commit('user/SET_USER_INFO', res.data.user)
                     this.$router.push('/home')
                 })
                 .catch(err => {
@@ -238,7 +241,7 @@ export default {
             })
         },
         closeLoading(){
-            setTimeout(() => { this.loading.close() }, 500)
+            setTimeout(() => { this.loading.close() }, 1000)
         }
     }
 }

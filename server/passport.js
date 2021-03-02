@@ -68,17 +68,24 @@ passport.use('facebookToken', new FacebookTokenStrategy({
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
 }, async (accessToken, refreshToken, profile, done) => {
     
-    console.log('profile', profile)
-    console.log(profile.photos[0].value)
-
     try {
         
         const userExists = await User.findOne({ 'facebook.id': profile.id })
-        console.log(userExists)
+
         if (userExists) {
-            console.log('user exists')
             return done(null, userExists)
         }
+
+        var getInitials = function (string) {
+            var names = string.split(' '),
+                initials = names[0].substring(0, 1).toUpperCase();
+            
+            if (names.length > 1) {
+                initials += names[names.length - 1].substring(0, 1).toUpperCase();
+            }
+            return initials;
+        };
+
 
         const newUser = new User({
             method: 'facebook',
@@ -87,7 +94,7 @@ passport.use('facebookToken', new FacebookTokenStrategy({
                 email: profile.emails[0].value
             },
             name: profile.displayName,
-            initials: 'ja',
+            initials: getInitials(profile.displayName),
             profile: {
                 link: true,
                 profile_photo: profile.photos[0].value
