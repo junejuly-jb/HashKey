@@ -59,38 +59,41 @@ const login = (req, res) => {
 const googleAuth = async (req, res) => {
 
     try {
-        const user = new User({
+       const user = new User({
             method: 'google',
             google: {
                 id: req.body.id,
                 email: req.body.email,
             }
-        })
+       })
+        
+        const token = JWT.sign({
+            iss: "June Amante",
+            sub: user._id
+        }, process.env.PASS_PHRASE, { expiresIn: '7d' })
+        const exp = JWT.decode(token)
 
-        const userExists = await User.find({ "google.id": user.google.id })
-
+        const userExists = await User.findOne({ "google.id": user.google.id })
+        console.log(userExists)
         if (userExists) {
-            const token = signToken(user)
-            return res.status(200).json({token, user, msg: 'user exists'})
+            return res.status(200).json({token, user, exp: exp})
         }
         else {
             await user.save()
+            return res.status(200).json({token, user, exp: exp})
         }
     } catch (error) {
-        return res.status(400).send(err)
+        return res.status(400).send(error)
     }
-    
 }
 
 const facebookAuth = (req, res) => {
-    const user = new User({
-        method: 'google',
-        google: {
-            id: req.body.id,
-            email: req.body.email,
-        }
-    })
-    return res.status(200).json({ token, user: req.user })
+    const token = JWT.sign({
+        iss: "June Amante",
+        sub: req.user._id
+    }, process.env.PASS_PHRASE, { expiresIn: '7d'})
+    const exp = JWT.decode(token)
+    return res.status(200).json({ token, exp })
 }
 
 const protectedRoute = (req, res) => {

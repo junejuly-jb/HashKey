@@ -65,15 +65,16 @@ passport.use('jwt', new JwtStrategy({
 
 passport.use('facebookToken', new FacebookTokenStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
 }, async (accessToken, refreshToken, profile, done) => {
     
-        console.log('profile', profile)
-        console.log('accessToken', accessToken)
+    console.log('profile', profile)
+    console.log(profile.photos[0].value)
 
     try {
         
         const userExists = await User.findOne({ 'facebook.id': profile.id })
+        console.log(userExists)
         if (userExists) {
             console.log('user exists')
             return done(null, userExists)
@@ -84,7 +85,14 @@ passport.use('facebookToken', new FacebookTokenStrategy({
             facebook: {
                 id: profile.id,
                 email: profile.emails[0].value
+            },
+            name: profile.displayName,
+            initials: 'ja',
+            profile: {
+                link: true,
+                profile_photo: profile.photos[0].value
             }
+            
         })
 
         await newUser.save()

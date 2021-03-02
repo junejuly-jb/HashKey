@@ -35,16 +35,20 @@ const userSchema = new Schema({
             lowercase: true
         }
     },
-    Name: {
+    name: {
         type: String,
         required: true,
     },
-    Profile: {
+    initials: {
+        type: String,
+        uppercase: true,
+    },
+    profile: {
         link: {
             type: Boolean
         },
-        img: {
-            Type: String
+        profile_photo: {
+            type: String
         }
     }
 })
