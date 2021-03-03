@@ -218,6 +218,7 @@ export default {
                 HashKeyServices.loginFacebook({access_token: res.authResponse.accessToken})
                 .then((res) => {
                     console.log(res.data)
+                    
                     this.$auth.setToken(res.data.token, res.data.exp)
                     this.$store.commit('user/SET_USER_INFO', res.data.user)
                     this.$router.push('/home')
