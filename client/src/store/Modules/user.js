@@ -1,3 +1,4 @@
+import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
@@ -24,12 +25,24 @@ export const mutations = {
         else {
             state.user_info.email = payload.local.email
         }
-
+    },
+    REMOVE_USER_INFO(state) {
+        state.user_info.id = ''
+        state.user_info.profile = ''
+        state.user_info.name = ''
+        state.user_info.email = ''
     }
 }
 
 export const actions = {
-    
+    registerUser({ commit }, payload) {
+        return HashKeyServices.register(payload)
+            .then(res => {
+                localStorage.setItem('token', res.data.token)
+                localStorage.setItem('exp', res.data.exp)
+                commit('SET_USER_INFO', res.data.user)
+            })
+    }
 }
 
 export const getters = {
