@@ -111,12 +111,13 @@ export default {
             this.openLoading()
             HashKeyServices.loginLocal({ email: this.login_email, password: this.login_password, remember: this.remember })
             .then( (res) => {
+                console.log(res)
                 this.$auth.setToken(res.data.token, res.data.exp)
                 this.$store.commit('user/SET_USER_INFO', res.data.user)
                 this.$router.push('/home')
             })
             .catch((err)=> {
-                console.log(err.response.data)
+                console.log(err.response)
                 this.$vs.notification({
                     title: 'Error',
                     text: err.response.data,
