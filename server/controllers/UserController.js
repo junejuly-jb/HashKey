@@ -13,14 +13,11 @@ const register = async (req, res) => {
         }
         return initials;
     };
-
-    const { error } = registerValidation(req.body)
-    if (error) return res.status(400).json({ success: false, message: error.details[0].message })
     
     const { email, password, name, remember_me } = req.body
 
     const foundUser = await User.findOne({ 'local.email': email })
-    if (foundUser) return res.status(403).json({ error: 'Email already exists' })
+    if (foundUser) return res.status(403).send('User already exists')
 
     const newUser = new User({ 
         method: 'local',
@@ -55,7 +52,7 @@ const register = async (req, res) => {
             return res.status(200).json({ msg: 'Registered Successfully' })
         }
     } catch (err) {
-        return res.status(500).json({ error: err})
+        return res.status(400).send('Error occured unexpectedly')
     }
 
 }
