@@ -70,7 +70,7 @@ const login = (req, res) => {
                 expiresIn: '2h'
             })
         const exp = JWT.decode(token)
-        return res.status(200).json({ token, exp: exp.exp })
+        return res.status(200).json({ token, exp: exp.exp, user: req.user })
     }
     else {
         const token = JWT.sign({
@@ -78,7 +78,7 @@ const login = (req, res) => {
             sub: req.user._id
         }, process.env.PASS_PHRASE, { expiresIn: '7d'})
         const exp = JWT.decode(token)
-        return res.status(200).json({ token, exp: exp.exp })
+        return res.status(200).json({ token, exp: exp.exp, user: req.user })
     }
 }
 
@@ -106,13 +106,10 @@ const googleAuth = async (req, res) => {
         const exp = JWT.decode(token)
 
         const userExists = await User.findOne({ "google.id": user.google.id })
-        console.log(userExists)
         if (userExists) {
-            console.log('exists!')
             return res.status(200).json({token, user, exp: exp.exp})
         }
         else {
-            console.log('not exists!')
             await user.save()
             return res.status(200).json({token, user, exp: exp.exp})
         }

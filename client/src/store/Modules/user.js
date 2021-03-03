@@ -1,3 +1,4 @@
+// import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
@@ -24,7 +25,12 @@ export const mutations = {
         else {
             state.user_info.email = payload.local.email
         }
-
+    },
+    REMOVE_USER_INFO(state) {
+        state.user_info.id = ''
+        state.user_info.profile = ''
+        state.user_info.name = ''
+        state.user_info.email = ''
     }
 }
 

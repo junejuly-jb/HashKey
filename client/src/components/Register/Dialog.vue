@@ -117,14 +117,33 @@ export default {
             this.openLoading()
             if(this.$refs.form.validate()){
                 if(this.direct_login){
-                    console.log('hehe')
+                    HashKeyServices.register({
+                        name: this.reg_name, 
+                        email: this.reg_email, 
+                        password: this.reg_password, 
+                        remember_me: this.direct_login
+                    })
+                    .then(res => {
+                        this.$store.commit('user/SET_USER_INFO', res.data.user)
+                        this.$auth.setToken(res.data.token, res.data.exp)
+                        this.$router.push('/home')
+                        this.closeLoading()
+                    })
+                    .catch(err => {
+                        this.$vs.notification({
+                            title: 'Error',
+                            text: err.response,
+                            position: 'top-center',
+                        })
+                    })
                 }
                 else{
                     HashKeyServices.register({
                         name: this.reg_name, 
                         email: this.reg_email, 
                         password: this.reg_password, 
-                        remember_me: this.direct_login})
+                        remember_me: this.direct_login
+                    })
                     .then(res => {
                         this.$store.commit('SET_REGISTRATION_DIALOG')
                         this.$vs.notification({
@@ -134,7 +153,6 @@ export default {
                         })
                     })
                     .catch((err) => {
-                        console.log(err.response.data)
                         this.$vs.notification({
                             title: 'Error',
                             text: err.response.data,
