@@ -4,10 +4,20 @@ const JWT = require('jsonwebtoken')
 
 const register = async (req, res) => {
 
+    var getInitials = function (string) {
+        var names = string.split(' '),
+            initials = names[0].substring(0, 1).toUpperCase();
+        
+        if (names.length > 1) {
+            initials += names[names.length - 1].substring(0, 1).toUpperCase();
+        }
+        return initials;
+    };
+
     const { error } = registerValidation(req.body)
     if (error) return res.status(400).json({ success: false, message: error.details[0].message })
     
-    const { email, password } = req.body
+    const { email, password, name, remember_me } = req.body
 
     const foundUser = await User.findOne({ 'local.email': email })
     if (foundUser) return res.status(403).json({ error: 'Email already exists' })
@@ -17,13 +27,33 @@ const register = async (req, res) => {
         local: {
             email: email,
             password: password
+        },
+        name: name,
+        initials: getInitials(name),
+        profile: {
+            link: false,
+            profile_photo: ''
         }
      })
 
     try {
         await newUser.save()
-        const token = signToken(newUser)
-        return res.status(200).json({ msg: 'user created successfully', token })
+        if (remember_me) {
+            const token = JWT.sign(
+                {
+                    iss: 'June Amante',
+                    sub: newUser._id,
+                },
+                process.env.PASS_PHRASE,
+                {
+                    expiresIn: '7d'
+                })
+            const exp = JWT.decode(token)
+            return res.status(200).json({ token, user: newUser, exp: exp.exp })
+        }
+        else {
+            return res.status(200).json({ msg: 'Registered Successfully' })
+        }
     } catch (err) {
         return res.status(500).json({ error: err})
     }
