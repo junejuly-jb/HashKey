@@ -3,7 +3,7 @@
         <v-container class="left-body">
             <div class="text--white brand d-flex align-center">
                 <div class="ml-5">
-                    🔒 HashKey.
+                    🔒 HashKey ● ● ● |
                 </div>
             </div>
             <div class="sub d-flex align-center">

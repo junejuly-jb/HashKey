@@ -7,12 +7,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLoadingLocal: false
+    isLoadingLocal: false,
+    registration_dialog: false,
   },
   mutations: {
     SET_LOADING_LOCAL(state) {
       state.isLoadingLocal = !state.isLoadingLocal
     },
+    SET_REGISTRATION_DIALOG(state) {
+      state.registration_dialog = !state.registration_dialog
+    }
   },
   actions: {
   },

@@ -4,7 +4,7 @@
             <v-card class="rounded-xl">
                 <div class="text-center" style="padding: 50px 50px 20px 50px">
                     <div class="text-center mb-5">
-                        <h2>HashKey. {{count}}</h2>
+                        <h2>HashKey ● ● ● |</h2>
                     </div>
                     <div class="">
                         <v-text-field
@@ -32,7 +32,7 @@
                         dense
                         class="ma-0 pa-0"
                         ></v-checkbox>
-                        <p class="small py-2">Haven't signed up yet? <br> click <span style="cursor:pointer;" @click="dialog = !dialog" class="modalToggler">here</span></p>
+                        <p class="small py-2">Haven't signed up yet? <br> click <span style="cursor:pointer;" @click="SET_REGISTRATION_DIALOG" class="modalToggler">here</span></p>
                         <div class="my-3 text-center">
                             <vs-button block gradient @click="localLogin" :loading="isLoadingLocal">
                                 Login
@@ -61,75 +61,22 @@
             </v-card>
 
             <!-- dialog -->
-            <div class="center">
-                <vs-dialog v-model="dialog" blur prevent-close>
-                    <template #header>
-                        <h4 class="not-margin my-5">
-                            Welcome to <b>HashKey.</b>
-                        </h4>
-                    </template>
-                    <div class="">
-                        <v-text-field
-                            filled
-                            rounded
-                            dense
-                            label="Name"
-                            prepend-inner-icon="mdi-account"
-                            v-model="reg_name"
-                        ></v-text-field>
-                        <v-text-field
-                            filled
-                            rounded
-                            dense
-                            label="Email"
-                            prepend-inner-icon="mdi-at"
-                            v-model="reg_email"
-                        ></v-text-field>
-                        <v-text-field
-                            filled
-                            rounded
-                            dense
-                            label="Password"
-                            prepend-inner-icon="mdi-lock"
-                            v-model="reg_password"
-                            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="show2 ? 'text' : 'password'"
-                            @click:append="show2 = !show2"
-                        ></v-text-field>
-                        <v-text-field
-                            filled
-                            rounded
-                            dense
-                            label="Confirm Password"
-                            prepend-inner-icon="mdi-lock"
-                            v-model="reg_cpassword"
-                            :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="show3 ? 'text' : 'password'"
-                            @click:append="show3 = !show3"
-                        ></v-text-field>
-                        <vs-checkbox v-model="direct_login">Direct log-in</vs-checkbox>
-                    </div>
-                    <template #footer>
-                        <div class="footer-dialog">
-                            <vs-button block gradient>
-                            Register
-                            </vs-button>
-                        </div>
-                    </template>
-                </vs-dialog>
-            </div>
+            <RegistrationDialog />
+
         </v-container>
     </v-app>
 </template>
 <script>
 import { mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 import GoogleLogin from 'vue-google-login';
 import VFacebookLogin from 'vue-facebook-login-component'
-import HashKeyServices from '../../Services/HashKeyServices'
+import HashKeyServices from '../../services/HashKeyServices'
+import RegistrationDialog from '../Register/Dialog'
 
 export default {
     components: {
-        GoogleLogin, VFacebookLogin
+        GoogleLogin, VFacebookLogin, RegistrationDialog
     },
     data: () => ({
         // login
@@ -137,17 +84,8 @@ export default {
         login_email: '',
         remember: true,
 
-        // register
-        reg_name: '',
-        reg_email: '',
-        reg_password: '',
-        reg_cpassword: '',
-        direct_login: true,
-
         show1: false,
-        show2: false,
-        show3: false,
-        dialog: false,
+        
         FB: {},
         params:{
             client_id: '651921626033-4e0o98cbs3oi6s7rpngbmg6ne6fb97dn.apps.googleusercontent.com'
@@ -162,12 +100,12 @@ export default {
 
 
     computed:{
-        ...mapState(['count','isLoadingLocal'])
+        ...mapState(['isLoadingLocal'])
     },
 
 
     methods: {
-
+         ...mapMutations(['SET_REGISTRATION_DIALOG']),
         localLogin(){
             this.$store.commit('SET_LOADING_LOCAL')
             this.openLoading()
@@ -193,9 +131,7 @@ export default {
         },
 
         onSuccess(googleUser) {
-            console.log(googleUser.getBasicProfile())
-            console.log('id', googleUser.getBasicProfile().kR);
-            console.log('email', googleUser.getBasicProfile().nt);
+            this.openLoading()
             HashKeyServices.loginGoogle({
                 id: googleUser.getBasicProfile().kR, 
                 email: googleUser.getBasicProfile().nt,
@@ -203,8 +139,14 @@ export default {
                 img: googleUser.getBasicProfile().jI,
             })
             .then(res => {
-                console.log('Vue Response', res)
+                this.$auth.setToken(res.data.token, res.data.exp)
+                this.$store.commit('user/SET_USER_INFO', res.data.user)
+                this.$router.push('/home')
             })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => { this.closeLoading() })
         },
 
         onFailure(err){
@@ -217,8 +159,6 @@ export default {
             this.FB.getLoginStatus( (res) => {
                 HashKeyServices.loginFacebook({access_token: res.authResponse.accessToken})
                 .then((res) => {
-                    console.log(res.data)
-                    
                     this.$auth.setToken(res.data.token, res.data.exp)
                     this.$store.commit('user/SET_USER_INFO', res.data.user)
                     this.$router.push('/home')
