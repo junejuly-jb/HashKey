@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoadingLocal: false,
-    registration_dialog: false,
+    registration_dialog: true,
   },
   mutations: {
     SET_LOADING_LOCAL(state) {

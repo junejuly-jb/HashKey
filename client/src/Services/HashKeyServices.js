@@ -19,6 +19,9 @@ export default {
     },
     loginGoogle(payload) {
         return apiClient.post('/oauth/googleplus', payload)
+    },
+    register(payload) {
+        return apiClient.post('/register', payload)
     }
 
 }

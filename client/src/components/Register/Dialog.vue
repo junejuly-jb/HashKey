@@ -60,7 +60,7 @@
             </div>
             <template #footer>
                 <div class="footer-dialog">
-                    <vs-button block gradient :disabled="!isValid" @click="register">
+                    <vs-button block gradient :disabled="!isValid" @click="doRegister">
                     Register
                     </vs-button>
                 </div>
@@ -69,7 +69,7 @@
     </div>
 </template>
 <script>
-// import { mapState } from 'vuex'
+import HashKeyServices from '../../services/HashKeyServices'
 
 export default {
     data: () => ({
@@ -113,10 +113,47 @@ export default {
     },
 
     methods: {
-        register(){
+        doRegister(){
+            this.openLoading()
             if(this.$refs.form.validate()){
-                console.log('Validation Success')
+                if(this.direct_login){
+                    console.log('hehe')
+                }
+                else{
+                    HashKeyServices.register({
+                        name: this.reg_name, 
+                        email: this.reg_email, 
+                        password: this.reg_password, 
+                        remember_me: this.direct_login})
+                    .then(res => {
+                        this.$store.commit('SET_REGISTRATION_DIALOG')
+                        this.$vs.notification({
+                            title: 'Success',
+                            text: res.data.msg,
+                            position: 'top-center',
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err.response.data)
+                        this.$vs.notification({
+                            title: 'Error',
+                            text: err.response.data,
+                            position: 'top-center',
+                        })
+                    })
+                    .finally(() => this.closeLoading())
+                }
             }
+        },
+        openLoading(){
+            this.loading = this.$vs.loading({
+                type: 'circles',
+                background: '#003ECB',
+                color: '#fff'
+            })
+        },
+        closeLoading(){
+            setTimeout(() => { this.loading.close() }, 1000)
         }
     }
 }

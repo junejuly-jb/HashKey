@@ -115,10 +115,11 @@ export default {
                 this.closeLoading()
 
             })
-            .catch(()=> {
+            .catch((err)=> {
+                console.log(err.response.data)
                 this.$vs.notification({
                     title: 'Error',
-                    text: `Incorrect credentials`,
+                    text: err.response.data,
                     position: 'top-center',
                 })
                 this.closeLoading()
