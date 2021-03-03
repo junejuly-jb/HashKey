@@ -12,7 +12,6 @@ export const state = {
 
 export const mutations = {
     SET_USER_INFO(state, payload) {
-        console.log("payload", payload)
         state.user_info.id = payload._id
         state.user_info.profile = payload.profile.profile_photo
         state.user_info.name = payload.name
