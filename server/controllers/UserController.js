@@ -82,12 +82,12 @@ const googleAuth = async (req, res) => {
         console.log(userExists)
         if (userExists) {
             console.log('exists!')
-            return res.status(200).json({token, user, exp: exp})
+            return res.status(200).json({token, user, exp: exp.exp})
         }
         else {
             console.log('not exists!')
             await user.save()
-            return res.status(200).json({token, user, exp: exp})
+            return res.status(200).json({token, user, exp: exp.exp})
         }
     } catch (error) {
         return res.status(400).send(error)
