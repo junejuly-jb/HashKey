@@ -114,6 +114,8 @@ export default {
     methods: {
          ...mapMutations(['SET_REGISTRATION_DIALOG']),
         localLogin(){
+            console.log(this.$auth.isHavePin())
+            
             if(this.$refs.form.validate()){
                 this.$store.commit('SET_LOADING_LOCAL')
                 this.openLoading()
@@ -152,9 +154,15 @@ export default {
                 img: googleUser.getBasicProfile().jI,
             })
             .then(res => {
+                
                 this.$auth.setToken(res.data.token, res.data.exp)
                 this.$store.commit('user/SET_USER_INFO', res.data.user)
-                this.$router.push('/home')
+                if(res.data.user.safety_pin !== null){
+                    this.$router.push('/home')
+                }
+                else{
+                    this.$router.push('/pin')
+                }
             })
             .catch(err => {
                 console.log(err)

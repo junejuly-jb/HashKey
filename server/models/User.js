@@ -54,6 +54,7 @@ const userSchema = new Schema({
     safety_pin: {
         type: Number,
         max: 6,
+        default: null
     },
     user_settings: {
         ask_pin: { type: Boolean, default: true },

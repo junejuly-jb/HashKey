@@ -6,7 +6,8 @@ export const state = {
         id: '',
         email: '',
         name: '',
-        profile: ''
+        profile: '',
+        pin: '',
     }
 }
 
@@ -23,6 +24,12 @@ export const mutations = {
         }
         else {
             state.user_info.email = payload.local.email
+        }
+        if (payload.safety_pin !== null) {
+            state.user_info.pin = true
+        }
+        else {
+            state.user_info.pin = false
         }
     },
     REMOVE_USER_INFO(state) {
