@@ -54,6 +54,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import store from '../store/index'
 export default {
     data: () => ({
         max: 6,
@@ -63,7 +64,15 @@ export default {
             v => /^[0-9]*$/.test(v) || 'Characters is not allowed',
             v => !!v || 'Pin is required'
         ]
-    }), 
+    }),
+    beforeRouteEnter(to, from, next){
+        if(store.state.user.user_info.pin){
+            console.log('not allowed')
+            next(from)
+        }else{
+            next()
+        }
+    },
     computed:{
         ...mapState('user', ['user_info']),
         ...mapState(['isLoadingLocal'])
@@ -85,7 +94,7 @@ export default {
         }
     },
     mounted(){
-        this.checkIfHavePin()
+        
     }
 }
 </script>

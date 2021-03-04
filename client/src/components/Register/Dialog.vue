@@ -127,6 +127,12 @@ export default {
                         this.$store.commit('user/SET_USER_INFO', res.data.user)
                         this.$auth.setToken(res.data.token, res.data.exp)
                         this.$router.push('/home')
+                        if(res.data.user.safety_pin !== null){
+                            this.$router.push('/home')
+                        }
+                        else{
+                            this.$router.push('/pin')
+                        }
                         this.closeLoading()
                     })
                     .catch(err => {
