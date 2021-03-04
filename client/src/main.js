@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
       }
       else next()
     }
-    if (to.matched.some(record => record.meta.requireAuth)) {
+    else if (to.matched.some(record => record.meta.requireAuth)) {
       if (!Vue.auth.isAuthenticated()) {
         next('/')
       }

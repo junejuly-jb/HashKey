@@ -9,7 +9,7 @@ export default function (Vue) {
             
             const token = localStorage.getItem('token')
             const expiration = localStorage.getItem('expiration')
-
+            
             if (!token || !expiration)
                 return null
             
@@ -31,7 +31,7 @@ export default function (Vue) {
                 return true
             else
                 return false
-        }
+        },
     }
 
     Object.defineProperties(Vue.prototype, {

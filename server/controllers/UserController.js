@@ -43,7 +43,7 @@ const register = async (req, res) => {
                 },
                 process.env.PASS_PHRASE,
                 {
-                    expiresIn: '1h'
+                    expiresIn: newUser.user_settings.vault_timeout
                 })
             const exp = JWT.decode(token)
             return res.status(200).json({ token, user: newUser, exp: exp.exp })
@@ -62,12 +62,11 @@ const login = (req, res) => {
     const token = JWT.sign({
         iss: "June Amante",
         sub: req.user._id
-    }, process.env.PASS_PHRASE, { expiresIn: '1h'})
+    }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
     const exp = JWT.decode(token)
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
     
 }
-
 
 const googleAuth = async (req, res) => {
 
@@ -82,14 +81,13 @@ const googleAuth = async (req, res) => {
             profile: {
                 link: true,
                 profile_photo: req.body.img
-            },
-            safety_pin: ''
+            }
         })
-        
+
         const token = JWT.sign({
             iss: "June Amante",
             sub: user._id
-        }, process.env.PASS_PHRASE, { expiresIn: '1h' })
+        }, process.env.PASS_PHRASE, { expiresIn: user.user_settings.vault_timeout })
         const exp = JWT.decode(token)
 
         const userExists = await User.findOne({ "google.id": user.google.id })
@@ -106,10 +104,11 @@ const googleAuth = async (req, res) => {
 }
 
 const facebookAuth = (req, res) => {
+    console.log('fb auth', req.user )
     const token = JWT.sign({
         iss: "June Amante",
         sub: req.user._id
-    }, process.env.PASS_PHRASE, { expiresIn: '1h'})
+    }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
     const exp = JWT.decode(token)
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
 }

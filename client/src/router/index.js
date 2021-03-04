@@ -16,6 +16,12 @@ const routes = [
     component: () => import('../views/Home.vue'),
     meta: { requireAuth: true }
 
+  },
+  {
+    path: '/pin',
+    name: 'Pin',
+    component: () => import('../views/AddPin.vue'),
+    meta: { requireAuth: true }
   }
 ]
 

@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     isLoadingLocal: false,
     registration_dialog: false,
+    loading_screen: ''
   },
   mutations: {
     SET_LOADING_LOCAL(state) {
@@ -19,7 +20,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    
+
   },
   modules: {
     user
