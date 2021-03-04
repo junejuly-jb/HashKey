@@ -98,8 +98,8 @@ passport.use('facebookToken', new FacebookTokenStrategy({
             profile: {
                 link: true,
                 profile_photo: profile.photos[0].value
-            }
-            
+            },
+            safety_pin: ''
         })
 
         await newUser.save()

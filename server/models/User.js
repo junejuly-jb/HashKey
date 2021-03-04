@@ -50,6 +50,19 @@ const userSchema = new Schema({
         profile_photo: {
             type: String
         }
+    },
+    safety_pin: {
+        type: Number,
+        max: 6,
+    },
+    user_settings: {
+        ask_pin: { type: Boolean, default: true },
+        vault_timeout: { type: String, default: '15m'},
+        vault_timeout_action: { type: String, default: 'lock'}  
+    },
+    subscription: {
+        type: String,
+        default: 'free'
     }
 })
 

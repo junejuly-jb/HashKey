@@ -82,7 +82,8 @@ const googleAuth = async (req, res) => {
             profile: {
                 link: true,
                 profile_photo: req.body.img
-            }
+            },
+            safety_pin: ''
         })
         
         const token = JWT.sign({
