@@ -43,7 +43,7 @@ const register = async (req, res) => {
                 },
                 process.env.PASS_PHRASE,
                 {
-                    expiresIn: '7d'
+                    expiresIn: '1h'
                 })
             const exp = JWT.decode(token)
             return res.status(200).json({ token, user: newUser, exp: exp.exp })
@@ -59,27 +59,13 @@ const register = async (req, res) => {
 
 const login = (req, res) => {
     
-    if (!req.body.remember) {
-        const token = JWT.sign(
-            {
-                iss: 'June Amante',
-                sub: req.user._id,  
-            },
-            process.env.PASS_PHRASE,
-            {
-                expiresIn: '2h'
-            })
-        const exp = JWT.decode(token)
-        return res.status(200).json({ token, exp: exp.exp, user: req.user })
-    }
-    else {
-        const token = JWT.sign({
-            iss: "June Amante",
-            sub: req.user._id
-        }, process.env.PASS_PHRASE, { expiresIn: '7d'})
-        const exp = JWT.decode(token)
-        return res.status(200).json({ token, exp: exp.exp, user: req.user })
-    }
+    const token = JWT.sign({
+        iss: "June Amante",
+        sub: req.user._id
+    }, process.env.PASS_PHRASE, { expiresIn: '1h'})
+    const exp = JWT.decode(token)
+    return res.status(200).json({ token, exp: exp.exp, user: req.user })
+    
 }
 
 
@@ -102,7 +88,7 @@ const googleAuth = async (req, res) => {
         const token = JWT.sign({
             iss: "June Amante",
             sub: user._id
-        }, process.env.PASS_PHRASE, { expiresIn: '7d' })
+        }, process.env.PASS_PHRASE, { expiresIn: '1h' })
         const exp = JWT.decode(token)
 
         const userExists = await User.findOne({ "google.id": user.google.id })
@@ -122,7 +108,7 @@ const facebookAuth = (req, res) => {
     const token = JWT.sign({
         iss: "June Amante",
         sub: req.user._id
-    }, process.env.PASS_PHRASE, { expiresIn: '7d'})
+    }, process.env.PASS_PHRASE, { expiresIn: '1h'})
     const exp = JWT.decode(token)
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
 }

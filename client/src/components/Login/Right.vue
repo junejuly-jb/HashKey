@@ -7,34 +7,36 @@
                         <h2>HashKey ● ● ● |</h2>
                     </div>
                     <div class="">
-                        <v-text-field
-                            dense
-                            rounded
-                            filled
-                            label="Email"
-                            prepend-inner-icon="mdi-at"
-                            v-model="login_email"
-                        ></v-text-field>
-                        <v-text-field
-                            dense
-                            filled
-                            rounded
-                            v-model="login_password"
-                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="show1 ? 'text' : 'password'"
-                            @click:append="show1 = !show1"
-                            prepend-inner-icon="mdi-lock"
-                            label="Password"
-                        ></v-text-field>
-                        <v-checkbox
-                        v-model="remember"
-                        label="Keep me logged in"
-                        dense
-                        class="ma-0 pa-0"
-                        ></v-checkbox>
+                        <v-form
+                        ref="form"
+                        v-model="isValid"
+                        lazy-validation
+                        >
+                            <v-text-field
+                                dense
+                                rounded
+                                filled
+                                label="Email"
+                                prepend-inner-icon="mdi-at"
+                                v-model="login_email"
+                                :rules="email_rules"
+                            ></v-text-field>
+                            <v-text-field
+                                dense
+                                filled
+                                rounded
+                                v-model="login_password"
+                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :type="show1 ? 'text' : 'password'"
+                                @click:append="show1 = !show1"
+                                :rules="password_rules"
+                                prepend-inner-icon="mdi-lock"
+                                label="Password"
+                            ></v-text-field>
+                        </v-form>
                         <p class="small py-2">Haven't signed up yet? <br> click <span style="cursor:pointer;" @click="SET_REGISTRATION_DIALOG" class="modalToggler">here</span></p>
                         <div class="my-3 text-center">
-                            <vs-button block gradient @click="localLogin" :loading="isLoadingLocal">
+                            <vs-button block gradient :disabled="!isValid" @click="localLogin" :loading="isLoadingLocal">
                                 Login
                             </vs-button>
                             <div class="my-2">
@@ -80,12 +82,10 @@ export default {
     },
     data: () => ({
         // login
+        isValid: false,
         login_password: '',
         login_email: '',
-        remember: true,
-
         show1: false,
-        
         FB: {},
         params:{
             client_id: '651921626033-4e0o98cbs3oi6s7rpngbmg6ne6fb97dn.apps.googleusercontent.com'
@@ -95,7 +95,14 @@ export default {
             width: 305
         },
         fb_graph_api_version: "v10.0",
-        loading: ''
+        loading: '',
+        email_rules: [
+            v => !!v || 'E-mail is required',
+            v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        ],
+        password_rules: [
+            v => !!v || 'Password is required'
+        ]
     }),
 
 
@@ -107,29 +114,33 @@ export default {
     methods: {
          ...mapMutations(['SET_REGISTRATION_DIALOG']),
         localLogin(){
-            this.$store.commit('SET_LOADING_LOCAL')
-            this.openLoading()
-            HashKeyServices.loginLocal({ email: this.login_email, password: this.login_password, remember: this.remember })
-            .then( (res) => {
-                console.log(res)
-                this.$auth.setToken(res.data.token, res.data.exp)
-                this.$store.commit('user/SET_USER_INFO', res.data.user)
-                this.$router.push('/home')
-            })
-            .catch((err)=> {
-                console.log(err.response)
-                this.$vs.notification({
-                    title: 'Error',
-                    text: err.response.data,
-                    position: 'top-center',
-                })
-                this.closeLoading()
-            })
-            .finally(() => {
-                this.closeLoading()
+            if(this.$refs.form.validate()){
                 this.$store.commit('SET_LOADING_LOCAL')
-            })
-            
+                this.openLoading()
+                HashKeyServices.loginLocal({ email: this.login_email, password: this.login_password })
+                .then( (res) => {
+                    console.log(res)
+                    this.$auth.setToken(res.data.token, res.data.exp)
+                    this.$store.commit('user/SET_USER_INFO', res.data.user)
+                    this.$router.push('/home')
+                })
+                .catch((err)=> {
+                    console.log(err.response)
+                    this.$vs.notification({
+                        title: 'Error',
+                        text: err.response.data,
+                        position: 'top-center',
+                    })
+                    this.closeLoading()
+                })
+                .finally(() => {
+                    this.closeLoading()
+                    this.$store.commit('SET_LOADING_LOCAL')
+                })
+            }
+            else{
+                this.closeLoading()
+            }
         },
 
         onSuccess(googleUser) {
