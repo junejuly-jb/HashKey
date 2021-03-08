@@ -116,6 +116,17 @@ const facebookAuth = (req, res) => {
 const protectedRoute = (req, res) => {
     return res.status(200).json({ msg: 'hello', user: req.user })
 }
+
+const addPin = async (req, res) => {
+    try {
+        await User.findOneAndUpdate({ _id: req.user._id }, { safety_pin: req.body.pin })
+            .then(() => {
+            return res.status(200).json('pin successfully added')
+        })
+    } catch (error) {
+        return res.status(400).send('Error occured')
+    }
+}
 module.exports = {
-    register, login, protectedRoute, googleAuth, facebookAuth
+    register, login, protectedRoute, googleAuth, facebookAuth, addPin
 }

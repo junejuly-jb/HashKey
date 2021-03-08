@@ -19,9 +19,11 @@
                                 v-model="pin"
                                 filled
                                 rounded
-                                type="tel"
+                                :type="show1 ? 'text' : 'password'"
                                 :maxlength="max"
                                 :rules="rules"
+                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                @click:append="show1 = !show1"
                                 max="6"
                                 counter
                                 class="centered-input"
@@ -44,7 +46,6 @@
                                 <line x1="15" y1="8" x2="19" y2="12" />
                                 </svg>
                             </vs-button>
-
                         </div>
                     </div>
                 </div>
@@ -60,6 +61,7 @@ export default {
         max: 6,
         pin: '',
         isValid: false,
+        show1: false,
         rules: [
             v => /^[0-9]*$/.test(v) || 'Characters is not allowed',
             v => !!v || 'Pin is required'
@@ -110,9 +112,9 @@ export default {
     .centered-input >>> input{
         text-align: center;
     }
-    .centered-input ::-webkit-outer-spin-button,
+    /* .centered-input ::-webkit-outer-spin-button,
     .centered-input ::-webkit-inner-spin-button {
         -webkit-appearance: none;
-    }
+    } */
     
 </style>
