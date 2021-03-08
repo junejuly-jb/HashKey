@@ -59,10 +59,7 @@ const register = async (req, res) => {
 
 const login = (req, res) => {
     
-    const token = JWT.sign({
-        iss: "June Amante",
-        sub: req.user._id
-    }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
+    const token = JWT.sign({ _id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
     const exp = JWT.decode(token)
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
     
@@ -84,14 +81,12 @@ const googleAuth = async (req, res) => {
             }
         })
 
-        const token = JWT.sign({
-            iss: "June Amante",
-            sub: user._id
-        }, process.env.PASS_PHRASE, { expiresIn: user.user_settings.vault_timeout })
+        const token = JWT.sign({ _id: user._id}, process.env.PASS_PHRASE, { expiresIn: user.user_settings.vault_timeout })
         const exp = JWT.decode(token)
 
         const userExists = await User.findOne({ "google.id": user.google.id })
         if (userExists) {
+            const token = JWT.sign({ _id: userExists._id}, process.env.PASS_PHRASE, { expiresIn: userExists.user_settings.vault_timeout })
             return res.status(200).json({token, user: userExists, exp: exp.exp})
         }
         else {
@@ -105,10 +100,7 @@ const googleAuth = async (req, res) => {
 
 const facebookAuth = (req, res) => {
     console.log('fb auth', req.user )
-    const token = JWT.sign({
-        iss: "June Amante",
-        sub: req.user._id
-    }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
+    const token = JWT.sign({ id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
     const exp = JWT.decode(token)
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
 }

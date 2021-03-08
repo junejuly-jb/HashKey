@@ -1,17 +1,18 @@
 import axios from 'axios'
 
+const token = localStorage.getItem('token')
 const apiClient = axios.create({
     baseURL: 'http://localhost:5000/api',
     headers: {
         Accept: 'application/json',
         'Content-type': 'application/json',
+        Authorization: 'Bearer ' + token
     }
 })
 
 export default {
     
     loginLocal(payload) {
-        console.log('i got into services section!')
         return apiClient.post('/login', payload)
     },
     loginFacebook(payload) {
@@ -22,6 +23,9 @@ export default {
     },
     register(payload) {
         return apiClient.post('/register', payload)
+    },
+    addPin(payload) {
+        return apiClient.post('/add-pin', payload)
     }
 
 }
