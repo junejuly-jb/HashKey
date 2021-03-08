@@ -1,4 +1,4 @@
-// import HashKeyServices from '../../services/HashKeyServices'
+import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
@@ -37,11 +37,19 @@ export const mutations = {
         state.user_info.profile = ''
         state.user_info.name = ''
         state.user_info.email = ''
+    },
+    SET_PIN_STATUS(state) {
+        state.user_info.pin = true
     }
 }
 
 export const actions = {
-    
+    addPin({ commit }, payload) {
+        HashKeyServices.addPin(payload)
+        .then(() => {
+            commit('SET_PIN_STATUS')
+        })
+    }
 }
 
 export const getters = {

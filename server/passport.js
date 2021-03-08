@@ -16,7 +16,7 @@ passport.use('jwt', new JwtStrategy({
         
         const user = await User.findById(payload.sub)
         if (!user) {
-            return done(null, false)
+            return done(err, false)
         }
 
         done(null, user)
