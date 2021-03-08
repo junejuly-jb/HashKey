@@ -121,7 +121,7 @@ export default {
                 .then( (res) => {
                     this.$auth.setToken(res.data.token, res.data.exp)
                     this.$store.commit('user/SET_USER_INFO', res.data.user)
-                    this.$router.push('/home')
+                    // this.$router.push('/home')
                     if(res.data.user.safety_pin !== null){
                         this.$router.push('/home')
                     }

@@ -9,6 +9,7 @@ api.post('/login', passport.authenticate('local', { session: false }), UserContr
 // api.post('/oauth/google', passport.authenticate('googleToken', { session: false }), UserController.googleAuth)
 api.post('/oauth/googleplus', UserController.googleAuth)
 api.post('/oauth/facebook', passport.authenticate('facebookToken', { session: false }), UserController.facebookAuth)
+api.post('/add-pin', passport.authenticate('jwt', { session: false }), UserController.addPin)
 api.get('/secret', passport.authenticate('jwt', { session: false }) , UserController.protectedRoute)
 
 module.exports = api
