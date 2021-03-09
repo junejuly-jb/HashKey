@@ -52,8 +52,7 @@ const userSchema = new Schema({
         }
     },
     safety_pin: {
-        type: Number,
-        max: 6,
+        type: String,
         default: null
     },
     user_settings: {
