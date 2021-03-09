@@ -88,7 +88,14 @@ export default {
         secure(){
             this.$store.commit('SET_LOADING_LOCAL')
             if(this.$refs.form.validate()){
-                console.log('success')
+                this.$store.dispatch('user/addPin', { pin: this.pin })
+                .then(() => {
+                    // console.log(res)
+                    this.$store.commit('SET_LOADING_LOCAL')
+                })
+                .catch( err => {
+                    console.log(err)
+                }).finally(() => this.$store.commit('SET_LOADING_LOCAL'))
             }
             else{
                 this.$store.commit('SET_LOADING_LOCAL')
