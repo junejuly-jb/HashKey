@@ -1,13 +1,17 @@
 import axios from 'axios'
 
-const token = localStorage.getItem('token')
+const getToken = function () {
+    const token = localStorage.getItem('token')
+    console.log(token)
+    return token
+}
+
 const apiClient = axios.create({
     baseURL: 'http://localhost:5000/api',
-    headers: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-        Authorization: 'Bearer ' + token
-    }
+    // headers: {
+    //     Accept: 'application/json',
+    //     'Content-type': 'application/json'
+    // }
 })
 
 export default {
@@ -25,7 +29,10 @@ export default {
         return apiClient.post('/register', payload)
     },
     addPin(payload) {
-        return apiClient.post('/add-pin', payload)
+        return apiClient.post('/add-pin', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            })
     }
 
 }

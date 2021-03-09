@@ -36,15 +36,7 @@ const register = async (req, res) => {
     try {
         await newUser.save()
         if (remember_me) {
-            const token = JWT.sign(
-                {
-                    iss: 'June Amante',
-                    sub: newUser._id,
-                },
-                process.env.PASS_PHRASE,
-                {
-                    expiresIn: newUser.user_settings.vault_timeout
-                })
+            const token = JWT.sign({ _id: newUser._id }, process.env.PASS_PHRASE,{ expiresIn: newUser.user_settings.vault_timeout })
             const exp = JWT.decode(token)
             return res.status(200).json({ token, user: newUser, exp: exp.exp })
         }
@@ -100,7 +92,7 @@ const googleAuth = async (req, res) => {
 
 const facebookAuth = (req, res) => {
     console.log('fb auth', req.user )
-    const token = JWT.sign({ id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
+    const token = JWT.sign({ _id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
     const exp = JWT.decode(token)
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
 }
@@ -111,9 +103,9 @@ const protectedRoute = (req, res) => {
 
 const addPin = async (req, res) => {
     try {
-        await User.findOneAndUpdate({ _id: req.user._id }, { safety_pin: req.body.pin })
+        await User.updateOne({ _id: req.user._id }, { safety_pin: req.body.pin })
             .then(() => {
-            return res.status(200).json('pin successfully added')
+                return res.status(200).json({ msg: 'pin successfully added', user: req.user._id })
         })
     } catch (error) {
         return res.status(400).send('Error occured')

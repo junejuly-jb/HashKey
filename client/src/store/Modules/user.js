@@ -8,7 +8,8 @@ export const state = {
         name: '',
         profile: '',
         pin: '',
-    }
+    },
+    token: ''
 }
 
 export const mutations = {
@@ -32,6 +33,9 @@ export const mutations = {
             state.user_info.pin = false
         }
     },
+    SET_USER_TOKEN(state, payload) {
+        state.token = payload  
+    },
     REMOVE_USER_INFO(state) {
         state.user_info.id = ''
         state.user_info.profile = ''
@@ -45,7 +49,8 @@ export const mutations = {
 
 export const actions = {
     addPin({ commit }, payload) {
-        HashKeyServices.addPin(payload)
+        console.log('from action!', payload)
+        return HashKeyServices.addPin(payload)
         .then(() => {
             commit('SET_PIN_STATUS')
         })
@@ -53,5 +58,4 @@ export const actions = {
 }
 
 export const getters = {
-
 }
