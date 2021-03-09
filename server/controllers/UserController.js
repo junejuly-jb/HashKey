@@ -1,6 +1,8 @@
 const { registerValidation } = require('../helpers/RouteHelpers')
 const User = require('../models/User')
 const JWT = require('jsonwebtoken')
+const Cryptr = require('cryptr')
+const cryptr = new Cryptr('HellNaw!')
 
 const register = async (req, res) => {
 
@@ -103,7 +105,8 @@ const protectedRoute = (req, res) => {
 
 const addPin = async (req, res) => {
     try {
-        await User.updateOne({ _id: req.user._id }, { safety_pin: req.body.pin })
+        const pin = cryptr.encrypt(req.body.pin)
+        await User.updateOne({ _id: req.user._id }, { safety_pin: pin })
             .then(() => {
                 return res.status(200).json({ msg: 'pin successfully added', user: req.user._id })
         })
