@@ -89,9 +89,17 @@ export default {
             this.$store.commit('SET_LOADING_LOCAL')
             if(this.$refs.form.validate()){
                 this.$store.dispatch('user/addPin', { pin: this.pin })
-                .then(() => {
-                    // console.log(res)
-                    this.$store.commit('SET_LOADING_LOCAL')
+                .then((res) => {
+                    if(res == 200){
+                        this.$router.push('/home')
+                    }
+                    else{
+                        this.$vs.notification({
+                            title: 'Error',
+                            text: 'Error occured unexpectedly',
+                            position: 'top-center',
+                        })
+                    }
                 })
                 .catch( err => {
                     console.log(err)

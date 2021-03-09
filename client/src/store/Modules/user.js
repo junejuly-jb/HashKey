@@ -9,7 +9,6 @@ export const state = {
         profile: '',
         pin: '',
     },
-    token: ''
 }
 
 export const mutations = {
@@ -33,9 +32,6 @@ export const mutations = {
             state.user_info.pin = false
         }
     },
-    SET_USER_TOKEN(state, payload) {
-        state.token = payload  
-    },
     REMOVE_USER_INFO(state) {
         state.user_info.id = ''
         state.user_info.profile = ''
@@ -51,8 +47,13 @@ export const actions = {
     addPin({ commit }, payload) {
         console.log('from action!', payload)
         return HashKeyServices.addPin(payload)
-        .then(() => {
+        .then((res) => {
+            console.log('api response from mutation', res)
             commit('SET_PIN_STATUS')
+            return res.status
+        })
+        .catch((err) => {
+            return err
         })
     }
 }

@@ -121,7 +121,6 @@ export default {
                 .then( (res) => {
                     this.$auth.setToken(res.data.token, res.data.exp)
                     this.$store.commit('user/SET_USER_INFO', res.data.user)
-                    this.$store.commit('user/SET_USER_TOKEN', res.data.token)
                     if(res.data.user.safety_pin !== null){
                         this.$router.push('/home')
                     }
@@ -159,7 +158,6 @@ export default {
             .then(res => {
                 this.$auth.setToken(res.data.token, res.data.exp)
                 this.$store.commit('user/SET_USER_INFO', res.data.user)
-                this.$store.commit('user/SET_USER_TOKEN', res.data.token)
                 if(res.data.user.safety_pin !== null){
                     this.$router.push('/home')
                 }
@@ -186,7 +184,6 @@ export default {
                     console.log(res)
                     this.$auth.setToken(res.data.token, res.data.exp)
                     this.$store.commit('user/SET_USER_INFO', res.data.user)
-                    this.$store.commit('user/SET_USER_TOKEN', res.data.token)
                     if(res.data.user.safety_pin !== null){
                         this.$router.push('/home')
                     }

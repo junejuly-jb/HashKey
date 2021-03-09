@@ -108,7 +108,7 @@ const addPin = async (req, res) => {
         const pin = cryptr.encrypt(req.body.pin)
         await User.updateOne({ _id: req.user._id }, { safety_pin: pin })
             .then(() => {
-                return res.status(200).json({ msg: 'pin successfully added', user: req.user._id })
+                return res.status(200).json({ msg: 'pin successfully added' })
         })
     } catch (error) {
         return res.status(400).send('Error occured')

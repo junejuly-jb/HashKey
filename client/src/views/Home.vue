@@ -1,69 +1,70 @@
 <template>
-    <v-app id="inspire">
+  <v-app class="bg-primary">
     <v-app-bar
       app
-      color="white"
       flat
+      style="background-color: #EAEAF4"
+      height="110"
     >
-      <v-avatar
-        :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
-        size="32"
-      ></v-avatar>
-
-      <v-tabs
-        centered
-        class="ml-n9"
-        color="grey darken-1"
-      >
-        <v-tab
-          v-for="link in links"
-          :key="link"
-        >
-          {{ link }}
-        </v-tab>
-      </v-tabs>
-
-      <v-avatar
-        class="hidden-sm-and-down"
-        color="grey darken-1 shrink"
-        size="32"
-      ></v-avatar>
+      <v-container class="py-0 fill-height">
+        
+        <v-toolbar-title>HashKey ● ● ● |</v-toolbar-title>
+        <v-responsive max-width="260" class="ml-15">
+          <v-text-field
+            placeholder="Search"
+            rounded
+            style="background-color: #F4F4FC"
+            hide-details
+            class="py-1"
+          ></v-text-field>
+        </v-responsive>
+        <v-spacer></v-spacer>
+        <v-btn icon fab dense class="bg-secondary">
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </v-container>
     </v-app-bar>
 
-    <v-main class="grey lighten-3">
+    <v-main class="pa-0 ma-0">
       <v-container>
         <v-row>
-          <v-col
-            cols="12"
-            sm="2"
-          >
-            <v-sheet
-              rounded="lg"
-              min-height="268"
-            >
-              <!--  -->
+          <v-col cols="2">
+            <v-sheet rounded="lg" style="background-color: #EAEAF4">
+              <v-list color="transparent">
+                <v-list-item
+                  v-for="n in 5"
+                  :key="n"
+                  link
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      List Item {{ n }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-divider class="my-2"></v-divider>
+
+                <v-list-item
+                  link
+                  color="grey lighten-4"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Refresh
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
             </v-sheet>
           </v-col>
 
-          <v-col
-            cols="12"
-            sm="8"
-          >
+          <v-col>
             <v-sheet
               min-height="70vh"
-              rounded="lg"
-            >
-              <!--  -->
-            </v-sheet>
-          </v-col>
-
-          <v-col
-            cols="12"
-            sm="2"
-          >
-            <v-sheet
-              rounded="lg"
-              min-height="268"
+              class="rounded-xl mx-5"
+              elevation="5"
+              style="background-color: #F4F4FC"
             >
               <!--  -->
             </v-sheet>
@@ -73,15 +74,25 @@
     </v-main>
   </v-app>
 </template>
+
 <script>
-export default {
+  export default {
     data: () => ({
-        links: [
+      links: [
         'Dashboard',
         'Messages',
         'Profile',
         'Updates',
       ],
-    })
-}
+    }),
+  }
 </script>
+
+<style scoped>
+.bg-primary{
+  background-color: #EAEAF4;
+}
+.bg-secondary{
+  background-color: #F4F4FC
+}
+</style>
