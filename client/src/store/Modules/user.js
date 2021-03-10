@@ -37,6 +37,7 @@ export const mutations = {
         state.user_info.profile = ''
         state.user_info.name = ''
         state.user_info.email = ''
+        state.user_info.pin = ''
     },
     SET_PIN_STATUS(state) {
         state.user_info.pin = true
