@@ -14,7 +14,11 @@
               elevation="24"
               style="background-color: #F4F4FC"
             >
-              <!--  -->
+              <div class="ml-4 pt-4">
+                <vs-button primary gradient @click="addPassword">
+                  Add Item
+                </vs-button>
+              </div>
             </v-sheet>
           </v-col>
         </v-row>
