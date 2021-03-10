@@ -5,6 +5,12 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import Auth from './auth'
 
+// component
+
+Vue.component('AppBar', () => import('./components/Main/AppBar'))
+Vue.component('SideBar', () => import('./components/Main/SideBar'))
+
+
 import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css'
 
