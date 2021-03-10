@@ -6,9 +6,9 @@ import vuetify from './plugins/vuetify';
 import Auth from './auth'
 
 // component
-
 Vue.component('AppBar', () => import('./components/Main/AppBar'))
 Vue.component('SideBar', () => import('./components/Main/SideBar'))
+Vue.component('ConfirmationDialog', () => import('./components/Main/ConfirmationDialog'))
 
 
 import Vuesax from 'vuesax'

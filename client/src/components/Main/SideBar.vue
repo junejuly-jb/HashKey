@@ -30,8 +30,6 @@
             </v-list-item-group>
             <v-subheader>Tools</v-subheader>
             <v-list-item-group
-                v-model="model"
-                mandatory
                 color="indigo"
             >
                 <v-list-item
@@ -58,28 +56,28 @@ export default {
         }
     },
     data: () => ({
-      general: [
-        {
-          icon: 'mdi-form-textbox-password',
-          text: 'Passwords',
-        },
-        {
-          icon: 'mdi-wifi',
-          text: 'Wifi',
-        },
-        {
-          icon: 'mdi-note-text-outline',
-          text: 'Secure Notes',
-        },
-        {
-          icon: 'mdi-account-outline',
-          text: 'Personal Info',
-        },
-        {
-          icon: 'mdi-card-bulleted-outline',
-          text: 'Cards',
-        },
-      ],
+        general: [
+            {
+                icon: 'mdi-form-textbox-password',
+                text: 'Passwords',
+            },
+            {
+                icon: 'mdi-wifi',
+                text: 'Wifi',
+            },
+            {
+                icon: 'mdi-note-text-outline',
+                text: 'Secure Notes',
+            },
+            {
+                icon: 'mdi-account-outline',
+                text: 'Personal Info',
+            },
+            {
+                icon: 'mdi-card-bulleted-outline',
+                text: 'Cards',
+            },
+        ],
       tools: [
         {
           icon: 'mdi-account-heart-outline',
@@ -89,6 +87,10 @@ export default {
           icon: 'mdi-cog-counterclockwise',
           text: 'Password Generator',
         },
+        {
+          icon: 'mdi-cog-outline',
+          text: 'Settings',
+        }
       ],
       model: 0,
     }),

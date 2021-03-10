@@ -38,10 +38,10 @@
 </script>
 
 <style scoped>
-.bg-primary{
-  background-color: #EAEAF4;
-}
-.bg-secondary{
-  background-color: #F4F4FC
-}
+  .bg-primary{
+    background-color: #EAEAF4;
+  }
+  .bg-secondary{
+    background-color: #F4F4FC
+  }
 </style>
