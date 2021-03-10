@@ -17,7 +17,7 @@
                         rounded
                         dense
                         label="Name"
-                        :rules="[name_rules]"
+                        :rules="name_rules"
                         prepend-inner-icon="mdi-account"
                         v-model="reg_name"
                         required
