@@ -19,14 +19,14 @@
         ></v-text-field>
         </v-responsive>
         <v-spacer></v-spacer>
-        <v-btn icon fab dense class="bg-secondary mx-1">
-        <v-icon>mdi-account-lock</v-icon>
-        </v-btn>
-        <v-btn icon fab dense class="bg-secondary mx-1">
+        <v-btn icon fab dense class="bg-secondary mx-2" small>
         <v-icon>mdi-refresh</v-icon>
         </v-btn>
-        <v-btn icon fab dense class="bg-secondary mx-1">
-        <v-icon>mdi-account</v-icon>
+        <v-btn icon fab dense class="bg-secondary mx-2" small>
+        <v-icon>mdi-account-lock</v-icon>
+        </v-btn>
+        <v-btn fab depressed class="mx-2" color="red lighten-2" small>
+        <v-icon color="white">mdi-logout</v-icon>
         </v-btn>
     </v-container>
     </v-app-bar>
