@@ -4,7 +4,7 @@
         app
         flat
         style="background-color: #EAEAF4"
-        height="100"
+        height="80"
         >
             <v-container class="py-0 fill-height">
                 <v-toolbar-title>HashKey ● ● ● |</v-toolbar-title>

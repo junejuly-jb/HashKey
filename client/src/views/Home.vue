@@ -1,24 +1,25 @@
 <template>
   <v-app class="bg-primary">
     <AppBar/>
-    <v-main class="pa-3 ma-3">
+    <v-main class="pa-0 ma-0">
       <v-container>
         <v-row>
           <v-col cols="3">
             <SideBar />
           </v-col>
           <v-col>
+            <v-container><h2>{{filtering}}</h2></v-container>
             <v-sheet
               min-height="70vh"
               class="rounded-xl mx-5"
               elevation="24"
               style="background-color: #F4F4FC"
             >
-              <div class="ml-4 pt-4">
+              <!-- <div class="ml-4 pt-4">
                 <vs-button primary gradient>
                   Add Item
                 </vs-button>
-              </div>
+              </div> -->
             </v-sheet>
           </v-col>
         </v-row>
@@ -28,7 +29,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
   export default {
+    computed: {
+      ...mapState('user', ['filtering'])
+    },
     data: () => ({
       links: [
         'Dashboard',
