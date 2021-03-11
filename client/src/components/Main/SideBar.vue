@@ -1,16 +1,16 @@
 <template>
     <v-sheet rounded="lg" style="background-color: #EAEAF4">
         <div class="d-flex align-center justify-center">
-            <vs-avatar badge badge-color="success" circle history history-gradient>
+            <vs-avatar circle size="80">
                 <img :src="user_info.profile" alt="">
             </vs-avatar>
         </div>
         <div class="my-3">
             <h5 class="text-center">{{ user_info.name }}</h5>
         </div>
-        <v-list color="transparent" shaped>
+        <v-list color="transparent" shaped dense>
             <v-list-item-group
-                v-model="current_index"
+                v-model="index"
                 mandatory
                 color="indigo"
             >
@@ -35,50 +35,50 @@
 import { mapState } from 'vuex'
 export default {
     computed: {
-        ...mapState('user', ['user_info','filtering', 'current_index'])
-
+        ...mapState('user', ['user_info','filtering', 'current_index']),
     },
     data: () => ({
+        index: '',
         general: [
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/locked_1f512.png',
                 text: 'Passwords',
-                action: 'passwordList'
+                action: 'Passwords'
             },
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/antenna-bars_1f4f6.png',
                 text: 'Wifi',
-                action: 'wifiList'
+                action: 'Wifi'
             },
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/memo_1f4dd.png',
                 text: 'Secure Notes',
-                action: 'noteList'
+                action: 'Notes'
             },
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/man_1f468.png',
                 text: 'Personal Info',
-                action: 'personalInfoList'
+                action: 'Personal Information'
             },
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/credit-card_1f4b3.png',
                 text: 'Cards',
-                action: 'cardList'
+                action: 'Cards'
             },
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/sparkling-heart_1f496.png',
                 text: 'Password Status',
-                action: 'passwordStats'
+                action: 'Password Status'
             },
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/eight-spoked-asterisk_2733-fe0f.png',
                 text: 'Password Generator',
-                action: 'passwordGenerator'
+                action: 'Password Generator'
             },
             {
                 name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/gear_2699-fe0f.png',
                 text: 'Settings',
-                action: 'settings'
+                action: 'Settings'
             }
         ],
     }),
@@ -87,6 +87,12 @@ export default {
             console.log('hello')
             this.$store.commit('user/SET_APP_STATE', { action, index})
         },
+        passValue(){
+            this.index = this.current_index
+        }
+    },
+    mounted() {
+        this.passValue()
     }
 }
 </script>
