@@ -15,7 +15,7 @@
               style="background-color: #F4F4FC"
             >
               <div class="ml-4 pt-4">
-                <vs-button primary gradient @click="addPassword">
+                <vs-button primary gradient>
                   Add Item
                 </vs-button>
               </div>
