@@ -9,6 +9,8 @@ export const state = {
         profile: '',
         pin: '',
     },
+    current_index: 0,
+    filtering: 'passwordList'
 }
 
 export const mutations = {
@@ -38,9 +40,15 @@ export const mutations = {
         state.user_info.name = ''
         state.user_info.email = ''
         state.user_info.pin = ''
+        // state.filtering = 'passwordList'
+        // state.current_index = 0
     },
     SET_PIN_STATUS(state) {
         state.user_info.pin = true
+    },
+    SET_APP_STATE(state, payload) {
+        state.filtering = payload.action,
+        state.current_index = payload.index
     }
 }
 
