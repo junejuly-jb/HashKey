@@ -2,15 +2,15 @@
     <v-sheet rounded="lg" style="background-color: #EAEAF4">
         <div class="d-flex align-center justify-center">
             <vs-avatar badge badge-color="success" circle history history-gradient>
-                <img :src="profile" alt="">
+                <img :src="user_info.profile" alt="">
             </vs-avatar>
         </div>
         <div class="my-3">
-            <h5 class="text-center">{{ name }}</h5>
+            <h5 class="text-center">{{ user_info.name }}</h5>
         </div>
         <v-list color="transparent" shaped>
             <v-list-item-group
-                v-model="model"
+                v-model="current_index"
                 mandatory
                 color="indigo"
             >
@@ -32,14 +32,11 @@
     </v-sheet>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
     computed: {
-        profile() {
-            return this.$store.state.user.user_info.profile
-        },
-        name(){
-            return this.$store.state.user.user_info.name
-        }
+        ...mapState('user', ['user_info','filtering', 'current_index'])
+
     },
     data: () => ({
         general: [
@@ -84,11 +81,11 @@ export default {
                 action: 'settings'
             }
         ],
-      model: 0,
     }),
     methods: {
         clickFilter(action, index){
-            console.log('Filtered list!', action, index)
+            console.log('hello')
+            this.$store.commit('user/SET_APP_STATE', { action, index})
         },
     }
 }
