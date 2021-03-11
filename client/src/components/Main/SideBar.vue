@@ -1,48 +1,31 @@
 <template>
     <v-sheet rounded="lg" style="background-color: #EAEAF4">
         <div class="d-flex align-center justify-center">
-            <vs-avatar badge badge-color="success" history history-gradient>
-                <img src="../../assets/resources/default.png" alt="">
+            <vs-avatar badge badge-color="success" circle history history-gradient>
+                <img :src="profile" alt="">
             </vs-avatar>
         </div>
         <div class="my-3">
-            <h5 class="text-center">{{ count }}</h5>
+            <h5 class="text-center">{{ name }}</h5>
         </div>
         <v-list color="transparent" shaped>
-            <v-subheader>General</v-subheader>
             <v-list-item-group
                 v-model="model"
                 mandatory
                 color="indigo"
             >
+                <v-subheader>General</v-subheader>
                 <v-list-item
-                v-for="(item, i) in general"
-                :key="i"
+                v-for="(features, indexF) in general"
+                :key="indexF"
+                @click="clickFilter(features.action, indexF)"
                 >
-                <v-list-item-icon>
-                    <v-icon v-text="item.icon"></v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                    <v-list-item-title v-text="item.text"></v-list-item-title>
-                </v-list-item-content>
-                </v-list-item>
-            </v-list-item-group>
-            <v-subheader>Tools</v-subheader>
-            <v-list-item-group
-                color="indigo"
-            >
-                <v-list-item
-                v-for="(tool, i) in tools"
-                :key="i"
-                >
-                <v-list-item-icon>
-                    <v-icon v-text="tool.icon"></v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                    <v-list-item-title v-text="tool.text"></v-list-item-title>
-                </v-list-item-content>
+                    <v-list-item-icon>
+                        <img :src="features.name" alt="" width="25">
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title v-text="features.text"></v-list-item-title>
+                    </v-list-item-content>
                 </v-list-item>
             </v-list-item-group>
         </v-list>
@@ -51,48 +34,62 @@
 <script>
 export default {
     computed: {
-        count(){
+        profile() {
+            return this.$store.state.user.user_info.profile
+        },
+        name(){
             return this.$store.state.user.user_info.name
         }
     },
     data: () => ({
         general: [
             {
-                icon: 'mdi-form-textbox-password',
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/locked_1f512.png',
                 text: 'Passwords',
+                action: 'passwordList'
             },
             {
-                icon: 'mdi-wifi',
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/antenna-bars_1f4f6.png',
                 text: 'Wifi',
+                action: 'wifiList'
             },
             {
-                icon: 'mdi-note-text-outline',
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/memo_1f4dd.png',
                 text: 'Secure Notes',
+                action: 'noteList'
             },
             {
-                icon: 'mdi-account-outline',
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/man_1f468.png',
                 text: 'Personal Info',
+                action: 'personalInfoList'
             },
             {
-                icon: 'mdi-card-bulleted-outline',
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/credit-card_1f4b3.png',
                 text: 'Cards',
+                action: 'cardList'
             },
+            {
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/sparkling-heart_1f496.png',
+                text: 'Password Status',
+                action: 'passwordStats'
+            },
+            {
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/eight-spoked-asterisk_2733-fe0f.png',
+                text: 'Password Generator',
+                action: 'passwordGenerator'
+            },
+            {
+                name: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/gear_2699-fe0f.png',
+                text: 'Settings',
+                action: 'settings'
+            }
         ],
-      tools: [
-        {
-          icon: 'mdi-account-heart-outline',
-          text: 'Password Status',
-        },
-        {
-          icon: 'mdi-cog-counterclockwise',
-          text: 'Password Generator',
-        },
-        {
-          icon: 'mdi-cog-outline',
-          text: 'Settings',
-        }
-      ],
       model: 0,
     }),
+    methods: {
+        clickFilter(action, index){
+            console.log('Filtered list!', action, index)
+        },
+    }
 }
 </script>
