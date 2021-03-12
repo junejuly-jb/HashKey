@@ -15,11 +15,9 @@
               elevation="24"
               style="background-color: #F4F4FC"
             >
-              <!-- <div class="ml-4 pt-4">
-                <vs-button primary gradient>
-                  Add Item
-                </vs-button>
-              </div> -->
+              <Passwords v-show="filtering == 'Passwords'"/>
+              <Wifi v-show="filtering == 'Wifi'"/>
+              <Notes v-show="filtering == 'Notes'"/>
             </v-sheet>
           </v-col>
         </v-row>
@@ -29,8 +27,14 @@
 </template>
 
 <script>
+import Passwords from '../components/Filters/Passwords'
+import Wifi from '../components/Filters/Wifi'
+import Notes from '../components/Filters/Notes'
+
 import { mapState } from 'vuex'
+
   export default {
+    components: { Passwords, Wifi, Notes },
     computed: {
       ...mapState('user', ['filtering'])
     },
@@ -41,7 +45,6 @@ import { mapState } from 'vuex'
         'Profile',
         'Updates',
       ],
-      active: true,
     }),
   }
 </script>

@@ -1,36 +1,3 @@
-<template>
-    <v-sheet rounded="lg" style="background-color: #EAEAF4">
-        <div class="d-flex align-center justify-center">
-            <vs-avatar circle size="80">
-                <img :src="user_info.profile" alt="">
-            </vs-avatar>
-        </div>
-        <div class="my-3">
-            <h5 class="text-center">{{ user_info.name }}</h5>
-        </div>
-        <v-list color="transparent" shaped dense>
-            <v-list-item-group
-                v-model="index"
-                mandatory
-                color="indigo"
-            >
-                <v-subheader>General</v-subheader>
-                <v-list-item
-                v-for="(features, indexF) in general"
-                :key="indexF"
-                @click="clickFilter(features.action, indexF)"
-                >
-                    <v-list-item-icon>
-                        <img :src="features.name" alt="" width="25">
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title v-text="features.text"></v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list-item-group>
-        </v-list>
-    </v-sheet>
-</template>
 <script>
 import { mapState } from 'vuex'
 export default {
@@ -84,7 +51,6 @@ export default {
     }),
     methods: {
         clickFilter(action, index){
-            console.log('hello')
             this.$store.commit('user/SET_APP_STATE', { action, index})
         },
         passValue(){
@@ -96,3 +62,36 @@ export default {
     }
 }
 </script>
+<template>
+    <v-sheet rounded="lg" style="background-color: #EAEAF4">
+        <div class="d-flex align-center justify-center">
+            <vs-avatar circle size="80">
+                <img :src="user_info.profile" alt="">
+            </vs-avatar>
+        </div>
+        <div class="my-3">
+            <h5 class="text-center">{{ user_info.name }}</h5>
+        </div>
+        <v-list color="transparent" shaped dense>
+            <v-list-item-group
+                v-model="index"
+                mandatory
+                color="indigo"
+            >
+                <v-subheader>General</v-subheader>
+                <v-list-item
+                v-for="(features, indexF) in general"
+                :key="indexF"
+                @click="clickFilter(features.action, indexF)"
+                >
+                    <v-list-item-icon>
+                        <img :src="features.name" alt="" width="25">
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title v-text="features.text"></v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list-item-group>
+        </v-list>
+    </v-sheet>
+</template>
