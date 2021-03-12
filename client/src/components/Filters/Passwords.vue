@@ -4,7 +4,8 @@ export default {
     components: { UniversalDialog },
     data: () => ({
         dialogStat: false,
-        header: 'Add Login'
+        header: 'Add Login',
+        type: 'password'
     }),
     methods: {
         onDialogShow(){
@@ -43,6 +44,7 @@ export default {
         <UniversalDialog 
         :dialogStat="dialogStat"
         :header="header"
+        :type="type"
         @close="dialogStat = false"/>
     </v-container>
 </template>

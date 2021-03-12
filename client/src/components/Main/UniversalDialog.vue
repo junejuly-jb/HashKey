@@ -1,5 +1,5 @@
 <template>
-    <vs-dialog width="600px" not-center v-model="dialog" blur prevent-close>
+    <vs-dialog width="500px" not-center v-model="dialog" blur prevent-close>
         <template #header>
             <h4 class="not-margin">
             <b>{{header}}</b>
@@ -8,15 +8,16 @@
 
 
         <div class="con-content">
-            <p>
-                content
-            </p>
+            <PasswordInput />
         </div>
 
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
-            <vs-button @click="dialog=false" transparent>
-                Ok
+            <vs-button @click="dialog=false" transparent v-show="type == 'password'">
+                Add Password
+            </vs-button>
+            <vs-button @click="dialog=false" transparent v-show="type == 'wifi'">
+                Add Wifi
             </vs-button>
             <vs-button @click="dialog=false" dark transparent>
                 Cancel
@@ -26,8 +27,10 @@
     </vs-dialog>
 </template>
 <script>
+import PasswordInput from '../Inputs/PasswordInput'
 export default {
-    props: ['dialogStat', 'header'],
+    components: {PasswordInput},
+    props: ['dialogStat', 'header', 'type'],
     computed: {
         dialog:{
             get(){
