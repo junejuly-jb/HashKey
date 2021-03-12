@@ -29,7 +29,7 @@ export default {
 </script>
 <template>
     <v-container>
-      <v-text-field prepend-icon="mdi-semantic-web" rounded filled dense placeholder="Website"
+      <v-text-field prepend-icon="mdi-semantic-web" rounded filled placeholder="Website"
       v-model="name">
       </v-text-field>
       <v-text-field prepend-icon="mdi-web" rounded filled placeholder="URL"

@@ -7,7 +7,8 @@
         </template>
 
         <div class="con-content">
-            <PasswordInput 
+            <PasswordInput
+            v-show="type == 'password'"
             :l_name="login.l_name"
             :l_url="login.l_url"
             :l_user="login.l_user"
