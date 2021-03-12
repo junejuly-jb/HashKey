@@ -2,7 +2,7 @@
     <vs-dialog width="600px" not-center v-model="dialog" blur prevent-close>
         <template #header>
             <h4 class="not-margin">
-            <b>Header</b>
+            <b>{{header}}</b>
             </h4>
         </template>
 
@@ -27,13 +27,13 @@
 </template>
 <script>
 export default {
-    props: ['dialogStat'],
+    props: ['dialogStat', 'header'],
     computed: {
         dialog:{
-            set(){
+            get(){
                 return this.dialogStat
             },
-            get(val){
+            set(val){
                 if(!val){
                     return this.$emit('close')
                 }

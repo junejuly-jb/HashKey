@@ -7,6 +7,6 @@ export default {
 </script>
 <template>
     <v-container>
-        <vs-button>+ Wifi Key</vs-button>
+        <vs-button gradient>+ Wifi Key</vs-button>
     </v-container>
 </template>

@@ -7,6 +7,6 @@ export default {
 </script>
 <template>
     <v-container>
-        <vs-button>+ Note</vs-button>
+        <vs-button gradient>+ Note</vs-button>
     </v-container>
 </template>
