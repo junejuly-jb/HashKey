@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify';
 import Auth from './auth'
 import VueMasonry from 'vue-masonry-css'
 
+export const bus = new Vue()
 // component
 Vue.component('AppBar', () => import('./components/Main/AppBar'))
 Vue.component('SideBar', () => import('./components/Main/SideBar'))

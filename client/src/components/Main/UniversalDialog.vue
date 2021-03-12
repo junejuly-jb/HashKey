@@ -6,14 +6,21 @@
             </h4>
         </template>
 
-
         <div class="con-content">
-            <PasswordInput />
+            <PasswordInput 
+            :l_name="login.l_name"
+            :l_url="login.l_url"
+            :l_user="login.l_user"
+            :l_pass="login.l_pass"
+            @change_name="login.l_name = $event"
+            @change_url="login.l_url = $event"
+            @change_user="login.l_username = $event"
+            @change_pass="login.l_pass = $event"/>
         </div>
 
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
-            <vs-button @click="dialog=false" transparent v-show="type == 'password'">
+            <vs-button @click="addPass" transparent v-show="type == 'password'">
                 Add Password
             </vs-button>
             <vs-button @click="dialog=false" transparent v-show="type == 'wifi'">
@@ -28,7 +35,16 @@
 </template>
 <script>
 import PasswordInput from '../Inputs/PasswordInput'
+import { bus } from '../../main'
 export default {
+    data: () => ({
+        login: {
+            l_name: '',
+            l_url: '',
+            l_username: '',
+            l_pass: '',
+        }
+    }),
     components: {PasswordInput},
     props: ['dialogStat', 'header', 'type'],
     computed: {
@@ -41,6 +57,11 @@ export default {
                     return this.$emit('close')
                 }
             }
+        }
+    },
+    methods: {
+        addPass(){
+            bus.$emit('onSavePassword', this.login)
         }
     }
 }
