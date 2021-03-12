@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import Auth from './auth'
+import VueMasonry from 'vue-masonry-css'
 
 // component
 Vue.component('AppBar', () => import('./components/Main/AppBar'))
@@ -15,6 +16,7 @@ import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css'
 
 Vue.use(Auth)
+Vue.use(VueMasonry)
 Vue.use(Vuesax)
 
 router.beforeEach((to, from, next) => {

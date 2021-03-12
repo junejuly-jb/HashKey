@@ -18,6 +18,8 @@
               <Passwords v-show="filtering == 'Passwords'"/>
               <Wifi v-show="filtering == 'Wifi'"/>
               <Notes v-show="filtering == 'Notes'"/>
+              <Info v-show="filtering == 'Personal Information'"/>
+              <Cards v-show="filtering == 'Cards'"/>
             </v-sheet>
           </v-col>
         </v-row>
@@ -30,11 +32,13 @@
 import Passwords from '../components/Filters/Passwords'
 import Wifi from '../components/Filters/Wifi'
 import Notes from '../components/Filters/Notes'
+import Info from '../components/Filters/Info'
+import Cards from '../components/Filters/Cards'
 
 import { mapState } from 'vuex'
 
   export default {
-    components: { Passwords, Wifi, Notes },
+    components: { Passwords, Wifi, Notes, Info, Cards },
     computed: {
       ...mapState('user', ['filtering'])
     },
