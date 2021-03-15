@@ -22,10 +22,13 @@
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
             <vs-button @click="addPass" transparent v-show="type == 'password'">
-                Add Password
+                Save Password
             </vs-button>
             <vs-button @click="dialog=false" transparent v-show="type == 'wifi'">
-                Add Wifi
+                Save Wifi
+            </vs-button>
+            <vs-button @click="dialog=false" transparent v-show="type == 'notes'">
+                Save Note
             </vs-button>
             <vs-button @click="dialog=false" dark transparent>
                 Cancel
