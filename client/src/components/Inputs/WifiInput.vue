@@ -9,8 +9,8 @@ export default {
     },
     computed: {
         ssid: {
-            get(){ return this.w_ssid},
-            set(val){ return this.$emit('change_ssid', val)}
+            get(){ return this.w_ssid },
+            set(val){ return this.$emit('change_ssid', val) }
         },
         pass: {
             get(){ return this.w_pass},
