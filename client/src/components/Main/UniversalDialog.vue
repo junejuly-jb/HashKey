@@ -30,6 +30,9 @@
             <vs-button @click="dialog=false" transparent v-show="type == 'notes'">
                 Save Note
             </vs-button>
+            <vs-button @click="dialog=false" transparent v-show="type == 'info'">
+                Save User Info
+            </vs-button>
             <vs-button @click="dialog=false" dark transparent>
                 Cancel
             </vs-button>
