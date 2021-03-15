@@ -33,6 +33,9 @@
             <vs-button @click="dialog=false" transparent v-show="type == 'info'">
                 Save User Info
             </vs-button>
+            <vs-button @click="dialog=false" transparent v-show="type == 'card'">
+                Save Card
+            </vs-button>
             <vs-button @click="dialog=false" dark transparent>
                 Cancel
             </vs-button>

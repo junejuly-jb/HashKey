@@ -7,16 +7,11 @@ export default {
         header: 'Add Personal Information',
         type: 'info'
     }),
-    methods: {
-        onDialogShow(){
-            this.dialogStat = true
-        }   
-    }
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="onDialogShow">+ Info</vs-button>
+        <vs-button gradient @click="dialogStat = true">+ Info</vs-button>
         <UniversalDialog
         :dialogStat="dialogStat" 
         :type="type"

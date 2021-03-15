@@ -7,17 +7,11 @@ export default {
         header: 'Add Login',
         type: 'password'
     }),
-    methods: {
-        onDialogShow(){
-            this.dialogStat = true,
-            this.header = "Add Login"
-        }
-    }
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="onDialogShow">+ Password</vs-button>
+        <vs-button gradient @click="dialogStat = true">+ Password</vs-button>
         <masonry
         :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"
         :gutter="{default: '20px', 700: '10px'}"

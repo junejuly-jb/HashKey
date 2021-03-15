@@ -7,16 +7,11 @@ export default {
         header: 'Add Secure Notes',
         type: 'notes'
     }),
-    methods: {
-        onDialogShow(){
-            this.dialogStat = true
-        }
-    }
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="onDialogShow">+ Note</vs-button>
+        <vs-button gradient @click="dialogStat = true">+ Note</vs-button>
         <UniversalDialog 
         :dialogStat="dialogStat"
         :header="header"
