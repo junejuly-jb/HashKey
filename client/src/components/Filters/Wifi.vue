@@ -6,17 +6,12 @@ export default {
         dialogStat: false,
         header: 'Add Wifi Credentials',
         type: 'wifi'
-    }),
-    methods: {
-        onDialogShow(){
-            this.dialogStat = true
-        }
-    }
+    })
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="onDialogShow">+ Wifi Key</vs-button>
+        <vs-button gradient @click="dialogStat = true">+ Wifi Key</vs-button>
         <UniversalDialog 
         :dialogStat="dialogStat"
         :header="header"
