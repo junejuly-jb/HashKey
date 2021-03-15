@@ -17,6 +17,13 @@
             @change_url="login.l_url = $event"
             @change_user="login.l_username = $event"
             @change_pass="login.l_pass = $event"/>
+            <WifiInput
+            v-show="type == 'wifi'"
+            :w_ssid="wifi.w_ssid"
+            :w_pass="wifi.w_pass"
+            @change_ssid="wifi.w_ssid = $event"
+            @change_pass="wifi.w_pass = $event"/>
+
         </div>
 
         <template #footer>
@@ -24,7 +31,7 @@
             <vs-button @click="addPass" transparent v-show="type == 'password'">
                 Save Password
             </vs-button>
-            <vs-button @click="dialog=false" transparent v-show="type == 'wifi'">
+            <vs-button @click="addWifi" transparent v-show="type == 'wifi'">
                 Save Wifi
             </vs-button>
             <vs-button @click="dialog=false" transparent v-show="type == 'notes'">
@@ -45,6 +52,7 @@
 </template>
 <script>
 import PasswordInput from '../Inputs/PasswordInput'
+import WifiInput from '../Inputs/WifiInput'
 import { bus } from '../../main'
 export default {
     data: () => ({
@@ -53,9 +61,13 @@ export default {
             l_url: '',
             l_username: '',
             l_pass: '',
+        },
+        wifi: {
+            w_ssid: '',
+            w_pass: '',
         }
     }),
-    components: {PasswordInput},
+    components: { PasswordInput, WifiInput },
     props: ['dialogStat', 'header', 'type'],
     computed: {
         dialog:{
@@ -72,6 +84,9 @@ export default {
     methods: {
         addPass(){
             bus.$emit('onSavePassword', this.login)
+        },
+        addWifi(){
+            bus.$emit('onSaveWifi', this.wifi)
         }
     }
 }
