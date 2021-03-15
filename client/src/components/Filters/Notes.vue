@@ -5,7 +5,7 @@ export default {
     data: () => ({
         dialogStat: false,
         header: 'Add Secure Notes',
-        type: 'notes'
+        type: 'note'
     }),
 }
 </script>

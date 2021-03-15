@@ -5,7 +5,6 @@
             <b>{{header}}</b>
             </h4>
         </template>
-
         <div class="con-content">
             <PasswordInput
             v-show="type == 'password'"
@@ -23,7 +22,16 @@
             :w_pass="wifi.w_pass"
             @change_ssid="wifi.w_ssid = $event"
             @change_pass="wifi.w_pass = $event"/>
-
+            <NoteInput 
+            v-show="type == 'note'"
+            :n_title="note.n_title"
+            :n_note="note.n_note"
+            @change_title="note.n_title = $event"
+            @change_note="note.n_note = $event"
+            />
+            <CardInput 
+            v-show="type == 'card'"
+            />
         </div>
 
         <template #footer>
@@ -34,7 +42,7 @@
             <vs-button @click="addWifi" transparent v-show="type == 'wifi'">
                 Save Wifi
             </vs-button>
-            <vs-button @click="dialog=false" transparent v-show="type == 'notes'">
+            <vs-button @click="addNote" transparent v-show="type == 'note'">
                 Save Note
             </vs-button>
             <vs-button @click="dialog=false" transparent v-show="type == 'info'">
@@ -53,6 +61,8 @@
 <script>
 import PasswordInput from '../Inputs/PasswordInput'
 import WifiInput from '../Inputs/WifiInput'
+import NoteInput from '../Inputs/NoteInput'
+import CardInput from '../Inputs/CardInput'
 import { bus } from '../../main'
 export default {
     data: () => ({
@@ -65,9 +75,13 @@ export default {
         wifi: {
             w_ssid: '',
             w_pass: '',
+        },
+        note: {
+            n_title: '',
+            n_note: '',
         }
     }),
-    components: { PasswordInput, WifiInput },
+    components: { PasswordInput, WifiInput, NoteInput, CardInput },
     props: ['dialogStat', 'header', 'type'],
     computed: {
         dialog:{
@@ -82,12 +96,9 @@ export default {
         }
     },
     methods: {
-        addPass(){
-            bus.$emit('onSavePassword', this.login)
-        },
-        addWifi(){
-            bus.$emit('onSaveWifi', this.wifi)
-        }
+        addPass(){ bus.$emit('onSavePassword', this.login) },
+        addWifi(){ bus.$emit('onSaveWifi', this.wifi) },
+        addNote(){ bus.$emit('onSaveNote', this.note) }
     }
 }
 </script>
