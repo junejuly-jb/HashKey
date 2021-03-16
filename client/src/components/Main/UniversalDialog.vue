@@ -31,6 +31,12 @@
             />
             <CardInput 
             v-show="type == 'card'"
+            :c_number="card.c_number"
+            :c_exp="card.c_exp"
+            :c_ccv="card.c_ccv"
+            @change_cnumber="card.c_number = $event"
+            @change_cexp="card.c_exp = $event"
+            @change_cccv="card.c_ccv = $event"
             />
         </div>
 
@@ -48,7 +54,7 @@
             <vs-button @click="dialog=false" transparent v-show="type == 'info'">
                 Save User Info
             </vs-button>
-            <vs-button @click="dialog=false" transparent v-show="type == 'card'">
+            <vs-button @click="addCard" transparent v-show="type == 'card'">
                 Save Card
             </vs-button>
             <vs-button @click="dialog=false" dark transparent>
@@ -79,6 +85,11 @@ export default {
         note: {
             n_title: '',
             n_note: '',
+        },
+        card: {
+            c_number: '',
+            c_exp: '',
+            c_ccv: ''
         }
     }),
     components: { PasswordInput, WifiInput, NoteInput, CardInput },
@@ -98,7 +109,8 @@ export default {
     methods: {
         addPass(){ bus.$emit('onSavePassword', this.login) },
         addWifi(){ bus.$emit('onSaveWifi', this.wifi) },
-        addNote(){ bus.$emit('onSaveNote', this.note) }
+        addNote(){ bus.$emit('onSaveNote', this.note) },
+        addCard(){ bus.$emit('onSaveCard', this.card) }
     }
 }
 </script>
