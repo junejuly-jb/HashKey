@@ -1,23 +1,27 @@
 <script>
-// import { bus } from '../../main'
-// export default {
-//     props: ['n_title', 'n_note'],
-//     created(){
-//         bus.$on('onSaveNote', (data) => {
-//             console.log(data)
-//         })
-//     },
-//     computed: {
-//         title: {
-//             get(){ return this.n_title },
-//             set(val){ return this.$emit('change_title', val) }
-//         },
-//         note: {
-//             get(){ return this.n_note},
-//             set(val){ return this.$emit('change_note', val)}
-//         },
-//     }
-// }
+import { bus } from '../../main'
+export default {
+    props: ['c_number', 'c_exp', 'c_ccv'],
+    created(){
+        bus.$on('onSaveCard', (data) => {
+            console.log(data)
+        })
+    },
+    computed: {
+        card_number: {
+            get(){ return this.c_number },
+            set(val){ return this.$emit('change_cnumber', val) }
+        },
+        exp: {
+            get(){ return this.c_exp},
+            set(val){ return this.$emit('change_cexp', val)}
+        },
+        ccv: {
+            get(){ return this.c_ccv},
+            set(val){ return this.$emit('change_cccv', val)}
+        },
+    }
+}
 </script>
 <template>
     <v-container>
