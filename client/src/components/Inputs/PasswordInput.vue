@@ -1,11 +1,19 @@
 <script>
 import { bus } from '../../main'
 export default {
-    props: ['l_name','l_url','l_user','l_pass'],
+    data: () => ({
+        required: [ v => !!v || 'This field is required' ],
+        valid: false
+    }),
+    props: ['l_name','l_url','l_user','l_pass', 'l_logname'],
     created(){
-        bus.$on('onSavePassword', (data) => {
+        bus.$on('onSavePassword', (data) => { this.onSave(data) })
+    },
+    methods: {
+        onSave(data){
             console.log(data)
-        })
+            console.log(this.$refs.form.validate())
+        }
     },
     computed: {
         name: {
@@ -23,6 +31,10 @@ export default {
         pass: {
             get(){ return this.l_pass},
             set(val){ return this.$emit('change_pass', val)}
+        },
+        logname: {
+            get(){ return this.l_logname},
+            set(val){ return this.$emit('change_logname', val)}
         }
     }
 }
@@ -37,17 +49,22 @@ export default {
             <path d="M8 11v-4a4 4 0 0 1 8 0v4" />
             </svg>
         </div>
-        <v-text-field prepend-icon="mdi-semantic-web" rounded filled placeholder="Website"
-        v-model="name">
-        </v-text-field>
-        <v-text-field prepend-icon="mdi-web" rounded filled placeholder="URL"
-        v-model="url">
-        </v-text-field>
-        <v-text-field prepend-icon="mdi-account" rounded filled placeholder="Username / Email"
-        v-model="user">
-        </v-text-field>
-        <v-text-field prepend-icon="mdi-lock" rounded filled placeholder="Password"
-        v-model="pass">
-        </v-text-field>
+        <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field prepend-icon="mdi-label-outline" rounded filled placeholder="Name this login"
+            v-model="logname" :rules="required">
+            </v-text-field>
+            <v-text-field prepend-icon="mdi-semantic-web" rounded filled placeholder="Website"
+            v-model="name" :rules="required">
+            </v-text-field>
+            <v-text-field prepend-icon="mdi-web" rounded filled placeholder="URL"
+            v-model="url" :rules="required">
+            </v-text-field>
+            <v-text-field prepend-icon="mdi-account-outline" rounded filled placeholder="Username / Email"
+            v-model="user" :rules="required">
+            </v-text-field>
+            <v-text-field prepend-icon="mdi-lock-outline" rounded filled placeholder="Password"
+            v-model="pass" type="password" :rules="required">
+            </v-text-field>
+        </v-form>
     </v-container>
 </template>
