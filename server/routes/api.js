@@ -1,6 +1,7 @@
 const api = require('express').Router();
 
 const UserController = require('../controllers/UserController')
+const PasswordController = require('../controllers/PasswordController')
 const passport = require('passport')
 const passportConf = require('../passport')
 const auth = require('../auth')
@@ -13,4 +14,7 @@ api.post('/oauth/facebook', passport.authenticate('facebookToken', { session: fa
 api.post('/add-pin', auth, UserController.addPin)
 api.get('/secret', auth , UserController.protectedRoute)
 
+
+// password route
+api.post('/add-password', auth, PasswordController.addPass)
 module.exports = api

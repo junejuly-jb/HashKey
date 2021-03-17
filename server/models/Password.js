@@ -21,7 +21,7 @@ const loginSchema = new Schema({
             type: String
         },
         log_email: {
-            type: email
+            type: String
         },
         log_password: {
             type: String

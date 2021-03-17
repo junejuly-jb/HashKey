@@ -6,9 +6,9 @@ export default {
     }),
     props: ['l_name','l_url','l_user','l_pass', 'l_logname'],
     computed: {
-        name: {
+        website: {
             get(){ return this.l_name},
-            set(val){ return this.$emit('change_name', val)}
+            set(val){ return this.$emit('change_website', val)}
         },
         url: {
             get(){ return this.l_url},
@@ -58,7 +58,7 @@ export default {
             v-model="logname" :rules="required">
             </v-text-field>
             <v-text-field prepend-icon="mdi-semantic-web" rounded filled placeholder="Website"
-            v-model="name" :rules="required">
+            v-model="website" :rules="required">
             </v-text-field>
             <v-text-field prepend-icon="mdi-web" rounded filled placeholder="URL"
             v-model="url" :rules="required">

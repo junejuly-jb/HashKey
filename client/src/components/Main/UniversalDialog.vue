@@ -8,12 +8,12 @@
         <div class="con-content">
             <PasswordInput
             v-show="type == 'password'"
-            :l_name="login.l_name"
+            :l_website="login.l_website"
             :l_url="login.l_url"
             :l_user="login.l_user"
             :l_pass="login.l_pass"
             :l_logname="login.l_logname"
-            @change_name="login.l_name = $event"
+            @change_website="login.l_website = $event"
             @change_url="login.l_url = $event"
             @change_user="login.l_user = $event"
             @change_pass="login.l_pass = $event"
@@ -78,7 +78,7 @@ export default {
     data: () => ({
         login: {
             l_logname: '',
-            l_name: '',
+            l_website: '',
             l_url: '',
             l_user: '',
             l_pass: '',
