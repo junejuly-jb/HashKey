@@ -99,10 +99,6 @@ const facebookAuth = (req, res) => {
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
 }
 
-const protectedRoute = (req, res) => {
-    return res.status(200).json({ msg: 'hello', user: req.user })
-}
-
 const addPin = async (req, res) => {
     try {
         const pin = cryptr.encrypt(req.body.pin)
@@ -115,5 +111,5 @@ const addPin = async (req, res) => {
     }
 }
 module.exports = {
-    register, login, protectedRoute, googleAuth, facebookAuth, addPin
+    register, login, googleAuth, facebookAuth, addPin
 }

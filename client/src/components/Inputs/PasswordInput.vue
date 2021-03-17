@@ -4,7 +4,7 @@ export default {
     data: () => ({
         required: [ v => !!v || 'This field is required' ],
     }),
-    props: ['l_name','l_url','l_user','l_pass', 'l_logname'],
+    props: ['l_name','l_url','l_user','l_pass', 'l_logname', 'validPassForm'],
     computed: {
         website: {
             get(){ return this.l_name},
@@ -25,6 +25,10 @@ export default {
         logname: {
             get(){ return this.l_logname},
             set(val){ return this.$emit('change_logname', val)}
+        },
+        isValid: {
+            get(){ return this.validPassForm},
+            set(val){ return this.$emit('change_validPassForm', val)}
         }
     },
     created(){
@@ -35,11 +39,19 @@ export default {
                 setTimeout( () => {
                     this.$store.commit('SET_LOADING_LOCAL')
                 }, 2000)
+                this.isValid = true
             }
+            else{
+                this.isValid = false
+            }
+        })
+        bus.$on('onClickCancel', () => {
+            this.$refs.form.reset()
         })
     },
     beforeDestroy(){
         bus.$off('onSavePassword')
+        bus.$off('onClickCancel')
     }
 }
 </script>
@@ -53,7 +65,7 @@ export default {
             <path d="M8 11v-4a4 4 0 0 1 8 0v4" />
             </svg>
         </div>
-        <v-form ref="form">
+        <v-form ref="form" v-model="isValid">
             <v-text-field prepend-icon="mdi-label-outline" rounded filled placeholder="Name this login"
             v-model="logname" :rules="required">
             </v-text-field>
