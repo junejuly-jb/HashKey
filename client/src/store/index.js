@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 import * as user from './Modules/user'
+import * as password from './Modules/password'
 
 Vue.use(Vuex)
 
@@ -9,7 +10,7 @@ export default new Vuex.Store({
   state: {
     isLoadingLocal: false,
     registration_dialog: false,
-    loading_screen: ''
+    loading_screen: '',
   },
   mutations: {
     SET_LOADING_LOCAL(state) {
@@ -23,7 +24,7 @@ export default new Vuex.Store({
 
   },
   modules: {
-    user
+    user, password
   },
   plugins: [
     createPersistedState({
