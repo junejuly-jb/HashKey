@@ -33,6 +33,23 @@ export default {
             {
                 headers: { Authorization: 'Bearer ' + getToken() }
             })
+    },
+
+    addPassword(payload) {
+        return apiClient.post('/add-password', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            })
+    },
+
+    deletePassword(payload) {
+        return apiClient.post('/delete-password', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
+
+
 
 }

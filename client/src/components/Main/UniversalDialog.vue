@@ -13,11 +13,13 @@
             :l_user="login.l_user"
             :l_pass="login.l_pass"
             :l_logname="login.l_logname"
+            :validPassForm="validPassForm"
             @change_website="login.l_website = $event"
             @change_url="login.l_url = $event"
             @change_user="login.l_user = $event"
             @change_pass="login.l_pass = $event"
             @change_logname="login.l_logname = $event"
+            @change_validPassForm="validPassForm = $event"
             />
             <WifiInput
             v-show="type == 'wifi'"
@@ -45,7 +47,7 @@
 
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
-            <vs-button @click="addPass" transparent v-show="type == 'password'">
+            <vs-button @click="addPass" :disabled="!validPassForm" transparent v-show="type == 'password'">
                 Save Password
             </vs-button>
             <vs-button @click="addWifi" transparent v-show="type == 'wifi'">
@@ -60,7 +62,7 @@
             <vs-button @click="addCard" transparent v-show="type == 'card'">
                 Save Card
             </vs-button>
-            <vs-button @click="dialog = false" dark transparent>
+            <vs-button @click="onClickCancel" dark transparent>
                 Cancel
             </vs-button>
             </div>
@@ -76,6 +78,7 @@ import { bus } from '../../main'
 import { mapState } from 'vuex'
 export default {
     data: () => ({
+        validPassForm: false,
         login: {
             l_logname: '',
             l_website: '',
@@ -117,6 +120,10 @@ export default {
         addWifi(){ bus.$emit('onSaveWifi', this.wifi) },
         addNote(){ bus.$emit('onSaveNote', this.note) },
         addCard(){ bus.$emit('onSaveCard', this.card) },
+        onClickCancel(){ 
+            this.dialog = false
+            bus.$emit('onClickCancel') 
+        }
     }
 }
 </script>
