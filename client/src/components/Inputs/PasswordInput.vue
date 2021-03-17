@@ -3,18 +3,8 @@ import { bus } from '../../main'
 export default {
     data: () => ({
         required: [ v => !!v || 'This field is required' ],
-        valid: false
     }),
     props: ['l_name','l_url','l_user','l_pass', 'l_logname'],
-    created(){
-        bus.$on('onSavePassword', (data) => { this.onSave(data) })
-    },
-    methods: {
-        onSave(data){
-            console.log(data)
-            console.log(this.$refs.form.validate())
-        }
-    },
     computed: {
         name: {
             get(){ return this.l_name},
@@ -36,6 +26,20 @@ export default {
             get(){ return this.l_logname},
             set(val){ return this.$emit('change_logname', val)}
         }
+    },
+    created(){
+        bus.$on('onSavePassword', (data) => {
+            console.log(data)
+            if(this.$refs.form.validate()){
+                this.$store.commit('SET_LOADING_LOCAL')
+                setTimeout( () => {
+                    this.$store.commit('SET_LOADING_LOCAL')
+                }, 2000)
+            }
+        })
+    },
+    beforeDestroy(){
+        bus.$off('onSavePassword')
     }
 }
 </script>
@@ -49,7 +53,7 @@ export default {
             <path d="M8 11v-4a4 4 0 0 1 8 0v4" />
             </svg>
         </div>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form ref="form">
             <v-text-field prepend-icon="mdi-label-outline" rounded filled placeholder="Name this login"
             v-model="logname" :rules="required">
             </v-text-field>

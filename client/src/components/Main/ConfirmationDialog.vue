@@ -1,18 +1,15 @@
 <template>
-    <vs-dialog :width="width" not-center v-model="dialog" blur prevent-close>
+    <vs-dialog :width="width" not-center v-model="dialog" blur prevent-close :loading="isLoading">
         <template #header>
             <h4 class="not-margin">
             <b>{{header}}</b>
             </h4>
         </template>
-
-
         <div class="con-content">
             <p>
                 {{message}}
             </p>
         </div>
-
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
             <vs-button @click="doLogout" transparent v-show="status == 'logout'">
@@ -28,6 +25,9 @@
 <script>
 export default {
     props: ['dialogStats', 'message', 'width', 'header', 'status'],
+    data: () => ({
+        isLoading: false
+    }),
     computed:{
         dialog:{
             get(){
@@ -42,7 +42,11 @@ export default {
     },
     methods: {
         doLogout(){
-            this.$emit('onLogout')
+            this.isLoading = true
+            setTimeout( () => {
+                this.isLoading = false
+                this.$emit('onLogout')
+            }, 2000)
         }
     }
 }

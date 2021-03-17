@@ -2,11 +2,6 @@
 import { bus } from '../../main'
 export default {
     props: ['c_number', 'c_exp', 'c_ccv'],
-    created(){
-        bus.$on('onSaveCard', (data) => {
-            console.log(data)
-        })
-    },
     computed: {
         card_number: {
             get(){ return this.c_number },
@@ -20,6 +15,14 @@ export default {
             get(){ return this.c_ccv},
             set(val){ return this.$emit('change_cccv', val)}
         },
+    },
+    created(){
+        bus.$on('onSaveCard', (data) => {
+            console.log(data)
+        })
+    },
+    beforeDestroy(){
+        bus.$off('onSaveCard')
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <vs-dialog width="500px" not-center v-model="dialog" blur prevent-close>
+    <vs-dialog width="500px" :loading="isLoadingLocal" not-center v-model="dialog" blur prevent-close>
         <template #header>
             <h4 class="not-margin">
             <b>{{header}}</b>
@@ -15,9 +15,10 @@
             :l_logname="login.l_logname"
             @change_name="login.l_name = $event"
             @change_url="login.l_url = $event"
-            @change_user="login.l_username = $event"
+            @change_user="login.l_user = $event"
             @change_pass="login.l_pass = $event"
-            @change_logname="login.l_logname = $event"/>
+            @change_logname="login.l_logname = $event"
+            />
             <WifiInput
             v-show="type == 'wifi'"
             :w_ssid="wifi.w_ssid"
@@ -59,7 +60,7 @@
             <vs-button @click="addCard" transparent v-show="type == 'card'">
                 Save Card
             </vs-button>
-            <vs-button @click="dialog=false" dark transparent>
+            <vs-button @click="dialog = false" dark transparent>
                 Cancel
             </vs-button>
             </div>
@@ -72,13 +73,14 @@ import WifiInput from '../Inputs/WifiInput'
 import NoteInput from '../Inputs/NoteInput'
 import CardInput from '../Inputs/CardInput'
 import { bus } from '../../main'
+import { mapState } from 'vuex'
 export default {
     data: () => ({
         login: {
             l_logname: '',
             l_name: '',
             l_url: '',
-            l_username: '',
+            l_user: '',
             l_pass: '',
         },
         wifi: {
@@ -98,6 +100,7 @@ export default {
     components: { PasswordInput, WifiInput, NoteInput, CardInput },
     props: ['dialogStat', 'header', 'type'],
     computed: {
+        ...mapState(['isLoadingLocal']),
         dialog:{
             get(){
                 return this.dialogStat
@@ -113,7 +116,7 @@ export default {
         addPass(){ bus.$emit('onSavePassword', this.login) },
         addWifi(){ bus.$emit('onSaveWifi', this.wifi) },
         addNote(){ bus.$emit('onSaveNote', this.note) },
-        addCard(){ bus.$emit('onSaveCard', this.card) }
+        addCard(){ bus.$emit('onSaveCard', this.card) },
     }
 }
 </script>
