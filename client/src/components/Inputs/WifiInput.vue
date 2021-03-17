@@ -2,11 +2,6 @@
 import { bus } from '../../main'
 export default {
     props: ['w_ssid', 'w_pass'],
-    created(){
-        bus.$on('onSaveWifi', (data) => {
-            console.log(data)
-        })
-    },
     computed: {
         ssid: {
             get(){ return this.w_ssid },
@@ -16,6 +11,14 @@ export default {
             get(){ return this.w_pass},
             set(val){ return this.$emit('change_pass', val)}
         },
+    },
+    created(){
+        bus.$on('onSaveWifi', (data) => {
+            console.log(data)
+        })
+    },
+    beforeDestroy(){
+        bus.$off('onSaveWifi')
     }
 }
 </script>

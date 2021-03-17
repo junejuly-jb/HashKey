@@ -2,11 +2,6 @@
 import { bus } from '../../main'
 export default {
     props: ['n_title', 'n_note'],
-    created(){
-        bus.$on('onSaveNote', (data) => {
-            console.log(data)
-        })
-    },
     computed: {
         title: {
             get(){ return this.n_title },
@@ -16,6 +11,14 @@ export default {
             get(){ return this.n_note},
             set(val){ return this.$emit('change_note', val)}
         },
+    },
+    created(){
+        bus.$on('onSaveNote', (data) => {
+            console.log(data)
+        })
+    },
+    beforeDestroy(){
+        bus.$off('onSaveNote')
     }
 }
 </script>
