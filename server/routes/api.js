@@ -17,4 +17,5 @@ api.get('/secret', auth , UserController.protectedRoute)
 
 // password route
 api.post('/add-password', auth, PasswordController.addPass)
+api.post('/delete-password', auth, PasswordController.deletePass)
 module.exports = api

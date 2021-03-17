@@ -1,8 +1,11 @@
 const Password = require('../models/Password')
+const Cryptr = require('cryptr')
+const cryptr = new Cryptr('HellNaw!')
 
 const addPass = async (req, res) => {
     try {
-        const { l_logname, l_website, l_url, l_pass, l_user } = req.body
+        const { l_logname, l_website, l_url, l_user } = req.body
+        const l_pass = cryptr.encrypt(req.body.l_pass)
         const password = new Password({
             credential_type: 'password',
             owner: req.user._id,
@@ -15,10 +18,20 @@ const addPass = async (req, res) => {
             }
         })
         await password.save()
+        password.credentials.log_password = cryptr.decrypt(password.credentials.log_password)
         return res.status(200).json({ data: password })
     } catch (error) {
-        return res.send(error)
+        return res.status(500).send(error)
     }
 }
-
-module.exports = { addPass }
+const deletePass = async (req, res) => {
+    try {
+        await Password.deleteMany({ _id: { $in: req.body.ids } })
+            .then(() => {
+            return res.status(200).json({ msg: 'deleted!'})
+        })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+module.exports = { addPass, deletePass }
