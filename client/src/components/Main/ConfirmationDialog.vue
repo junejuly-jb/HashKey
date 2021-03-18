@@ -12,9 +12,10 @@
         </div>
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
-            <vs-button @click="doLogout" transparent v-show="status == 'logout'">
+            <vs-button @click="doLogout" transparent v-show="status == 'logout' || 'unauthorize'">
                 Logout
             </vs-button>
+           
             <vs-button @click="dialog=false" dark transparent>
                 Cancel
             </vs-button>
@@ -24,7 +25,17 @@
 </template>
 <script>
 export default {
-    props: ['dialogStats', 'message', 'width', 'header', 'status'],
+    // props: ['dialogStats', 'message', 'width', 'header', 'status'],
+    props: {
+        dialogStats: Boolean,
+        message: String,
+        width: [String, Number],
+        header: String,
+        status: {
+            required: false,
+            type: String
+        }
+    },
     data: () => ({
         isLoading: false
     }),

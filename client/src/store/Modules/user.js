@@ -10,7 +10,7 @@ export const state = {
         pin: '',
     },
     current_index: 0,
-    filtering: 'passwordList'
+    filtering: 'Passwords'
 }
 
 export const mutations = {
