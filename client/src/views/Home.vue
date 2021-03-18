@@ -10,16 +10,18 @@
           <v-col>
             <v-container><h2>{{filtering}}</h2></v-container>
             <v-sheet
-              min-height="70vh"
+              min-height="500px"
               class="rounded-xl mx-5"
               elevation="24"
               style="background-color: #F4F4FC"
             >
+            <v-container>
               <Passwords v-show="filtering == 'Passwords'"/>
               <Wifi v-show="filtering == 'Wifi'"/>
               <Notes v-show="filtering == 'Notes'"/>
               <Info v-show="filtering == 'Personal Information'"/>
               <Cards v-show="filtering == 'Cards'"/>
+            </v-container>
             </v-sheet>
           </v-col>
         </v-row>
