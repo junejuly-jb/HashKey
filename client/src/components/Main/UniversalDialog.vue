@@ -14,12 +14,14 @@
             :l_pass="login.l_pass"
             :l_logname="login.l_logname"
             :validPassForm="validPassForm"
+            :dialog="dialog"
             @change_website="login.l_website = $event"
             @change_url="login.l_url = $event"
             @change_user="login.l_user = $event"
             @change_pass="login.l_pass = $event"
             @change_logname="login.l_logname = $event"
             @change_validPassForm="validPassForm = $event"
+            @close="dialog = false"
             />
             <WifiInput
             v-show="type == 'wifi'"
