@@ -81,7 +81,7 @@ const googleAuth = async (req, res) => {
         const userExists = await User.findOne({ "google.id": user.google.id })
         if (userExists) {
             const token = JWT.sign({ _id: userExists._id}, process.env.PASS_PHRASE, { expiresIn: userExists.user_settings.vault_timeout })
-            return res.status(200).json({token, user: userExists, exp: exp.exp})
+            return res.status(200).json({ token, user: userExists, exp: exp.exp })
         }
         else {
             await user.save()
