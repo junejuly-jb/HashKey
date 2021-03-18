@@ -4,7 +4,7 @@ export default {
     data: () => ({
         required: [ v => !!v || 'This field is required' ],
     }),
-    props: ['l_name','l_url','l_user','l_pass', 'l_logname', 'validPassForm'],
+    props: ['l_name','l_url','l_user','l_pass', 'l_logname', 'validPassForm', 'dialog'],
     computed: {
         website: {
             get(){ return this.l_name},
@@ -29,17 +29,41 @@ export default {
         isValid: {
             get(){ return this.validPassForm},
             set(val){ return this.$emit('change_validPassForm', val)}
+        },
+        dialogStat: {
+            get(){ return this.dialog },
+            set(val){ 
+                if(!val){
+                    return this.$emit('close')
+                }
+            }
         }
     },
     created(){
         bus.$on('onSavePassword', (data) => {
-            console.log(data)
             if(this.$refs.form.validate()){
                 this.$store.commit('SET_LOADING_LOCAL')
-                setTimeout( () => {
-                    this.$store.commit('SET_LOADING_LOCAL')
-                }, 2000)
-                this.isValid = true
+                this.$store.dispatch('password/addPassword', data)
+                .then( res => {
+                    if(res === 200){
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Login credentials has been saved successfully!',
+                            position: 'top-right',
+                        })
+                        setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 2000)
+                        this.dialogStat = false
+                        this.$refs.form.reset()
+                    }
+                    else if(res === 401){
+                        console.log('unauthenticated')
+                    }
+                    else{
+                        console.log('magic')
+                    }
+                })
             }
             else{
                 this.isValid = false

@@ -18,6 +18,9 @@ export const actions = {
                 commit('SET_PASSWORD', res.data.data)
                 return res.status
             })
+            .catch(err => {
+                return err.response.status
+        })
     }
 }
 
