@@ -11,6 +11,9 @@ export const mutations = {
         for (let i = 0; i < payload.length; i++){
             state.passwords.push(payload[i])
         }
+    },
+    REMOVE_PASSWORD(state) {
+        state.passwords = []
     }
 }
 

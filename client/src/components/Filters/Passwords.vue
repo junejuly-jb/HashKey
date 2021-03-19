@@ -1,12 +1,19 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
+import { mapState } from 'vuex'
 export default {
+    computed: { ...mapState('password', ['passwords']) },
     components: { UniversalDialog },
     data: () => ({
         dialogStat: false,
         header: 'Add Login',
         type: 'password'
     }),
+    methods:{
+        getImage(pic){
+            return require('../../assets/web-icons/'+pic+'.png')
+        }
+    }
 }
 </script>
 <template>
@@ -17,9 +24,13 @@ export default {
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
             :gutter="{default: '30px', 700: '10px'}"
             >
-                <div class="neo">
+                <div v-for="(pass, i) in passwords" :key="i" class="neo">
                     <v-container>
-                        Hello
+                        <div class="text-center">
+                            <img :src="getImage(pass.log_website)" alt="" width="50">
+                            <h4 class="my-2">{{pass.log_name}}</h4>
+                            <small>{{pass.log_email}}</small>
+                        </div>
                     </v-container>
                 </div>
             </masonry>
@@ -34,19 +45,13 @@ export default {
 
 <style scoped>
     .neo{
-        padding: 30px 5px;
+        padding: 17px 5px;
         margin: 30px 0px;
         border-radius: 15px;
         background: #EAEAF4;
-        transition: 0.5s !important;
+        transition: 0.2s !important;
         box-shadow:  7px 7px 19px #dadae3,
              -7px -7px 19px #fafaff;
         cursor: pointer;
-    }
-    .neo:hover{
-        border-radius: 15px;
-        background: #EAEAF4;
-        box-shadow: inset 7px 7px 19px #dadae3,
-            inset -7px -7px 19px #fafaff;
     }
 </style>
