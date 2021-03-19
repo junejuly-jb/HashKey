@@ -11,7 +11,7 @@ const addPass = async (req, res) => {
             owner: req.user._id,
             credentials: {
                 log_name: l_logname,
-                log_website: l_website,
+                log_website: l_website.toLowerCase(),
                 log_url: l_url,
                 log_email: l_user,
                 log_password: l_pass,
@@ -34,4 +34,18 @@ const deletePass = async (req, res) => {
         return res.status(500).send(error)
     }
 }
-module.exports = { addPass, deletePass }
+
+const passwords = async (req, res) => {
+    try {
+        const passwords = await Password.find({ owner: req.user._id })
+        const credentials = [];
+        for (let i = 0; i < passwords.length; i++){
+            passwords[i].credentials.log_password = cryptr.decrypt(passwords[i].credentials.log_password)
+            credentials.push(passwords[i].credentials)
+        }
+        return res.status(200).json({ credentials })
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+}
+module.exports = { addPass, deletePass, passwords }

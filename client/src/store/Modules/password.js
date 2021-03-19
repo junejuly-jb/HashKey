@@ -2,13 +2,14 @@ import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
-    passwords: []
+    passwords: [],
+    websites: ['Others', 'Instagram', 'Gmail', 'MongoDB', 'Facebook', 'Reddit', '9gag', 'Twitter']
 }
 
 export const mutations = {
     SET_PASSWORD(state, payload) {
         state.passwords.push(payload)
-   }
+    }
 }
 
 export const actions = {
@@ -21,6 +22,12 @@ export const actions = {
             .catch(err => {
                 return err.response.status
         })
+    },
+    passwords({ commit }) {
+        return HashKeyServices.passwords()
+            .then(response => {
+                commit('SET_PASSWORD', response.data.credentials)
+            })
     }
 }
 
