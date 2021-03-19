@@ -59,6 +59,7 @@ export default {
         },
         onLogout(){
             this.$store.commit('user/REMOVE_USER_INFO')
+            this.$store.commit('password/REMOVE_PASSWORD')
             this.$auth.destroyToken()
             this.$router.push('/')
         }

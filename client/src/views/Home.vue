@@ -52,6 +52,14 @@ import { mapState } from 'vuex'
         'Updates',
       ],
     }),
+    methods: {
+      fetchPass(){
+        this.$store.dispatch('password/fetchPasswords')
+      }
+    },
+    mounted(){
+      this.fetchPass()
+    }
   }
 </script>
 

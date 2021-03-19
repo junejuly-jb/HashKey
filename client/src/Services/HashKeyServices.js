@@ -50,7 +50,7 @@ export default {
         )
     },
     fetchPassword() {
-        return apiClient.post('/passwords',
+        return apiClient.get('/passwords',
             {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }

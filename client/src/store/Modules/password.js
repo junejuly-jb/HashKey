@@ -8,7 +8,12 @@ export const state = {
 
 export const mutations = {
     SET_PASSWORD(state, payload) {
-        state.passwords.push(payload)
+        for (let i = 0; i < payload.length; i++){
+            state.passwords.push(payload[i])
+        }
+    },
+    REMOVE_PASSWORD(state) {
+        state.passwords = []
     }
 }
 
@@ -16,18 +21,21 @@ export const actions = {
     addPassword({ commit }, payload) {
         return HashKeyServices.addPassword(payload)
             .then(res => {
-                commit('SET_PASSWORD', res.data.data)
+                const creds = []
+                creds.push(res.data.data.credentials)
+                commit('SET_PASSWORD', creds)
                 return res.status
             })
             .catch(err => {
                 return err.response.status
         })
     },
-    passwords({ commit }) {
-        return HashKeyServices.passwords()
+    fetchPasswords({ commit }) {
+        return HashKeyServices.fetchPassword()
             .then(response => {
-                commit('SET_PASSWORD', response.data.credentials)
-            })
+            console.log('got here!')
+            commit('SET_PASSWORD', response.data.credentials)
+        })
     }
 }
 
