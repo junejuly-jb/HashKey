@@ -15,7 +15,6 @@
             <vs-button @click="doLogout" transparent v-show="status == 'logout' || 'unauthorize'">
                 Logout
             </vs-button>
-           
             <vs-button @click="dialog=false" dark transparent>
                 Cancel
             </vs-button>

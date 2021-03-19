@@ -65,8 +65,11 @@ export default {
 <template>
     <v-sheet rounded="lg" style="background-color: #EAEAF4">
         <div class="d-flex align-center justify-center">
-            <vs-avatar circle size="80">
-                <img :src="user_info.profile" alt="">
+            <vs-avatar circle size="80" v-if="user_info.profile != ''">
+                <img :src="user_info.profile.profile_photo" alt="">
+            </vs-avatar>
+            <vs-avatar circle size="80" v-else>
+                <i class='bx bx-user'></i>
             </vs-avatar>
         </div>
         <div class="my-3">

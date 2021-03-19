@@ -1,5 +1,6 @@
 <script>
 import { bus } from '../../main'
+import { mapState } from 'vuex'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
     data: () => ({
@@ -11,12 +12,17 @@ export default {
         status: ''
     }),
     components: { ConfirmationDialog },
-    props: ['l_name','l_url','l_user','l_pass', 'l_logname', 'validPassForm', 'dialog'],
+    props: ['l_website','l_url','l_user','l_pass', 'l_logname', 'validPassForm', 'dialog'],
     computed: {
-        website: {
-            get(){ return this.l_name},
-            set(val){ return this.$emit('change_website', val)}
+        ...mapState('password', ['websites']),
+        website:{
+            get(){ return this.l_website},
+            set(val){ return this.$emit('change_website', val) }
         },
+        // website: {
+        //     get(){ return this.l_name},
+        //     set(val){ return this.$emit('change_website', val)}
+        // },
         url: {
             get(){ return this.l_url},
             set(val){ return this.$emit('change_url', val)}
@@ -131,9 +137,15 @@ export default {
             <v-text-field prepend-icon="mdi-label-outline" rounded filled placeholder="Name this login"
             v-model="logname" :rules="required">
             </v-text-field>
-            <v-text-field prepend-icon="mdi-semantic-web" rounded filled placeholder="Website"
+            <!-- <v-text-field prepend-icon="mdi-semantic-web" rounded filled placeholder="Website"
             v-model="website" :rules="required">
-            </v-text-field>
+            </v-text-field> -->
+            <v-autocomplete
+                v-model="website"
+                :items="websites"
+                rounded filled placeholder="URL"
+                prepend-icon="mdi-semantic-web"
+            ></v-autocomplete>
             <v-text-field prepend-icon="mdi-web" rounded filled placeholder="URL"
             v-model="url" :rules="required">
             </v-text-field>
