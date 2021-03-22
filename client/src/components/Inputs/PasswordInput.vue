@@ -19,10 +19,6 @@ export default {
             get(){ return this.l_website},
             set(val){ return this.$emit('change_website', val) }
         },
-        // website: {
-        //     get(){ return this.l_name},
-        //     set(val){ return this.$emit('change_website', val)}
-        // },
         url: {
             get(){ return this.l_url},
             set(val){ return this.$emit('change_url', val)}

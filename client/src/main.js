@@ -5,6 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import Auth from './auth'
 import VueMasonry from 'vue-masonry-css'
+import VueClipboard from 'vue-clipboard2'
 
 export const bus = new Vue()
 // component
@@ -19,6 +20,8 @@ import 'vuesax/dist/vuesax.css'
 Vue.use(Auth)
 Vue.use(VueMasonry)
 Vue.use(Vuesax)
+Vue.use(VueClipboard)
+
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.forVisitors)) {
