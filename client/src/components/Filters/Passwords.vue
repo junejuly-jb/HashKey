@@ -50,6 +50,7 @@ export default {
         <InformationDialog 
         :infoDialogStat="infoDialogStat"
         :pass_info="pass_info"
+        :type="type"
         @close="infoDialogStat = false"
         />
     </v-container>
