@@ -33,7 +33,13 @@ export const actions = {
     fetchPasswords({ commit }) {
         return HashKeyServices.fetchPassword()
             .then(response => {
+            commit('REMOVE_PASSWORD')
             commit('SET_PASSWORD', response.data.credentials)
+            return response.status
+        })
+            .catch(err => {
+                console.log('errir frin store', err.response.status)
+            return err.response.status
         })
     }
 }

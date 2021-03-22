@@ -19,7 +19,7 @@
                 ></v-text-field>
                 </v-responsive>
                 <v-spacer></v-spacer>
-                <v-btn icon fab dense class="bg-secondary mx-2" small>
+                <v-btn icon fab dense class="bg-secondary mx-2" small @click="refresh">
                 <v-icon>mdi-refresh</v-icon>
                 </v-btn>
                 <v-btn icon fab dense class="bg-secondary mx-2" small>
@@ -62,6 +62,30 @@ export default {
             this.$store.commit('password/REMOVE_PASSWORD')
             this.$auth.destroyToken()
             this.$router.push('/')
+        },
+        refresh(){
+            this.$store.dispatch('password/fetchPasswords')
+            .then( res => {
+                if(res === 401){
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
+                }
+                else if( res === 200){
+                    console.log(res)
+                }
+                else{
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                }
+            })
         }
     }
 }

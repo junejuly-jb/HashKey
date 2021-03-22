@@ -8,11 +8,16 @@ export default {
                 if(!val){ return this.$emit('close')}
             }
         }
+    },
+    methods:{
+        getImage(pic){
+            return require('../../assets/web-icons/'+pic+'.png')
+        }
     }
 }
 </script>
 <template>
-    <vs-dialog width="300px" not-center v-model="dialog" blur prevent-close>
+    <vs-dialog width="200px" not-center v-model="dialog" blur prevent-close>
         <template #header>
             <h4 class="not-margin">
             <b>Information</b>
@@ -20,7 +25,8 @@ export default {
         </template>
         <div class="con-content">
             <p>
-                {{pass_info}}
+                {{pass_info.log_email}}
+                {{pass_info.log_password}}
             </p>
         </div>
         <template #footer>
