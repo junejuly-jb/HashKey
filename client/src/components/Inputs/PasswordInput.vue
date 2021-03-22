@@ -108,6 +108,7 @@ export default {
     methods:{
         onLogout(){
             this.$store.commit('user/REMOVE_USER_INFO')
+            this.$store.commit('password/REMOVE_PASSWORD')
             this.$auth.destroyToken()
             this.$store.commit('SET_LOADING_LOCAL')
             this.$router.push('/')
@@ -137,13 +138,10 @@ export default {
             <v-text-field prepend-icon="mdi-label-outline" rounded filled placeholder="Name this login"
             v-model="logname" :rules="required">
             </v-text-field>
-            <!-- <v-text-field prepend-icon="mdi-semantic-web" rounded filled placeholder="Website"
-            v-model="website" :rules="required">
-            </v-text-field> -->
             <v-autocomplete
                 v-model="website"
                 :items="websites"
-                rounded filled placeholder="URL"
+                rounded filled placeholder="Website"
                 prepend-icon="mdi-semantic-web"
             ></v-autocomplete>
             <v-text-field prepend-icon="mdi-web" rounded filled placeholder="URL"

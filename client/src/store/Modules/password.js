@@ -33,7 +33,6 @@ export const actions = {
     fetchPasswords({ commit }) {
         return HashKeyServices.fetchPassword()
             .then(response => {
-            console.log('got here!')
             commit('SET_PASSWORD', response.data.credentials)
         })
     }

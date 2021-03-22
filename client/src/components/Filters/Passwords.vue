@@ -1,17 +1,24 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
+import InformationDialog from '../Main/InformationDialog'
 import { mapState } from 'vuex'
 export default {
     computed: { ...mapState('password', ['passwords']) },
-    components: { UniversalDialog },
+    components: { UniversalDialog, InformationDialog },
     data: () => ({
         dialogStat: false,
+        infoDialogStat: false,
         header: 'Add Login',
-        type: 'password'
+        type: 'password',
+        pass_info: ''
     }),
     methods:{
         getImage(pic){
             return require('../../assets/web-icons/'+pic+'.png')
+        },
+        view(pass){
+            this.infoDialogStat = true
+            this.pass_info = pass
         }
     }
 }
@@ -24,7 +31,7 @@ export default {
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
             :gutter="{default: '30px', 700: '10px'}"
             >
-                <div v-for="(pass, i) in passwords" :key="i" class="neo">
+                <div v-for="(pass, i) in passwords" :key="i" class="neo" @click="view(pass)">
                     <v-container>
                         <div class="text-center">
                             <img :src="getImage(pass.log_website)" alt="" width="50">
@@ -40,6 +47,11 @@ export default {
         :header="header"
         :type="type"
         @close="dialogStat = false"/>
+        <InformationDialog 
+        :infoDialogStat="infoDialogStat"
+        :pass_info="pass_info"
+        @close="infoDialogStat = false"
+        />
     </v-container>
 </template>
 
