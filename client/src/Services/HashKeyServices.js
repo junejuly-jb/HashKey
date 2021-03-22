@@ -2,7 +2,6 @@ import axios from 'axios'
 
 const getToken = function () {
     const token = localStorage.getItem('token')
-    console.log(token)
     return token
 }
 
