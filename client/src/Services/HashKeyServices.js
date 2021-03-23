@@ -42,7 +42,7 @@ export default {
     },
 
     deletePassword(payload) {
-        return apiClient.post('/delete-password', payload,
+        return apiClient.post('/delete-password', {ids: payload},
             {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }

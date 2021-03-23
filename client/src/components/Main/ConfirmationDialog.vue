@@ -24,7 +24,6 @@
 </template>
 <script>
 export default {
-    // props: ['dialogStats', 'message', 'width', 'header', 'status'],
     props: {
         dialogStats: Boolean,
         message: String,
