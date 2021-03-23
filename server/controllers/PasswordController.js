@@ -40,8 +40,16 @@ const passwords = async (req, res) => {
         const passwords = await Password.find({ owner: req.user._id })
         const credentials = [];
         for (let i = 0; i < passwords.length; i++){
-            passwords[i].credentials.log_password = cryptr.decrypt(passwords[i].credentials.log_password)
-            credentials.push(passwords[i].credentials)
+            var log_pass = cryptr.decrypt(passwords[i].credentials.log_password)
+            var toPush = {
+                log_id: passwords[i]._id,
+                log_name: passwords[i].credentials.log_name,
+                log_website: passwords[i].credentials.log_website,
+                log_url: passwords[i].credentials.log_url,
+                log_email: passwords[i].credentials.log_email,
+                log_password: log_pass,
+            }
+            credentials.push(toPush)
         }
         return res.status(200).json({ credentials })
     } catch (error) {

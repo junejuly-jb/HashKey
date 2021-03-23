@@ -14,6 +14,13 @@ export const mutations = {
     },
     REMOVE_PASSWORD(state) {
         state.passwords = []
+    },
+    DELETE_LOGIN(state, payload) {
+        for (let i = 0; i < payload.length; i++) {
+            var idx = state.passwords.findIndex(index => index.log_id === payload[i]);
+            state.passwords.splice(idx, 1)
+            console.log(idx)
+        }
     }
 }
 
@@ -41,7 +48,13 @@ export const actions = {
                 console.log('errir frin store', err.response.status)
             return err.response.status
         })
-    }
+    },
+    // deletePassword({commit}) {
+    //     return HashKeyServices.deletePassword()
+    //         .then(response => {
+            
+    //     })
+    // }
 }
 
 export const getters = {

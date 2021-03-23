@@ -10,8 +10,7 @@ export default {
                 if(!val){ return this.$emit('close')}
             }
         }
-    },
-    
+    }
 }
 </script>
 <template>
