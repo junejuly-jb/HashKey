@@ -75,7 +75,7 @@ export default {
         <div class="my-3">
             <h5 class="text-center">{{ user_info.name }}</h5>
         </div>
-        <v-list color="transparent" shaped dense>
+        <v-list color="transparent" shaped>
             <v-list-item-group
                 v-model="index"
                 mandatory
