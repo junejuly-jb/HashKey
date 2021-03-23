@@ -1,6 +1,14 @@
 <script>
 export default {
-    props: [ 'pass_info' ],
+    props: [ 'pass_info', 'infoDialogStat' ],
+    computed: {
+        dialog:{
+            get(){ return this.infoDialogStat},
+            set(val){
+                if(!val){ this.$emit('close')}
+            }
+        }
+    },
     data: () => ({
         show: false,
         ids: []
@@ -25,9 +33,42 @@ export default {
             })
         },
         onClickDeleteLogin(){
+            this.$store.commit('SET_LOADING_LOCAL')
             this.ids.push(this.pass_info.log_id)
-            console.log(typeof this.ids)
-            this.$store.commit('password/DELETE_LOGIN', this.ids)
+            this.$store.dispatch('password/deletePassword', this.ids)
+            .then( res => {
+                if(res === 401){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$emit('error401')
+                    this.ids = []
+                }
+                else if( res === 200){
+                    setTimeout( () => {
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.dialog = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Login credentials deleted successfully',
+                            position: 'top-right',
+                        })
+                        this.ids = []
+                    }, 1000)
+                }
+                else{
+                    this.dialog = false
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                    this.ids = []
+                }
+            })
         }
     }
 }

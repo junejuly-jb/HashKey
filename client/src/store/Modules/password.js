@@ -19,7 +19,6 @@ export const mutations = {
         for (let i = 0; i < payload.length; i++) {
             var idx = state.passwords.findIndex(index => index.log_id === payload[i]);
             state.passwords.splice(idx, 1)
-            console.log(idx)
         }
     }
 }
@@ -45,16 +44,19 @@ export const actions = {
             return response.status
         })
             .catch(err => {
-                console.log('errir frin store', err.response.status)
             return err.response.status
         })
     },
-    // deletePassword({commit}) {
-    //     return HashKeyServices.deletePassword()
-    //         .then(response => {
-            
-    //     })
-    // }
+    deletePassword({commit}, payload) {
+        return HashKeyServices.deletePassword(payload)
+        .then(response => {
+            commit('DELETE_LOGIN', payload)
+            return response.status
+        })
+        .catch(err => {
+            return err.response.status
+        })
+    }
 }
 
 export const getters = {
