@@ -3,7 +3,8 @@ export const namespaced = true
 
 export const state = {
     passwords: [],
-    websites: ['Others', 'Instagram', 'Gmail', 'MongoDB', 'Facebook', 'Reddit', '9gag', 'Twitter']
+    websites: ['Others', 'Instagram', 'Gmail', 'MongoDB', 'Facebook', 'Reddit', '9gag', 'Twitter', 'Github', 'Dev', 'Linkedin',
+    'Apple', 'Google', 'Shopee']
 }
 
 export const mutations = {

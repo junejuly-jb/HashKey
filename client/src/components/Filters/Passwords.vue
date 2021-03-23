@@ -34,7 +34,7 @@ export default {
                 <div v-for="(pass, i) in passwords" :key="i" class="neo" @click="view(pass)">
                     <v-container>
                         <div class="text-center">
-                            <img :src="getImage(pass.log_website)" alt="" width="50">
+                            <img :src="getImage(pass.log_website)" alt="" width="60" class="web_icons">
                             <h4 class="my-2">{{pass.log_name}}</h4>
                             <small>{{pass.log_email}}</small>
                         </div>
@@ -66,5 +66,8 @@ export default {
         box-shadow:  7px 7px 19px #dadae3,
              -7px -7px 19px #fafaff;
         cursor: pointer;
+    }
+    .web_icons{
+        border-radius: 15px;
     }
 </style>
