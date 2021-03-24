@@ -70,7 +70,15 @@ const updatePass = async (req, res) => {
     }, { returnOriginal: false, useFindAndModify: false },
         (err, doc) => {
             if (err) return res.status(500).send(err)
-            return res.status(200).json({ doc })
+            const credentials = {
+                log_id: doc._id,
+                log_email: doc.credentials.log_email,
+                log_name: doc.credentials.log_name,
+                log_password: cryptr.decrypt(doc.credentials.log_password),
+                log_url: doc.credentials.log_url,
+                log_website: doc.credentials.log_website,
+            }
+            return res.status(200).json({ credentials })
         })
 }
 module.exports = { addPass, deletePass, passwords, updatePass }
