@@ -1,5 +1,6 @@
 const Password = require('../models/Password')
 const Cryptr = require('cryptr')
+const { UserRefreshClient } = require('google-auth-library')
 const cryptr = new Cryptr('HellNaw!')
 
 const addPass = async (req, res) => {
@@ -40,7 +41,7 @@ const passwords = async (req, res) => {
         const passwords = await Password.find({ owner: req.user._id })
         const credentials = [];
         for (let i = 0; i < passwords.length; i++){
-            var log_pass = cryptr.decrypt(passwords[i].credentials.log_password)
+            var log_pass = passwords[i].credentials.log_password == '' ? '' : cryptr.decrypt(passwords[i].credentials.log_password)
             var toPush = {
                 log_id: passwords[i]._id,
                 log_name: passwords[i].credentials.log_name,
@@ -53,7 +54,23 @@ const passwords = async (req, res) => {
         }
         return res.status(200).json({ credentials })
     } catch (error) {
+        console.log(err)
         return res.status(500).json({ error })
     }
 }
-module.exports = { addPass, deletePass, passwords }
+
+const updatePass = async (req, res) => {
+    const password = cryptr.encrypt(req.body.pass)
+    const owner = await Password.findOneAndUpdate({ _id: req.params.id, owner: req.user._id },{
+        $set: {
+            "credentials.log_url": req.body.url,
+            "credentials.log_email": req.body.email,
+            "credentials.log_password": password,
+        }
+    }, { returnOriginal: false, useFindAndModify: false },
+        (err, doc) => {
+            if (err) return res.status(500).send(err)
+            return res.status(200).json({ doc })
+        })
+}
+module.exports = { addPass, deletePass, passwords, updatePass }

@@ -17,4 +17,6 @@ api.post('/add-pin', auth, UserController.addPin)
 api.post('/add-password', auth, PasswordController.addPass)
 api.post('/delete-password', auth, PasswordController.deletePass)
 api.get('/passwords', auth, PasswordController.passwords)
+api.put('/update-password/:id', auth, PasswordController.updatePass)
+
 module.exports = api
