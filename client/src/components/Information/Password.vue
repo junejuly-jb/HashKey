@@ -7,12 +7,15 @@ export default {
             set(val){
                 if(!val){ this.$emit('close')}
             }
-        }
+        },
     },
     data: () => ({
         show: false,
         ids: [],
-        editing: false
+        editing: false,
+        log_user: '',
+        log_password: '',
+        log_link: '',
     }),
     methods:{
         getImage(pic){
@@ -73,6 +76,20 @@ export default {
                     this.ids = []
                 }
             })
+        },
+        onClickEdit(){
+            this.editing = true
+            this.log_user = this.pass_info.log_email
+            this.log_password = this.pass_info.log_password
+            this.log_link = this.pass_info.log_url
+        },
+        onClickUpdate(){
+            console.log(this.pass_info.log_id)
+            this.$store.commit('SET_LOADING_LOCAL')
+            setTimeout(() => { 
+                this.$store.commit('SET_LOADING_LOCAL') 
+                this.editing = false
+            }, 1000)
         }
     }
 }
@@ -92,29 +109,32 @@ export default {
         <div class="py-5" v-show="editing">
             <div class="d-flex align-center my-2">
                 <i class="bx bx-user mr-5 my-2"></i>
-                <vs-input v-model="value1" placeholder="User name"></vs-input>
+                <vs-input v-model="log_user" placeholder="User name"></vs-input>
             </div>
             <div class="d-flex align-center my-2">
                 <i class="bx bx-lock-alt mr-5 my-2"></i>
-                <vs-input v-model="value1" placeholder="Password" type="password"></vs-input>
+                <vs-input v-model="log_password" placeholder="Password" type="password"></vs-input>
             </div>
             <div class="d-flex align-center my-2">
                 <i class="bx bx-link mr-5 my-2"></i>
-                <vs-input v-model="value1" placeholder="Link"></vs-input>
+                <vs-input v-model="log_link" placeholder="Link"></vs-input>
             </div>
         </div>
         <div class="d-flex justify-end">
-            <vs-button icon flat @click="show = !show">
+            <vs-button icon flat @click="show = !show" v-show="!editing">
                 <i class='bx bx-hide' v-show="show"></i>
                 <i class='bx bx-show-alt' v-show="!show"></i>
             </vs-button>
-            <vs-button icon flat v-clipboard:copy="pass_info.log_password" @click="copyPass">
+            <vs-button icon flat v-clipboard:copy="pass_info.log_password" v-show="!editing" @click="copyPass">
                 <i class='bx bx-copy'></i>
             </vs-button>
-            <vs-button icon flat @click="editing = !editing">
+            <vs-button icon flat @click="onClickEdit" v-show="!editing">
                 <i class='bx bx-pencil'></i>
             </vs-button>
-            <vs-button icon flat color="danger" @click="onClickDeleteLogin">
+            <vs-button icon flat @click="onClickUpdate" v-show="editing">
+                <i class='bx bx-check'></i>
+            </vs-button>
+            <vs-button icon flat color="danger" v-show="!editing" @click="onClickDeleteLogin">
                 <i class='bx bx-trash'></i>
             </vs-button>
         </div>

@@ -110,7 +110,6 @@ export default {
         ...mapState(['isLoadingLocal'])
     },
 
-
     methods: {
          ...mapMutations(['SET_REGISTRATION_DIALOG']),
         localLogin(){
