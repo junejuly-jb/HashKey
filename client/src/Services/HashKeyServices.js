@@ -54,5 +54,12 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+    updatePassword(id, payload) {
+        return apiClient.put('/update-password/' + id, payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
 }
