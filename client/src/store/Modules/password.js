@@ -8,6 +8,9 @@ export const state = {
 }
 
 export const mutations = {
+    SET_NEW_ADDED_PASSWORD(state, payload) {
+        state.passwords.push(payload)
+    },
     SET_PASSWORD(state, payload) {
         for (let i = 0; i < payload.length; i++){
             state.passwords.push(payload[i])
@@ -32,9 +35,7 @@ export const actions = {
     addPassword({ commit }, payload) {
         return HashKeyServices.addPassword(payload)
             .then(res => {
-                const creds = []
-                creds.push(res.data.data.credentials)
-                commit('SET_PASSWORD', creds)
+                commit('SET_NEW_ADDED_PASSWORD', res.data.data)
                 return res.status
             })
             .catch(err => {
