@@ -61,5 +61,12 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+    addWifi(payload) {
+        return apiClient.post('/add-wifi/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
 }
