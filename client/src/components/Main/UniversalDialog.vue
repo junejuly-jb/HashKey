@@ -27,7 +27,9 @@
             v-show="type == 'wifi'"
             :w_ssid="wifi.w_ssid"
             :w_pass="wifi.w_pass"
+            :w_security="wifi.w_security"
             @change_ssid="wifi.w_ssid = $event"
+            @change_security="wifi.w_security = $event"
             @change_pass="wifi.w_pass = $event"/>
             <NoteInput 
             v-show="type == 'note'"
@@ -91,6 +93,7 @@ export default {
         wifi: {
             w_ssid: '',
             w_pass: '',
+            w_security: ''
         },
         note: {
             n_title: '',
