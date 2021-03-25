@@ -1,6 +1,5 @@
 const Password = require('../models/Password')
 const Cryptr = require('cryptr')
-const { UserRefreshClient } = require('google-auth-library')
 const cryptr = new Cryptr('HellNaw!')
 
 const addPass = async (req, res) => {
@@ -19,7 +18,15 @@ const addPass = async (req, res) => {
         })
         await password.save()
         password.credentials.log_password = cryptr.decrypt(password.credentials.log_password)
-        return res.status(200).json({ data: password })
+        const creds = {
+            log_id: password._id,
+            log_name: password.credentials.log_name,
+            log_website: password.credentials.log_website,
+            log_url: password.credentials.log_url,
+            log_email: password.credentials.log_email,
+            log_password: password.credentials.log_password,
+        }
+        return res.status(200).json({ data: creds })
     } catch (error) {
         return res.status(500).send(error)
     }
