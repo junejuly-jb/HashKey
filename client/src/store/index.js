@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 import * as user from './Modules/user'
 import * as password from './Modules/password'
+import * as wifi from './Modules/wifi'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,7 @@ export default new Vuex.Store({
 
   },
   modules: {
-    user, password
+    user, password, wifi
   },
   plugins: [
     createPersistedState({

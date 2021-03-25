@@ -1,10 +1,17 @@
 <script>
 import { bus } from '../../main'
+import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
     data: () => ({
-        tags: ['WEP', 'WPA', 'PSK']
+        tags: ['WEP', 'WPA', 'PSK'],
+        dialogStats: false,
+        message: '',
+        width: '',
+        header: '',
+        status: ''
     }),
-    props: ['w_ssid', 'w_pass', 'w_security'],
+    components: { ConfirmationDialog },
+    props: ['w_ssid', 'w_pass', 'w_security', 'dialog'],
     computed: {
         ssid: {
             get(){ return this.w_ssid },
@@ -18,13 +25,66 @@ export default {
             get(){ return this.w_security},
             set(val){ return this.$emit('change_security', val)}
         },
+        dialogStat: {
+            get(){ return this.dialog },
+            set(val){
+                if(!val){ return this.$emit('close') }
+            }
+        }
     },
     created(){
         bus.$on('onSaveWifi', (data) => {
-            console.log(data)
+            this.$store.commit('SET_LOADING_LOCAL')
             var sec = this.tags[data.w_security]
-            console.log('security', sec)
+            this.$store.dispatch('wifi/addWifi',{
+                w_ssid: this.ssid, w_pass: this.pass, w_security: sec
+            })
+            .then( res => {
+                if(res === 200){
+                    setTimeout(() => {
+                        this.$refs.form.reset()
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Wifi credentials has been saved successfully!',
+                            position: 'top-right',
+                        })
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.dialogStat = false
+                    }, 2000)
+                }
+                else if(res === 401){
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
+                }
+                else{
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Error occured',
+                        position: 'top-right',
+                    })
+                    setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 2000)
+                    this.dialogStat = false
+                    this.$refs.form.reset()
+                }
+            })
         })
+    },
+    methods: {
+        onLogout(){
+            this.$store.commit('user/REMOVE_USER_INFO')
+            this.$store.commit('password/REMOVE_PASSWORD')
+            this.$store.commit('wifi/REMOVE_WIFIS')
+            this.$auth.destroyToken()
+            this.$store.commit('SET_LOADING_LOCAL')
+            this.$router.push('/')
+        }
     },
     beforeDestroy(){
         bus.$off('onSaveWifi')
@@ -33,6 +93,14 @@ export default {
 </script>
 <template>
     <v-container>
+        <ConfirmationDialog
+        :dialogStats="dialogStats"
+        :message="message"
+        :width="width"
+        :header="header"
+        :status="status"
+        @close="dialogStats = false"
+        @onLogout="onLogout"/>
         <div class="text-center pb-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wifi" width="80" height="80" viewBox="0 0 24 24" stroke-width="1.5" stroke="#9e9e9e" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -42,12 +110,14 @@ export default {
             <path d="M3.515 9.515c4.686 -4.687 12.284 -4.687 17 0" />
             </svg>
         </div>
-        <v-text-field prepend-icon="mdi-wifi" rounded filled placeholder="SSID"
-        v-model="ssid">
-        </v-text-field>
-        <v-text-field prepend-icon="mdi-lock-outline" rounded filled placeholder="Password"
-        v-model="pass">
-        </v-text-field>
+        <v-form ref="form">
+            <v-text-field prepend-icon="mdi-wifi" rounded filled placeholder="SSID"
+            v-model="ssid">
+            </v-text-field>
+            <v-text-field prepend-icon="mdi-lock-outline" rounded filled placeholder="Password"
+            v-model="pass">
+            </v-text-field>
+        </v-form>
         <v-chip-group
           mandatory
           active-class="primary--text"

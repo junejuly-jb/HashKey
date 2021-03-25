@@ -28,9 +28,11 @@
             :w_ssid="wifi.w_ssid"
             :w_pass="wifi.w_pass"
             :w_security="wifi.w_security"
+            :dialog="dialog"
             @change_ssid="wifi.w_ssid = $event"
             @change_security="wifi.w_security = $event"
-            @change_pass="wifi.w_pass = $event"/>
+            @change_pass="wifi.w_pass = $event"
+            @close="dialog = false"/>
             <NoteInput 
             v-show="type == 'note'"
             :n_title="note.n_title"
