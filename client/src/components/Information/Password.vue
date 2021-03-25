@@ -86,10 +86,39 @@ export default {
         onClickUpdate(){
             console.log(this.pass_info.log_id)
             this.$store.commit('SET_LOADING_LOCAL')
-            setTimeout(() => { 
-                this.$store.commit('SET_LOADING_LOCAL') 
-                this.editing = false
-            }, 1000)
+            this.$store.dispatch('password/updatePassword',{
+                id: this.pass_info.log_id, url: this.log_link, email: this.log_user, pass: this.log_password 
+            })
+            .then( res => {
+                if(res === 401){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    // this.$emit('error401')
+                    // this.ids = []
+                }
+                else if( res === 200){
+                    setTimeout( () => {
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.editing = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Login credentials deleted successfully',
+                            position: 'top-right',
+                        })
+                    }, 1000)
+                }
+                else{
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                }
+            })
         }
     }
 }

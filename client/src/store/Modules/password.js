@@ -21,6 +21,10 @@ export const mutations = {
             var idx = state.passwords.findIndex(index => index.log_id === payload[i]);
             state.passwords.splice(idx, 1)
         }
+    },
+    UPDATE_PASSWORD(state, payload) {
+        var index = state.passwords.findIndex(idx => idx.log_id === payload.log_id)
+        Object.assign(state.passwords[index], payload)
     }
 }
 
@@ -57,6 +61,16 @@ export const actions = {
         .catch(err => {
             return err.response.status
         })
+    },
+    updatePassword({ commit },payload) {
+        return HashKeyServices.updatePassword(payload.id, payload)
+            .then(response => {
+                commit('UPDATE_PASSWORD', response.data.credentials)
+                return response.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
     }
 }
 
