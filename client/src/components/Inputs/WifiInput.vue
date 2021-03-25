@@ -1,7 +1,10 @@
 <script>
 import { bus } from '../../main'
 export default {
-    props: ['w_ssid', 'w_pass'],
+    data: () => ({
+        tags: ['WEP', 'WPA', 'PSK']
+    }),
+    props: ['w_ssid', 'w_pass', 'w_security'],
     computed: {
         ssid: {
             get(){ return this.w_ssid },
@@ -11,10 +14,16 @@ export default {
             get(){ return this.w_pass},
             set(val){ return this.$emit('change_pass', val)}
         },
+        security: {
+            get(){ return this.w_security},
+            set(val){ return this.$emit('change_security', val)}
+        },
     },
     created(){
         bus.$on('onSaveWifi', (data) => {
             console.log(data)
+            var sec = this.tags[data.w_security]
+            console.log('security', sec)
         })
     },
     beforeDestroy(){
@@ -39,5 +48,19 @@ export default {
         <v-text-field prepend-icon="mdi-lock-outline" rounded filled placeholder="Password"
         v-model="pass">
         </v-text-field>
+        <v-chip-group
+          mandatory
+          active-class="primary--text"
+          v-model="security"
+        >
+          <v-chip
+            v-for="tag in tags"
+            :key="tag"
+            filter
+            outlined
+          >
+            {{ tag }}
+          </v-chip>
+        </v-chip-group>
     </v-container>
 </template>
