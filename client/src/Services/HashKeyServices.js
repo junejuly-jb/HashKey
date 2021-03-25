@@ -68,5 +68,10 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+    fetchWifis() {
+        return apiClient.get('/wifis', {
+            headers: { Authorization: 'Bearer ' + getToken() }
+        })
     }
 }

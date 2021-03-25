@@ -29,7 +29,18 @@ export const actions = {
             .catch(err => {
                 return err.response.status
         })
-    }
+    },
+    fetchWifis({ commit }) {
+        return HashKeyServices.fetchWifis()
+            .then(response => {
+            commit('REMOVE_WIFIS')
+            commit('FETCH_WIFI', response.data.credentials)
+            return response.status
+        })
+            .catch(err => {
+            return err.response.status
+        })
+    },
 }
 
 export const getters = {

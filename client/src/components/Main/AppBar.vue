@@ -41,6 +41,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
     data: () => ({
         dialogStats: false,
@@ -49,6 +50,9 @@ export default {
         header: '',
         status: ''
     }),
+    computed: {
+        ...mapState('user', ['filtering'])
+    },
     methods: {
         logout(){
             this.dialogStats = true
@@ -64,28 +68,54 @@ export default {
             this.$router.push('/')
         },
         refresh(){
-            this.$store.dispatch('password/fetchPasswords')
-            .then( res => {
-                if(res === 401){
-                    this.dialogStats = true
-                    this.message = 'Session has expired pls login to continue'
-                    this.width = '400px',
-                    this.header = 'Unauthorize'
-                    this.status = 'unauthorize'
-                }
-                else if( res === 200){
-                    console.log(res)
-                }
-                else{
-                    this.$vs.notification({
-                        title: 'Error',
-                        color: 'danger',
-                        width: 'auto',
-                        text: 'Something went wrong',
-                        position: 'top-right',
-                    })
-                }
-            })
+            if(this.filtering === 'Passwords'){
+                this.$store.dispatch('password/fetchPasswords')
+                .then( res => {
+                    if(res === 401){
+                        this.dialogStats = true
+                        this.message = 'Session has expired pls login to continue'
+                        this.width = '400px',
+                        this.header = 'Unauthorize'
+                        this.status = 'unauthorize'
+                    }
+                    else if( res === 200){
+                        console.log(res)
+                    }
+                    else{
+                        this.$vs.notification({
+                            title: 'Error',
+                            color: 'danger',
+                            width: 'auto',
+                            text: 'Something went wrong',
+                            position: 'top-right',
+                        })
+                    }
+                })
+            }
+            else {
+                this.$store.dispatch('wifi/fetchWifis')
+                .then( res => {
+                    if(res === 401){
+                        this.dialogStats = true
+                        this.message = 'Session has expired pls login to continue'
+                        this.width = '400px',
+                        this.header = 'Unauthorize'
+                        this.status = 'unauthorize'
+                    }
+                    else if( res === 200){
+                        console.log(res)
+                    }
+                    else{
+                        this.$vs.notification({
+                            title: 'Error',
+                            color: 'danger',
+                            width: 'auto',
+                            text: 'Something went wrong',
+                            position: 'top-right',
+                        })
+                    }
+                })
+            }
         }
     }
 }

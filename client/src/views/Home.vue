@@ -53,12 +53,13 @@ import { mapState } from 'vuex'
       ],
     }),
     methods: {
-      fetchPass(){
+      fetchData(){
         this.$store.dispatch('password/fetchPasswords')
+        this.$store.dispatch('wifi/fetchWifis')
       }
     },
     mounted(){
-      this.fetchPass()
+      this.fetchData()
     }
   }
 </script>
