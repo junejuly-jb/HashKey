@@ -92,7 +92,7 @@ export default {
             .then( res => {
                 if(res === 401){
                     this.$store.commit('SET_LOADING_LOCAL')
-                    // this.$emit('error401')
+                    this.$emit('error401')
                     // this.ids = []
                 }
                 else if( res === 200){

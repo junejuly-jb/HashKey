@@ -8,7 +8,6 @@ const addPass = async (req, res) => {
         const { l_logname, l_website, l_url, l_user } = req.body
         const l_pass = cryptr.encrypt(req.body.l_pass)
         const password = new Password({
-            credential_type: 'password',
             owner: req.user._id,
             credentials: {
                 log_name: l_logname,
