@@ -16,10 +16,37 @@ const addWifi = async (req, res) => {
         })
         await wifi.save()
         wifi.credentials.wifi_pass = cryptr.decrypt(wifi.credentials.wifi_pass)
-        return res.status(200).json({ data: wifi })
+        const creds = {
+            wifi_id: wifi._id,
+            wifi_ssid: wifi.credentials.wifi_ssid,
+            wifi_pass: wifi.credentials.wifi_pass,
+            wifi_security: wifi.credentials.wifi_security,
+        }
+        return res.status(200).json({ data: creds })
     } catch (error) {
         return res.status(500).send(error.message)
     }
 }
 
-module.exports = { addWifi }
+
+const wifis = async (req, res) => {
+    try {
+        const wifi = await Wifi.find({ owner: req.user._id })
+        const credentials = [];
+        for (let i = 0; i < wifi.length; i++){
+            var wifi_pass = wifi[i].credentials.log_password == '' ? '' : cryptr.decrypt(wifi[i].credentials.wifi_pass)
+            var toPush = {
+                wifi_id: wifi[i]._id,
+                wifi_ssid: wifi[i].credentials.wifi_ssid,
+                wifi_pass: wifi_pass,
+                wifi_security: wifi[i].credentials.wifi_security
+            }
+            credentials.push(toPush)
+        }
+        return res.status(200).json({ credentials })
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({ error })
+    }
+}
+module.exports = { addWifi, wifis }

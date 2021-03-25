@@ -21,5 +21,6 @@ api.put('/update-password/:id', auth, PasswordController.updatePass)
 
 //wifi route
 api.post('/add-wifi', auth, WifiController.addWifi)
+api.get('/wifis', auth, WifiController.wifis)
 
 module.exports = api
