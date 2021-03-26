@@ -36,6 +36,7 @@ import Wifi from '../components/Filters/Wifi'
 import Notes from '../components/Filters/Notes'
 import Info from '../components/Filters/Info'
 import Cards from '../components/Filters/Cards'
+import { bus } from '../main'
 
 import { mapState } from 'vuex'
 
@@ -52,10 +53,22 @@ import { mapState } from 'vuex'
         'Updates',
       ],
     }),
+    created(){
+      bus.$on('onChangeFilter', () => {
+        this.fetchData()
+      })
+    },
     methods: {
       fetchData(){
-        this.$store.dispatch('password/fetchPasswords')
-        this.$store.dispatch('wifi/fetchWifis')
+        if(this.filtering === 'Passwords'){
+          this.$store.dispatch('password/fetchPasswords')
+        }
+        else if(this.filtering === 'Wifi' ){
+          this.$store.dispatch('wifi/fetchWifis')
+        }
+        else{
+          console.log('no change filter')
+        }
       }
     },
     mounted(){

@@ -56,6 +56,7 @@ export default {
                 .then( res => {
                     if(res === 200){
                         setTimeout(() => {
+                            this.$store.commit('SET_LOADING_LOCAL')
                             this.$refs.form.reset()
                             this.$vs.notification({
                                 title: 'Success',
@@ -64,11 +65,11 @@ export default {
                                 text: 'Login credentials has been saved successfully!',
                                 position: 'top-right',
                             })
-                            this.$store.commit('SET_LOADING_LOCAL')
                             this.dialogStat = false
                         }, 2000)
                     }
                     else if(res === 401){
+                        this.$store.commit('SET_LOADING_LOCAL')
                         this.dialogStats = true
                         this.message = 'Session has expired pls login to continue'
                         this.width = '400px',
@@ -83,7 +84,7 @@ export default {
                             text: 'Error occured',
                             position: 'top-right',
                         })
-                        setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 2000)
+                        setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 1000)
                         this.dialogStat = false
                         this.$refs.form.reset()
                     }
@@ -102,13 +103,13 @@ export default {
         bus.$off('onClickCancel')
     },
     methods:{
-        onLogout(){
-            this.$store.commit('user/REMOVE_USER_INFO')
-            this.$store.commit('password/REMOVE_PASSWORD')
-            this.$auth.destroyToken()
-            this.$store.commit('SET_LOADING_LOCAL')
-            this.$router.push('/')
-        }
+        // onLogout(){
+        //     this.$store.commit('user/REMOVE_USER_INFO')
+        //     this.$store.commit('password/REMOVE_PASSWORD')
+        //     this.$auth.destroyToken()
+        //     this.$store.commit('SET_LOADING_LOCAL')
+        //     this.$router.push('/')
+        // }
     }
 }
 </script>
@@ -121,7 +122,7 @@ export default {
         :header="header"
         :status="status"
         @close="dialogStats = false"
-        @onLogout="onLogout"/>
+        />
         <div class="text-center pb-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock" width="80" height="80" viewBox="0 0 24 24" stroke-width="1.5" stroke="#9e9e9e" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>

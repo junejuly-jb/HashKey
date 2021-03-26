@@ -10,9 +10,13 @@ export const mutations = {
         state.wifis.push(payload)
     },
     FETCH_WIFI(state, payload) {
-        for (let i = 0; i < payload.length; i++){
-            state.wifis.push(payload[i])
-        }
+        // for (let i = 0; i < payload.length; i++){
+        //     state.wifis.push(payload[i])
+        // }
+        // const newArr = state.wifis.concat(payload)
+        // const idPos = newArr.map(el => el.wifi_id)
+        state.wifis = payload.filter(id => { return id.wifi_id != state.wifis.wifi_id })
+        
     },
     REMOVE_WIFIS(state) {
         state.wifis = []
@@ -33,7 +37,7 @@ export const actions = {
     fetchWifis({ commit }) {
         return HashKeyServices.fetchWifis()
             .then(response => {
-            commit('REMOVE_WIFIS')
+            // commit('REMOVE_WIFIS')
             commit('FETCH_WIFI', response.data.credentials)
             return response.status
         })

@@ -77,14 +77,14 @@ export default {
         })
     },
     methods: {
-        onLogout(){
-            this.$store.commit('user/REMOVE_USER_INFO')
-            this.$store.commit('password/REMOVE_PASSWORD')
-            this.$store.commit('wifi/REMOVE_WIFIS')
-            this.$auth.destroyToken()
-            this.$store.commit('SET_LOADING_LOCAL')
-            this.$router.push('/')
-        }
+        // onLogout(){
+        //     this.$store.commit('user/REMOVE_USER_INFO')
+        //     this.$store.commit('password/REMOVE_PASSWORD')
+        //     this.$store.commit('wifi/REMOVE_WIFIS')
+        //     this.$auth.destroyToken()
+        //     this.$store.commit('SET_LOADING_LOCAL')
+        //     this.$router.push('/')
+        // }
     },
     beforeDestroy(){
         bus.$off('onSaveWifi')

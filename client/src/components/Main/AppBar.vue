@@ -37,7 +37,8 @@
         :header="header"
         :status="status"
         @close="dialogStats = false"
-        @onLogout="onLogout"/>
+        
+        />
     </div>
 </template>
 <script>
@@ -61,12 +62,12 @@ export default {
             this.header = 'Logout'
             this.status = 'logout'
         },
-        onLogout(){
-            this.$store.commit('user/REMOVE_USER_INFO')
-            this.$store.commit('password/REMOVE_PASSWORD')
-            this.$auth.destroyToken()
-            this.$router.push('/')
-        },
+        // onLogout(){
+        //     this.$store.commit('user/REMOVE_USER_INFO')
+        //     this.$store.commit('password/REMOVE_PASSWORD')
+        //     this.$auth.destroyToken()
+        //     this.$router.push('/')
+        // },
         refresh(){
             if(this.filtering === 'Passwords'){
                 this.$store.dispatch('password/fetchPasswords')

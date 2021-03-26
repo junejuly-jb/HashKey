@@ -53,7 +53,8 @@ const register = async (req, res) => {
 
 const login = (req, res) => {
     
-    const token = JWT.sign({ _id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
+    // const token = JWT.sign({ _id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
+    const token = JWT.sign({ _id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: '5m' })
     const exp = JWT.decode(token)
     return res.status(200).json({ token, exp: exp.exp, user: req.user })
     

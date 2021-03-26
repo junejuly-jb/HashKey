@@ -29,12 +29,12 @@ export default {
             this.header = 'Unauthorize'
             this.status = 'unauthorize'
         },
-        onLogout(){
-            this.$store.commit('user/REMOVE_USER_INFO')
-            this.$store.commit('password/REMOVE_PASSWORD')
-            this.$auth.destroyToken()
-            this.$router.push('/')
-        },
+        // onLogout(){
+        //     this.$store.commit('user/REMOVE_USER_INFO')
+        //     this.$store.commit('password/REMOVE_PASSWORD')
+        //     this.$auth.destroyToken()
+        //     this.$router.push('/')
+        // },
     }
 }
 </script>
@@ -56,7 +56,7 @@ export default {
             :header="header"
             :status="status"
             @close="dialogStats = false"
-            @onLogout="onLogout"/>
+            />
         </div>
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
