@@ -23,6 +23,7 @@
     </vs-dialog>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
     props: {
         dialogStats: Boolean,
@@ -38,6 +39,7 @@ export default {
         isLoading: false
     }),
     computed:{
+        ...mapState(['isLoadingLocal']),
         dialog:{
             get(){
                 return this.dialogStats
@@ -53,9 +55,16 @@ export default {
         doLogout(){
             this.isLoading = true
             setTimeout( () => {
-                this.isLoading = false
-                this.$emit('onLogout')
-            }, 2000)
+                if(this.isLoadingLocal == true){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                }
+                this.dialog = false
+                this.$store.commit('user/REMOVE_USER_INFO')
+                this.$store.commit('password/REMOVE_PASSWORD')
+                this.$store.commit('password/REMOVE_WIFIS')
+                this.$auth.destroyToken()
+                this.$router.push('/')
+            }, 1000)
         }
     }
 }

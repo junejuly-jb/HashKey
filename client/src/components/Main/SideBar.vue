@@ -1,5 +1,6 @@
 <script>
 import { mapState } from 'vuex'
+import { bus } from '../../main'
 export default {
     computed: {
         ...mapState('user', ['user_info','filtering', 'current_index']),
@@ -52,6 +53,7 @@ export default {
     methods: {
         clickFilter(action, index){
             this.$store.commit('user/SET_APP_STATE', { action, index})
+            bus.$emit('onChangeFilter')
         },
         passValue(){
             this.index = this.current_index
