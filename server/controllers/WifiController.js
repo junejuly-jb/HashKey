@@ -52,4 +52,16 @@ const wifis = async (req, res) => {
         return res.status(500).json({ error })
     }
 }
-module.exports = { addWifi, wifis }
+    
+const removeWifi = async (req, res) => {
+    try {
+        await Wifi.deleteMany({ _id: { $in: req.body.ids } })
+            .then(() => {
+            return res.status(200).json({ msg: 'deleted!'})
+        })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+
+module.exports = { addWifi, wifis, removeWifi }
