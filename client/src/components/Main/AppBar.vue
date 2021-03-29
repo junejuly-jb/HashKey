@@ -37,7 +37,6 @@
         :header="header"
         :status="status"
         @close="dialogStats = false"
-        
         />
     </div>
 </template>

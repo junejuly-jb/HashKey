@@ -21,6 +21,14 @@
               <Notes v-show="filtering == 'Notes'"/>
               <Info v-show="filtering == 'Personal Information'"/>
               <Card v-show="filtering == 'Cards'"/>
+              <ConfirmationDialog
+              :dialogStats="dialogStats"
+              :message="message"
+              :width="width"
+              :header="header"
+              :status="status"
+              @close="dialogStats = false"
+              />
             </v-container>
             </v-sheet>
           </v-col>
@@ -36,16 +44,23 @@ import Wifi from '../components/Filters/Wifi'
 import Notes from '../components/Filters/Notes'
 import Info from '../components/Filters/Info'
 import Card from '../components/Filters/Card'
+import ConfirmationDialog from '@/components/Main/ConfirmationDialog'
+
 import { bus } from '../main'
 
 import { mapState } from 'vuex'
 
   export default {
-    components: { Passwords, Wifi, Notes, Info, Card },
+    components: { Passwords, Wifi, Notes, Info, Card, ConfirmationDialog },
     computed: {
       ...mapState('user', ['filtering'])
     },
     data: () => ({
+      dialogStats: false,
+      message: '',
+      width: '',
+      header: '',
+      status: '',
       links: [
         'Dashboard',
         'Messages',
@@ -60,16 +75,34 @@ import { mapState } from 'vuex'
     },
     methods: {
       fetchData(){
-        if(this.filtering === 'Passwords'){
-          this.$store.dispatch('password/fetchPasswords')
-        }
-        else if(this.filtering === 'Wifi' ){
-          this.$store.dispatch('wifi/fetchWifis')
-        }
-        else{
-          console.log('no change filter')
+        switch(this.filtering){
+          case "Passwords":
+            this.$store.dispatch('password/fetchPasswords')
+            .then( res => {
+              if(res == 401){
+                this.onLogout()
+              }
+            })
+            break;
+          case "Wifi":
+            this.$store.dispatch('wifi/fetchWifis')
+            .then( res => {
+              if(res == 401){
+                this.onLogout()
+              }
+            })
+            break;
+          default: 
+            console.log('no filter')
         }
       }
+    },
+    onLogout(){
+      this.dialogStats = true
+      this.message = 'Session has expired pls login to continue'
+      this.width = '400px',
+      this.header = 'Unauthorize'
+      this.status = 'unauthorize'
     },
     mounted(){
       this.fetchData()
