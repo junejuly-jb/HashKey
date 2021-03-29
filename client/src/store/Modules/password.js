@@ -12,9 +12,6 @@ export const mutations = {
         state.passwords.push(payload)
     },
     SET_PASSWORD(state, payload) {
-        // for (let i = 0; i < payload.length; i++){
-        //     state.passwords.push(payload[i])
-        // }
         state.passwords = payload.filter( p_id => { return p_id.log_id != state.passwords.log_id })
     },
     REMOVE_PASSWORD(state) {

@@ -14,6 +14,9 @@ export default {
     }),
     methods:{
         getImage(pic){
+            if(!pic){
+                return require('../../assets/web-icons/others.png')    
+            }
             return require('../../assets/web-icons/'+pic+'.png')
         },
         view(pass){
