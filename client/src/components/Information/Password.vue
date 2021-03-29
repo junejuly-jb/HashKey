@@ -1,6 +1,15 @@
 <script>
 export default {
-    props: [ 'pass_info', 'infoDialogStat' ],
+    // props: [ 'pass_info', 'infoDialogStat' ],
+    props:{
+        pass_info: {
+            type: Object,
+            required: false
+        },
+        infoDialogStat:{
+            type: Boolean
+        }
+    },
     computed: {
         dialog:{
             get(){ return this.infoDialogStat},

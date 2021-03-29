@@ -1,9 +1,10 @@
 <script>
 import Password from '../Information/Password'
+import Wifi from '../Information/Wifi'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 import { mapState } from 'vuex'
 export default {
-    components: { Password, ConfirmationDialog },
+    components: { Password, ConfirmationDialog, Wifi },
     data: () => ({
         dialogStats: false,
         message: '',
@@ -11,7 +12,12 @@ export default {
         header: '',
         status: ''
     }),
-    props: ['infoDialogStat','pass_info', 'type'],
+    props:{
+        infoDialogStat: Boolean,
+        type: String,
+        pass_info : { type: Object, required: false },
+        wifi_info : { type: Object, required: false }
+    },
     computed: {
         ...mapState(['isLoadingLocal']),
         dialog: {
@@ -29,21 +35,24 @@ export default {
             this.header = 'Unauthorize'
             this.status = 'unauthorize'
         },
-        // onLogout(){
-        //     this.$store.commit('user/REMOVE_USER_INFO')
-        //     this.$store.commit('password/REMOVE_PASSWORD')
-        //     this.$auth.destroyToken()
-        //     this.$router.push('/')
-        // },
     }
 }
 </script>
 <template>
     <vs-dialog not-center v-model="dialog" blur prevent-close :loading="isLoadingLocal">
         <div class="con-content">
+            <!-- {{type}} -->
             <v-container>
-                <Password v-show="type === 'password'"
+                <Password
+                v-if="type === 'password'"
                 :pass_info="pass_info"
+                :infoDialogStat="infoDialogStat"
+                @close="dialog = false"
+                @error401="error401"
+                />
+                <Wifi
+                v-else
+                :wifi_info="wifi_info"
                 :infoDialogStat="infoDialogStat"
                 @close="dialog = false"
                 @error401="error401"

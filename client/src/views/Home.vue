@@ -80,6 +80,7 @@ import { mapState } from 'vuex'
             this.$store.dispatch('password/fetchPasswords')
             .then( res => {
               if(res == 401){
+                console.log('unauthorize')
                 this.onLogout()
               }
             })
@@ -88,6 +89,7 @@ import { mapState } from 'vuex'
             this.$store.dispatch('wifi/fetchWifis')
             .then( res => {
               if(res == 401){
+                console.log('unauthorize')
                 this.onLogout()
               }
             })
@@ -95,14 +97,14 @@ import { mapState } from 'vuex'
           default: 
             console.log('no filter')
         }
-      }
-    },
-    onLogout(){
-      this.dialogStats = true
-      this.message = 'Session has expired pls login to continue'
-      this.width = '400px',
-      this.header = 'Unauthorize'
-      this.status = 'unauthorize'
+      },
+      onLogout(){
+        this.dialogStats = true
+        this.message = 'Session has expired pls login to continue'
+        this.width = '400px',
+        this.header = 'Unauthorize'
+        this.status = 'unauthorize'
+      },
     },
     mounted(){
       this.fetchData()
