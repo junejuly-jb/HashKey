@@ -3,12 +3,13 @@ import { bus } from '../../main'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
     data: () => ({
-        tags: ['WEP', 'WPA', 'PSK'],
+        tags: ['WEP', 'WPA/WPA2'],
         dialogStats: false,
         message: '',
         width: '',
         header: '',
-        status: ''
+        status: '',
+        hidden: false
     }),
     components: { ConfirmationDialog },
     props: ['w_ssid', 'w_pass', 'w_security', 'dialog'],
@@ -35,9 +36,18 @@ export default {
     created(){
         bus.$on('onSaveWifi', (data) => {
             this.$store.commit('SET_LOADING_LOCAL')
-            var sec = this.tags[data.w_security]
+            console.log(data)
+            console.log(this.hidden)
+            var sec
+            if(data.w_security == '' || data.w_security == undefined){
+                sec = ''
+            }
+            sec = this.tags[data.w_security]
+            if(sec === 'WPA/WPA2'){
+                sec = 'WPA'
+            }
             this.$store.dispatch('wifi/addWifi',{
-                w_ssid: this.ssid, w_pass: this.pass, w_security: sec
+                w_ssid: this.ssid, w_pass: this.pass, w_security: sec, w_status: this.hidden
             })
             .then( res => {
                 if(res === 200){
@@ -100,7 +110,7 @@ export default {
         :header="header"
         :status="status"
         @close="dialogStats = false"
-        @onLogout="onLogout"/>
+        />
         <div class="text-center pb-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wifi" width="80" height="80" viewBox="0 0 24 24" stroke-width="1.5" stroke="#9e9e9e" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -118,8 +128,17 @@ export default {
             v-model="pass">
             </v-text-field>
         </v-form>
+        <div style="width: 18%;" class="py-5">
+            <vs-switch v-model="hidden">
+                <template #off>
+                    Visible
+                </template>
+                <template #on>
+                    Hidden
+                </template>
+            </vs-switch>
+        </div>
         <v-chip-group
-          mandatory
           active-class="primary--text"
           v-model="security"
         >

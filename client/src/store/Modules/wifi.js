@@ -21,6 +21,7 @@ export const actions = {
     addWifi({ commit }, payload) {
         return HashKeyServices.addWifi(payload)
             .then(res => {
+                console.log(res.data)
                 commit('ADD_WIFI', res.data.data)
                 return res.status
             })

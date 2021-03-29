@@ -4,7 +4,7 @@ const cryptr = new Cryptr('HellNaw!')
 
 const addWifi = async (req, res) => {
     try {
-        const { w_ssid, w_security } = req.body
+        const { w_ssid, w_security, w_status } = req.body
         const w_pass = cryptr.encrypt(req.body.w_pass)
         const wifi = new Wifi({
             owner: req.user._id,
@@ -12,6 +12,7 @@ const addWifi = async (req, res) => {
                 wifi_ssid: w_ssid,
                 wifi_pass: w_pass,
                 wifi_security: w_security,
+                wifi_status: w_status
             }
         })
         await wifi.save()
@@ -21,6 +22,7 @@ const addWifi = async (req, res) => {
             wifi_ssid: wifi.credentials.wifi_ssid,
             wifi_pass: wifi.credentials.wifi_pass,
             wifi_security: wifi.credentials.wifi_security,
+            wifi_status: wifi.credentials.wifi_status
         }
         return res.status(200).json({ data: creds })
     } catch (error) {
@@ -39,7 +41,8 @@ const wifis = async (req, res) => {
                 wifi_id: wifi[i]._id,
                 wifi_ssid: wifi[i].credentials.wifi_ssid,
                 wifi_pass: wifi_pass,
-                wifi_security: wifi[i].credentials.wifi_security
+                wifi_security: wifi[i].credentials.wifi_security,
+                wifi_status: wifi[i].credentials.wifi_status
             }
             credentials.push(toPush)
         }

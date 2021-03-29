@@ -10,7 +10,7 @@ export default {
         infoDialogStat: false,
         header: 'Add Login',
         type: 'password',
-        pass_info: ''
+        pass_info: {}
     }),
     methods:{
         getImage(pic){

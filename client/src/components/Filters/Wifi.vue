@@ -1,14 +1,23 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
+import InformationDialog from '../Main/InformationDialog'
 import { mapState } from 'vuex'
 export default {
     computed: { ...mapState('wifi', ['wifis']) },
-    components: { UniversalDialog },
+    components: { UniversalDialog, InformationDialog },
     data: () => ({
         dialogStat: false,
+        infoDialogStat: false,
         header: 'Add Wifi Credentials',
-        type: 'wifi'
+        type: 'wifi',
+        wifi_info: {}
     }),
+    methods:{
+        view(pass){
+            this.wifi_info = pass
+            this.infoDialogStat = true
+        }
+    }
 }
 </script>
 <template>
@@ -19,12 +28,12 @@ export default {
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
             :gutter="{default: '30px', 700: '10px'}"
             >
-                <div v-for="(wifi, index) in wifis" :key="index" class="neo">
+                <div v-for="(wifi, index) in wifis" :key="index" class="neo" @click="view(wifi)">
                     <v-container>
                         <div class="text-center">
                             <img src="../../assets/web-icons/wifi.png" alt="" width="60" class="web_icons">
                             <h4 class="my-2">{{wifi.wifi_ssid}}</h4>
-                            <small>{{wifi.wifi_pass}}</small>
+                            <small>{{wifi.wifi_security}}</small>
                         </div>
                     </v-container>
                 </div>
@@ -35,6 +44,12 @@ export default {
         :header="header"
         :type="type"
         @close="dialogStat = false"/>
+        <InformationDialog 
+        :infoDialogStat="infoDialogStat"
+        :wifi_info="wifi_info"
+        :type="type"
+        @close="infoDialogStat = false"
+        />
     </v-container>
 </template>
 <style scoped>

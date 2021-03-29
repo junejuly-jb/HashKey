@@ -20,6 +20,10 @@ const wifiSchema = new Schema({
         },
         wifi_security: {
             type: String
+        },
+        wifi_status: {
+            type: Boolean,
+            required: false
         }
     }
 })
