@@ -23,5 +23,6 @@ api.put('/update-password/:id', auth, PasswordController.updatePass)
 api.post('/add-wifi', auth, WifiController.addWifi)
 api.get('/wifis', auth, WifiController.wifis)
 api.post('/delete-wifi', auth, WifiController.removeWifi)
+api.put('/update-wifi/:id', auth, WifiController.updateWifi)
 
 module.exports = api
