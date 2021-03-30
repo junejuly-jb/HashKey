@@ -14,7 +14,13 @@ export const mutations = {
     },
     REMOVE_WIFIS(state) {
         state.wifis = []
-    }
+    },
+    DELETE_WIFIS(state, payload) {
+        for (let i = 0; i < payload.length; i++) {
+            var idx = state.wifis.findIndex(index => index.wifi_id === payload[i]);
+            state.wifis.splice(idx, 1)
+        }
+    },
 }
 
 export const actions = {
@@ -37,6 +43,16 @@ export const actions = {
             return response.status
         })
             .catch(err => {
+            return err.response.status
+        })
+    },
+    deleteWifis({commit}, payload) {
+        return HashKeyServices.deleteWifi(payload)
+        .then(response => {
+            commit('DELETE_WIFIS', payload)
+            return response.status
+        })
+        .catch(err => {
             return err.response.status
         })
     },
