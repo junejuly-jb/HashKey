@@ -6,12 +6,14 @@ import vuetify from './plugins/vuetify';
 import Auth from './auth'
 import VueMasonry from 'vue-masonry-css'
 import VueClipboard from 'vue-clipboard2'
+import VueQRCodeComponent from 'vue-qr-generator'
 
 export const bus = new Vue()
 // component
 Vue.component('AppBar', () => import('./components/Main/AppBar'))
 Vue.component('SideBar', () => import('./components/Main/SideBar'))
 Vue.component('ConfirmationDialog', () => import('./components/Main/ConfirmationDialog'))
+Vue.component('qr-code', VueQRCodeComponent)
 
 
 import Vuesax from 'vuesax'
