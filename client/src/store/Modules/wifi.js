@@ -21,6 +21,10 @@ export const mutations = {
             state.wifis.splice(idx, 1)
         }
     },
+    UPDATE_WIFI(state, payload) {
+        var index = state.wifis.findIndex(idx => idx.wifi_id === payload.wifi_id)
+        Object.assign(state.wifis[index], payload)
+    }
 }
 
 export const actions = {
@@ -56,6 +60,17 @@ export const actions = {
             return err.response.status
         })
     },
+    updateWifi({ commit },payload) {
+        return HashKeyServices.updateWifi(payload.id, payload)
+            .then(response => {
+                commit('UPDATE_WIFI', response.data.credentials)
+                return response.status
+            })
+            .catch(err => {
+                console.log(err.response)
+                return err.response.status
+            })
+    }
 }
 
 export const getters = {

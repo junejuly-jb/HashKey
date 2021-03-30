@@ -81,4 +81,11 @@ export default {
             }
         )
     },
+    updateWifi(id, payload) {
+        return apiClient.put('/update-wifi/' + id, payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
 }

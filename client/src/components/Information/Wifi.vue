@@ -79,7 +79,50 @@ export default {
             })
         },
         onClickUpdate(){
-            console.log('update')
+            var sec
+            if(this.securities[this.selectedChip] == 'WPA/WPA2'){
+                sec = 'WPA'
+            }
+            else{
+                sec = this.securities[this.selectedChip]
+            }
+            this.$store.commit('SET_LOADING_LOCAL')
+            this.$store.dispatch('wifi/updateWifi',{
+                id: this.wifi_info.wifi_id, 
+                ssid: this.ssid,
+                pass: this.pass,
+                security: sec,
+                status: this.hidden 
+            })
+            .then( res => {
+                if(res === 401){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$emit('error401')
+                }
+                else if( res === 200){
+                    setTimeout( () => {
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.editing = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Wifi credentials deleted successfully',
+                            position: 'top-right',
+                        })
+                    }, 1000)
+                }
+                else{
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                }
+            })
         },
         onClickEdit(){
             this.editing = true
