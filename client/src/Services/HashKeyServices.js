@@ -73,5 +73,12 @@ export default {
         return apiClient.get('/wifis', {
             headers: { Authorization: 'Bearer ' + getToken() }
         })
-    }
+    },
+    deleteWifi(payload) {
+        return apiClient.post('/delete-wifi', {ids: payload},
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
 }

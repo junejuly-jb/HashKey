@@ -1,7 +1,5 @@
 <script>
-// import QrcodeVue from 'qrcode.vue'
 export default {
-    // components: { QrcodeVue },
     props: ['wifi_info'],
     data: () => ({
         editing: false,
@@ -10,7 +8,9 @@ export default {
         security: '',
         pass: '',
         hidden: '',
-
+        securities: ['WEP', 'WPA/WPA2'],
+        selectedChip: -1,
+        ids: [],
         // qr
         value: '',
         size: 200
@@ -45,11 +45,19 @@ export default {
             this.ssid = this.wifi_info.wifi_ssid
             this.security = this.wifi_info.wifi_security
             this.pass = this.wifi_info.wifi_pass
-            this.hidden = this.wifi_info.wifi_hidden
+            this.hidden = this.wifi_info.wifi_status
+
+            var secCode
+            if(this.security == "WPA"){
+                secCode = 'WPA/WPA2'
+            }
+            else{
+                secCode = 'WEP'
+            }
+            this.selectedChip = this.securities.indexOf(secCode)
         },
         generateQR(){
-            this.value = `WIFI:S:${this.wifi_info.wifi_ssid};T:${this.wifi_info.wifi_security};P:${this.wifi_info.wifi_pass};H:${this.wifi_info.wifi_hidden}`
-            console.log(this.value)
+            this.value = `WIFI:S:${this.wifi_info.wifi_ssid};T:${this.wifi_info.wifi_security};P:${this.wifi_info.wifi_pass};H:${this.wifi_info.wifi_status}`
         }
     },
     mounted(){
@@ -59,7 +67,7 @@ export default {
 </script>
 <template>
     <div>
-        <div class="text-center">
+        <div class="text-center" v-show="!editing">
             <h2>Scan to Connect</h2>
             <div style="width: 100%" class="d-flex justify-center py-3">
                 <qr-code :text="value" :size="size"></qr-code>
@@ -84,12 +92,37 @@ export default {
                 <vs-input v-model="pass" placeholder="Password" type="password"></vs-input>
             </div>
             <div class="d-flex align-center my-2">
-                <i class="bx bx-link mr-5 my-2"></i>
-                <vs-input v-model="security" placeholder="Link"></vs-input>
+                <i class="bx bx-shield mr-5 my-2"></i>
+                <v-chip-group
+                    v-model="selectedChip"
+                    column
+                >
+                    <v-chip
+                    filter
+                    outlined
+                    >
+                    WEP
+                    </v-chip>
+                    <v-chip
+                    filter
+                    outlined
+                    >
+                        WPA/WPA2
+                    </v-chip>
+                </v-chip-group>
             </div>
-            <div class="d-flex align-center my-2">
-                <i class="bx bx-link mr-5 my-2"></i>
-                <vs-input v-model="hidden" placeholder="Link"></vs-input>
+            <div class="d-flex align-center">
+                <i class="bx bx-hide mr-5 my-2"></i>
+                <div style="width: 18%;" class="py-5">
+                    <vs-switch v-model="hidden">
+                        <template #off>
+                            Visible
+                        </template>
+                        <template #on>
+                            Hidden
+                        </template>
+                    </vs-switch>
+                </div>
             </div>
         </div>
         <div class="d-flex justify-end">
@@ -102,6 +135,9 @@ export default {
             </vs-button>
             <vs-button icon flat @click="onClickEdit" v-show="!editing">
                 <i class='bx bx-pencil'></i>
+            </vs-button>
+            <vs-button icon flat color="danger" @click="editing = false" v-show="editing">
+                <i class='bx bx-x'></i>
             </vs-button>
             <vs-button icon flat @click="onClickUpdate" v-show="editing">
                 <i class='bx bx-check'></i>
