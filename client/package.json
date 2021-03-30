@@ -17,6 +17,7 @@
     "vue-google-signin-button-directive": "^1.0.3",
     "vue-masonry": "^0.12.0",
     "vue-masonry-css": "^1.0.3",
+    "vue-qr-generator": "^3.0.1",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.2.0",
     "vuesax": "^4.0.1-alpha.25",
