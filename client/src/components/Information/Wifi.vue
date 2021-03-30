@@ -1,6 +1,6 @@
 <script>
 export default {
-    props: ['wifi_info'],
+    props: ['wifi_info', 'infoDialogStat'],
     data: () => ({
         editing: false,
         show: false,
@@ -15,9 +15,50 @@ export default {
         value: '',
         size: 200
     }),
+    computed: {
+        dialog: {
+            get(){ return this.infoDialogStat },
+            set(val){ if(!val) return this.$emit('close')}
+        }
+    },
     methods: {
         onClickDeleteLogin(){
-            console.log('del func')
+            this.$store.commit('SET_LOADING_LOCAL')
+            this.ids.push(this.wifi_info.wifi_id)
+            this.$store.dispatch('wifi/deleteWifis', this.ids)
+            .then( res => {
+                if(res === 401){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$emit('error401')
+                    this.ids = []
+                }
+                else if( res === 200){
+                    setTimeout( () => {
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.dialog = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Wifi credentials deleted successfully',
+                            position: 'top-right',
+                        })
+                        this.ids = []
+                    }, 1000)
+                }
+                else{
+                    this.dialog = false
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                    this.ids = []
+                }
+            })
         },
         getDots(str){
             if(str){
