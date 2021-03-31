@@ -37,8 +37,10 @@
             v-show="type == 'note'"
             :n_title="note.n_title"
             :n_note="note.n_note"
+            :n_color="note.n_color"
             @change_title="note.n_title = $event"
             @change_note="note.n_note = $event"
+            @change_color="note.n_color = $event"
             />
             <CardInput 
             v-show="type == 'card'"
@@ -100,6 +102,7 @@ export default {
         note: {
             n_title: '',
             n_note: '',
+            n_color: 'custom_gray'
         },
         card: {
             c_number: '',

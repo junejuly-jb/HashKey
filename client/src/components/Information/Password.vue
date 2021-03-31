@@ -162,22 +162,55 @@ export default {
             </div>
         </div>
         <div class="d-flex justify-end">
-            <vs-button icon flat @click="show = !show" v-show="!editing">
-                <i class='bx bx-hide' v-show="show"></i>
-                <i class='bx bx-show-alt' v-show="!show"></i>
-            </vs-button>
-            <vs-button icon flat v-clipboard:copy="pass_info.log_password" v-show="!editing" @click="copyPass">
-                <i class='bx bx-copy'></i>
-            </vs-button>
-            <vs-button icon flat @click="onClickEdit" v-show="!editing">
-                <i class='bx bx-pencil'></i>
-            </vs-button>
-            <vs-button icon flat @click="onClickUpdate" v-show="editing">
-                <i class='bx bx-check'></i>
-            </vs-button>
-            <vs-button icon flat color="danger" v-show="!editing" @click="onClickDeleteLogin">
-                <i class='bx bx-trash'></i>
-            </vs-button>
+            <vs-tooltip>
+                <vs-button icon flat @click="show = !show" v-show="!editing">
+                    <i class='bx bx-hide' v-show="show"></i>
+                    <i class='bx bx-show-alt' v-show="!show"></i>
+                </vs-button>
+                <template #tooltip>
+                    Hide / Show
+                </template>
+            </vs-tooltip>
+            <vs-tooltip>
+                <vs-button icon flat v-clipboard:copy="pass_info.log_password" v-show="!editing" @click="copyPass">
+                    <i class='bx bx-copy'></i>
+                </vs-button>
+                <template #tooltip>
+                    Copy password
+                </template>
+            </vs-tooltip>
+            <vs-tooltip>
+                <vs-button icon flat @click="onClickEdit" v-show="!editing">
+                    <i class='bx bx-pencil'></i>
+                </vs-button>
+                <template #tooltip>
+                    Edit
+                </template>
+            </vs-tooltip>
+            <vs-tooltip>
+                <vs-button icon flat color="danger" @click="editing = false" v-show="editing">
+                    <i class='bx bx-x'></i>
+                </vs-button>
+                <template #tooltip>
+                    Cancel
+                </template>
+            </vs-tooltip>
+            <vs-tooltip>
+                <vs-button icon flat @click="onClickUpdate" v-show="editing">
+                    <i class='bx bx-check'></i>
+                </vs-button>
+                <template #tooltip>
+                    Save
+                </template>
+            </vs-tooltip>
+            <vs-tooltip>
+                <vs-button icon flat color="danger" v-show="!editing" @click="onClickDeleteLogin">
+                    <i class='bx bx-trash'></i>
+                </vs-button>
+                <template #tooltip>
+                    Delete
+                </template>
+            </vs-tooltip>
         </div>
     </div>
 </template>
