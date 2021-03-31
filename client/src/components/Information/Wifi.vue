@@ -142,6 +142,29 @@ export default {
         },
         generateQR(){
             this.value = `WIFI:S:${this.wifi_info.wifi_ssid};T:${this.wifi_info.wifi_security};P:${this.wifi_info.wifi_pass};H:${this.wifi_info.wifi_status}`
+        },
+        showCaptureRef() {
+            console.log("this.$refs.capture: " + this.$refs.capture);
+            let vc = this;
+            return vc.$refs.capture;
+        },
+        capture () {
+            const html2canvas = require('html2canvas');
+            let vc = this
+            console.log(this.showCaptureRef())
+            html2canvas(vc.showCaptureRef(),{
+                width: 360,
+                height: 280,
+            }).then(canvas => {
+                
+                var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            var a = document.createElement("a");
+            a.setAttribute('download', 'myImage.png');
+            a.setAttribute('href', image);
+            a.click();
+            }).catch((error) => {
+                console.log("Erorr descargando reporte visual", error)
+            });
         }
     },
     mounted(){
@@ -151,11 +174,16 @@ export default {
 </script>
 <template>
     <div>
-        <div class="text-center" v-show="!editing">
-            <h2>Scan to Connect</h2>
-            <div style="width: 100%" class="d-flex justify-center py-3">
-                <qr-code :text="value" :size="size"></qr-code>
+        <div ref="capture" class="py-2">
+            <div class="text-center" v-show="!editing">
+                <div style="width: 100%" class="d-flex justify-center py-3">
+                    <qr-code :text="value" :size="size"></qr-code>
+                </div>
+                <h2>{{wifi_info.wifi_ssid}}</h2>
             </div>
+        </div>
+        <div class="text-center">
+            Scan to connect
         </div>
         <div class="py-5" v-show="!editing">
             <i class="bx bx-wifi mr-5 my-2"></i><small>{{wifi_info.wifi_ssid}}</small> <br>
@@ -166,7 +194,7 @@ export default {
                 <small v-else>Visible</small>
             </span>
         </div>
-        <div class="py-5" v-show="editing">
+        <div class="py-3" v-show="editing">
             <div class="d-flex align-center my-2">
                 <i class="bx bx-wifi mr-5 my-2"></i>
                 <vs-input v-model="ssid" placeholder="SSID"></vs-input>
@@ -229,6 +257,14 @@ export default {
             <vs-button icon flat color="danger" v-show="!editing" @click="onClickDeleteLogin">
                 <i class='bx bx-trash'></i>
             </vs-button>
+            <vs-tooltip>
+                <vs-button icon flat color="success" v-show="!editing" @click="capture">
+                    <i class='bx bx-download'></i>
+                </vs-button>
+                <template #tooltip>
+                    Save
+                </template>
+            </vs-tooltip>
         </div>
     </div>
 </template>

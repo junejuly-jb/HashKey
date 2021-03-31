@@ -8,6 +8,7 @@ import VueMasonry from 'vue-masonry-css'
 import VueClipboard from 'vue-clipboard2'
 import VueQRCodeComponent from 'vue-qr-generator'
 
+
 export const bus = new Vue()
 // component
 Vue.component('AppBar', () => import('./components/Main/AppBar'))
