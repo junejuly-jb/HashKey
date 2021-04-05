@@ -3,6 +3,7 @@ const api = require('express').Router();
 const UserController = require('../controllers/UserController')
 const PasswordController = require('../controllers/PasswordController')
 const WifiController = require('../controllers/WifiController')
+const NoteController = require('../controllers/NoteController')
 const passport = require('passport')
 const passportConf = require('../passport')
 const auth = require('../auth')
@@ -24,5 +25,9 @@ api.post('/add-wifi', auth, WifiController.addWifi)
 api.get('/wifis', auth, WifiController.wifis)
 api.post('/delete-wifi', auth, WifiController.removeWifi)
 api.put('/update-wifi/:id', auth, WifiController.updateWifi)
+
+// note route
+api.post('/add-note', auth, NoteController.addNote)
+
 
 module.exports = api
