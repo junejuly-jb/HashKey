@@ -13,7 +13,7 @@ export const mutations = {
 }
 
 export const actions = {
-    addPassword({ commit }, payload) {
+    addNote({ commit }, payload) {
         return HashKeyServices.addNote(payload)
             .then(res => {
                 commit('SET_NEW_ADDED_NOTE', res.data.data)
