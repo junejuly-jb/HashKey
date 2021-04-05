@@ -88,4 +88,12 @@ export default {
             }
         )
     },
+    
+    addNote(payload) {
+        return apiClient.post('/add-note/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
 }
