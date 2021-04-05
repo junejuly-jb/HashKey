@@ -54,6 +54,22 @@ export default {
         ...mapState('user', ['filtering'])
     },
     methods: {
+        unauthorizeErr(){
+            this.dialogStats = true
+            this.message = 'Session has expired pls login to continue'
+            this.width = '400px',
+            this.header = 'Unauthorize'
+            this.status = 'unauthorize'
+        },
+        unknownErr(){
+            this.$vs.notification({
+                title: 'Error',
+                color: 'danger',
+                width: 'auto',
+                text: 'Something went wrong',
+                position: 'top-right',
+            })
+        },
         logout(){
             this.dialogStats = true
             this.message = 'Confirm logout?'
@@ -61,34 +77,32 @@ export default {
             this.header = 'Logout'
             this.status = 'logout'
         },
-        // onLogout(){
-        //     this.$store.commit('user/REMOVE_USER_INFO')
-        //     this.$store.commit('password/REMOVE_PASSWORD')
-        //     this.$auth.destroyToken()
-        //     this.$router.push('/')
-        // },
         refresh(){
             if(this.filtering === 'Passwords'){
                 this.$store.dispatch('password/fetchPasswords')
                 .then( res => {
                     if(res === 401){
-                        this.dialogStats = true
-                        this.message = 'Session has expired pls login to continue'
-                        this.width = '400px',
-                        this.header = 'Unauthorize'
-                        this.status = 'unauthorize'
+                        this.unauthorizeErr()
                     }
                     else if( res === 200){
                         console.log(res)
                     }
                     else{
-                        this.$vs.notification({
-                            title: 'Error',
-                            color: 'danger',
-                            width: 'auto',
-                            text: 'Something went wrong',
-                            position: 'top-right',
-                        })
+                        this.unknownErr()
+                    }
+                })
+            }
+            else if (this.filtering === 'Notes'){
+                this.$store.dispatch('note/fetchNotes')
+                .then( res => {
+                    if(res === 401){
+                        this.unauthorizeErr()
+                    }
+                    else if( res === 200){
+                        console.log(res)
+                    }
+                    else{
+                        this.unknownErr()
                     }
                 })
             }
@@ -96,23 +110,13 @@ export default {
                 this.$store.dispatch('wifi/fetchWifis')
                 .then( res => {
                     if(res === 401){
-                        this.dialogStats = true
-                        this.message = 'Session has expired pls login to continue'
-                        this.width = '400px',
-                        this.header = 'Unauthorize'
-                        this.status = 'unauthorize'
+                        this.unauthorizeErr()
                     }
                     else if( res === 200){
                         console.log(res)
                     }
                     else{
-                        this.$vs.notification({
-                            title: 'Error',
-                            color: 'danger',
-                            width: 'auto',
-                            text: 'Something went wrong',
-                            position: 'top-right',
-                        })
+                        this.unknownErr()
                     }
                 })
             }
