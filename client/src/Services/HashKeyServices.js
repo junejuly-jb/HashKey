@@ -96,4 +96,9 @@ export default {
             }
         )
     },
+    fetchNotes() {
+        return apiClient.get('/notes', {
+            headers: { Authorization: 'Bearer ' + getToken() }
+        })
+    },
 }

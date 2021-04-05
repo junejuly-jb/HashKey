@@ -38,9 +38,11 @@
             :n_title="note.n_title"
             :n_note="note.n_note"
             :n_color="note.n_color"
+            :dialog="dialog"
             @change_title="note.n_title = $event"
             @change_note="note.n_note = $event"
             @change_color="note.n_color = $event"
+            @close="dialog = false"
             />
             <CardInput 
             v-show="type == 'card'"

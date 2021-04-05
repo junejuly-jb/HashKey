@@ -28,6 +28,7 @@ api.put('/update-wifi/:id', auth, WifiController.updateWifi)
 
 // note route
 api.post('/add-note', auth, NoteController.addNote)
+api.get('/notes', auth, NoteController.notes)
 
 
 module.exports = api
