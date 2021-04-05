@@ -85,6 +85,15 @@ import { mapState } from 'vuex'
               }
             })
             break;
+          case "Notes":
+            this.$store.dispatch('note/fetchNotes')
+            .then( res => {
+              if(res == 401){
+                console.log('unauthorize')
+                this.onLogout()
+              }
+            })
+            break;
           case "Wifi":
             this.$store.dispatch('wifi/fetchWifis')
             .then( res => {

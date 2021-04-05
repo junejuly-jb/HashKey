@@ -9,7 +9,9 @@ export const mutations = {
     SET_NEW_ADDED_NOTE(state, payload) {
         state.notes.push(payload)
     },
-    
+    FETCH_NOTES(state, payload) {
+        state.notes = payload.filter(id => { return id.note_id != state.notes.note_id })
+    },
 }
 
 export const actions = {
@@ -21,6 +23,16 @@ export const actions = {
             })
             .catch(err => {
                 return err.response.status
+        })
+    },
+    fetchNotes({ commit }) {
+        return HashKeyServices.fetchNotes()
+            .then(response => {
+            commit('FETCH_NOTES', response.data.credentials)
+            return response.status
+        })
+            .catch(err => {
+            return err.response.status
         })
     },
     
