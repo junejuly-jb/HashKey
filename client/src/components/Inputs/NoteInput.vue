@@ -22,7 +22,7 @@ export default {
     },
     created(){
         bus.$on('onSaveNote', (data) => {
-            console.log(data)
+            console.log('data:', data)
         })
     },
     methods:{
