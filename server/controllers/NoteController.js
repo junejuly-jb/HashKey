@@ -25,4 +25,24 @@ const addNote = async (req, res) => {
     }
 }
 
-module.exports = { addNote }
+const notes = async (req, res) => {
+    try {
+        const note = await Note.find({ owner: req.user._id })
+        const credentials = [];
+        for (let i = 0; i < note.length; i++){
+            var toPush = {
+                note_id: note[i]._id,
+                note_title: note[i].credentials.note_title,
+                note_content: note[i].credentials.note_content,
+                note_color: note[i].credentials.note_color
+            }
+            credentials.push(toPush)
+        }
+        return res.status(200).json({ credentials })
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({ error })
+    }
+}
+
+module.exports = { addNote, notes }
