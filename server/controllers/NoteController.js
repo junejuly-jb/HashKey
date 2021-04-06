@@ -45,4 +45,15 @@ const notes = async (req, res) => {
     }
 }
 
-module.exports = { addNote, notes }
+const removeNote = async (req, res) => {
+    try {
+        await Note.deleteMany({ _id: { $in: req.body.ids } })
+            .then(() => {
+            return res.status(200).json({ msg: 'deleted!'})
+        })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+
+module.exports = { addNote, notes, removeNote }
