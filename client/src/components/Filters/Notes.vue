@@ -1,10 +1,13 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
+import InformationDialog from '../Main/InformationDialog'
 import { mapState } from 'vuex'
 export default {
-    components: { UniversalDialog },
+    components: { UniversalDialog, InformationDialog },
     data: () => ({
         dialogStat: false,
+        infoDialogStat: false,
+        note_info: {},
         header: 'Add Secure Notes',
         type: 'note'
     }),
@@ -20,6 +23,10 @@ export default {
             if( !string ){ return false }
             else if( string.length > 300 ){ return true }
             else return false
+        },
+        view(note){
+            this.note_info = note,
+            this.infoDialogStat = true
         }
     }
 }
@@ -32,7 +39,7 @@ export default {
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
             :gutter="{default: '30px', 700: '10px'}"
             >
-                <v-card elevation="0" v-for="(note, index) in notes" :key="index" :color="note.note_color" class="neo rounded-lg">
+                <v-card elevation="0" @click="view(note)" v-for="(note, index) in notes" :key="index" :color="note.note_color" class="neo rounded-lg">
                     <v-container>
                         <div class="">
                             <h5 class="">{{note.note_title ? note.note_title : 'No Title'}}</h5>
@@ -50,6 +57,12 @@ export default {
         :header="header"
         :type="type"
         @close="dialogStat = false"/>
+        <InformationDialog 
+        :infoDialogStat="infoDialogStat"
+        :note_info="note_info"
+        :type="type"
+        @close="infoDialogStat = false"
+        />
     </v-container>
 </template>
 

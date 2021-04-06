@@ -16,7 +16,8 @@ export default {
         infoDialogStat: Boolean,
         type: String,
         pass_info : { type: Object, required: false },
-        wifi_info : { type: Object, required: false }
+        wifi_info : { type: Object, required: false },
+        note_info : { type: Object, required: false },
     },
     computed: {
         ...mapState(['isLoadingLocal']),
@@ -39,7 +40,7 @@ export default {
 }
 </script>
 <template>
-    <vs-dialog not-center v-model="dialog" blur prevent-close :loading="isLoadingLocal">
+    <vs-dialog :scroll="type === 'note'" not-center v-model="dialog" blur prevent-close :loading="isLoadingLocal">
         <div class="con-content">
             <!-- {{type}} -->
             <v-container>
