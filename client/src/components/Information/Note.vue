@@ -5,10 +5,17 @@ export default {
         editing: false,
         colours: ['custom_red','custom_orange','custom_yellow','custom_green','custom_teal','custom_blue','custom_darkblue','custom_purple','custom_pink','custom_brown','custom_gray'],
         colordialog: false,
+        ids: [],
         color: '',
         content: '',
         title: ''
     }),
+    computed: {
+        dialog: {
+            get(){ return this.infoDialogStat },
+            set(val){ if(!val) { return this.$emit('close') }}
+        }
+    },
     methods: {
         onClickEdit(){
             this.editing = true
@@ -19,6 +26,44 @@ export default {
         onChooseColor(color){
             this.color = color
             this.colordialog = false
+        },
+        onClickDeleteNote(){
+            this.$store.commit('SET_LOADING_LOCAL')
+            this.ids.push(this.note_info.note_id)
+            this.$store.dispatch('note/deleteNotes', this.ids)
+            .then( res => {
+                if(res === 401){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$emit('error401')
+                    this.ids = []
+                }
+                else if( res === 200){
+                    setTimeout( () => {
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.dialog = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Note deleted successfully',
+                            position: 'top-right',
+                        })
+                        this.ids = []
+                    }, 1000)
+                }
+                else{
+                    this.dialog = false
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                    this.ids = []
+                }
+            })
         }
     }
 }
@@ -75,7 +120,7 @@ export default {
                 </template>
             </vs-tooltip>
             <vs-tooltip>
-                <vs-button icon flat color="danger" v-show="!editing" @click="onClickDeleteLogin">
+                <vs-button icon flat color="danger" v-show="!editing" @click="onClickDeleteNote">
                     <i class='bx bx-trash'></i>
                 </vs-button>
                 <template #tooltip>

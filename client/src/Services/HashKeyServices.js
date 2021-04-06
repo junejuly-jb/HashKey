@@ -101,4 +101,11 @@ export default {
             headers: { Authorization: 'Bearer ' + getToken() }
         })
     },
+    deleteNote(payload) {
+        return apiClient.post('/delete-note', {ids: payload},
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
 }
