@@ -3,6 +3,8 @@ export default {
     props: ['note_info', 'infoDialogStat'],
     data: () => ({
         editing: false,
+        colours: ['custom_red','custom_orange','custom_yellow','custom_green','custom_teal','custom_blue','custom_darkblue','custom_purple','custom_pink','custom_brown','custom_gray'],
+        colordialog: false,
         color: '',
         content: '',
         title: ''
@@ -10,8 +12,13 @@ export default {
     methods: {
         onClickEdit(){
             this.editing = true
+            this.color = this.note_info.note_color
             this.title = this.note_info.note_title
             this.content = this.note_info.note_content
+        },
+        onChooseColor(color){
+            this.color = color
+            this.colordialog = false
         }
     }
 }
@@ -76,5 +83,18 @@ export default {
                 </template>
             </vs-tooltip>
         </div>
+
+        <vs-dialog width="100px" not-center v-model="colordialog">
+            <div class="con-content px-15">
+                <masonry
+                :cols="{default: 4, 1000: 5, 700: 4, 400: 3}"
+                :gutter="{default: '5px', 700: '5px'}"
+                >
+                    <v-btn icon x-large v-for="(color, i) in colours" :key="i" :color="color" @click="onChooseColor(color)">
+                        <v-icon>mdi-circle</v-icon>
+                    </v-btn>
+                </masonry>
+            </div>
+        </vs-dialog>
     </div>
 </template>
