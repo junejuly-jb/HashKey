@@ -1,10 +1,11 @@
 <script>
 import Password from '../Information/Password'
 import Wifi from '../Information/Wifi'
+import Note from '../Information/Note'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 import { mapState } from 'vuex'
 export default {
-    components: { Password, ConfirmationDialog, Wifi },
+    components: { Password, ConfirmationDialog, Wifi, Note },
     data: () => ({
         dialogStats: false,
         message: '',
@@ -52,8 +53,15 @@ export default {
                 @error401="error401"
                 />
                 <Wifi
-                v-else
+                v-else-if="type === 'wifi'"
                 :wifi_info="wifi_info"
+                :infoDialogStat="infoDialogStat"
+                @close="dialog = false"
+                @error401="error401"
+                />
+                <Note
+                v-else
+                :note_info="note_info"
                 :infoDialogStat="infoDialogStat"
                 @close="dialog = false"
                 @error401="error401"
