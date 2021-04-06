@@ -52,6 +52,7 @@ export default {
                         })
                         this.$store.commit('SET_LOADING_LOCAL')
                         this.dialogStat = false
+                        this.color = "custom_gray"
                     }, 2000)
                 }
                 else if(res === 401){
