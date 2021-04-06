@@ -41,7 +41,7 @@ export default {
 }
 </script>
 <template>
-    <vs-dialog :scroll="type === 'note'" not-center v-model="dialog" blur prevent-close :loading="isLoadingLocal">
+    <vs-dialog not-center v-model="dialog" blur prevent-close :loading="isLoadingLocal">
         <div class="con-content">
             <!-- {{type}} -->
             <v-container>
