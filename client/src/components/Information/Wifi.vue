@@ -107,7 +107,7 @@ export default {
                             title: 'Success',
                             color: 'success',
                             width: 'auto',
-                            text: 'Wifi credentials deleted successfully',
+                            text: 'Wifi credentials updated successfully',
                             position: 'top-right',
                         })
                     }, 1000)
