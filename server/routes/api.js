@@ -30,5 +30,6 @@ api.put('/update-wifi/:id', auth, WifiController.updateWifi)
 api.post('/add-note', auth, NoteController.addNote)
 api.get('/notes', auth, NoteController.notes)
 api.post('/delete-note', auth, NoteController.removeNote)
+api.put('/update-note/:id', auth, NoteController.updateNote)
 
 module.exports = api

@@ -61,7 +61,8 @@ export default {
                 this.dialog = false
                 this.$store.commit('user/REMOVE_USER_INFO')
                 this.$store.commit('password/REMOVE_PASSWORD')
-                this.$store.commit('password/REMOVE_WIFIS')
+                this.$store.commit('wifi/REMOVE_WIFIS')
+                this.$store.commit('note/REMOVE_NOTES')
                 this.$auth.destroyToken()
                 this.$router.push('/')
             }, 1000)
