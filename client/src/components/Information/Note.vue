@@ -64,6 +64,9 @@ export default {
                     this.ids = []
                 }
             })
+        },
+        onClickUpdate(){
+            console.log(this.color, this.title, this.content)
         }
     }
 }

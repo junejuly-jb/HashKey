@@ -18,6 +18,9 @@ export const mutations = {
             state.notes.splice(idx, 1)
         }
     },
+    REMOVE_NOTES(state) {
+        state.notes = []
+    }
 }
 
 export const actions = {

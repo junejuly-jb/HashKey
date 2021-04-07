@@ -56,4 +56,23 @@ const removeNote = async (req, res) => {
     }
 }
 
-module.exports = { addNote, notes, removeNote }
+const updateNote = async (req, res) => {
+    await Note.findOneAndUpdate({ _id: req.params.id, owner: req.user._id },{
+        $set: {
+            "credentials.note_title": req.body.title,
+            "credentials.note_content": req.body.content,
+            "credentials.note_color": req.body.color
+        }
+    }, { returnOriginal: false, useFindAndModify: false },
+        (err, doc) => {
+            if (err) return res.status(500).send(err)
+            const credentials = {
+                note_id: doc._id,
+                note_title: doc.credentials.note_title,
+                note_content: doc.credentials.note_content,
+                note_color: doc.credentials.note_color
+            }
+            return res.status(200).json({ credentials })
+        })
+}
+module.exports = { addNote, notes, removeNote, updateNote }
