@@ -20,6 +20,10 @@ export const mutations = {
     },
     REMOVE_NOTES(state) {
         state.notes = []
+    },
+    UPDATE_PASSWORD(state, payload) {
+        var index = state.notes.findIndex(idx => idx.note_id === payload.note_id)
+        Object.assign(state.notes[index], payload)
     }
 }
 
@@ -54,6 +58,17 @@ export const actions = {
             return err.response.status
         })
     },
+
+    updateNote({ commit },payload) {
+        return HashKeyServices.updateNote(payload.id, payload)
+            .then(response => {
+                commit('UPDATE_NOTE', response.data.credentials)
+                return response.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    }
 }
 
 export const getters = {

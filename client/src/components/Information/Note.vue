@@ -67,6 +67,41 @@ export default {
         },
         onClickUpdate(){
             console.log(this.color, this.title, this.content)
+            this.$store.commit('SET_LOADING_LOCAL')
+            this.$store.dispatch('note/updateNote', {
+                title: this.title,
+                content: this.content,
+                color: this.color
+            })
+            .then( res => {
+                if(res === 401){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$emit('error401')
+                }
+                else if( res === 200){
+                    setTimeout( () => {
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.editing = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Secured Note updated successfully',
+                            position: 'top-right',
+                        })
+                    }, 1000)
+                }
+                else{
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                }
+            })
         }
     }
 }
