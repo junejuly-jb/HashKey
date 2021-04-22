@@ -32,38 +32,40 @@ const addCard = async (req, res) => {
 }
 
 
-// const wifis = async (req, res) => {
-//     try {
-//         const wifi = await Wifi.find({ owner: req.user._id })
-//         const credentials = [];
-//         for (let i = 0; i < wifi.length; i++) {
-//             var wifi_pass = wifi[i].credentials.log_password == '' ? '' : cryptr.decrypt(wifi[i].credentials.wifi_pass)
-//             var toPush = {
-//                 wifi_id: wifi[i]._id,
-//                 wifi_ssid: wifi[i].credentials.wifi_ssid,
-//                 wifi_pass: wifi_pass,
-//                 wifi_security: wifi[i].credentials.wifi_security,
-//                 wifi_status: wifi[i].credentials.wifi_status
-//             }
-//             credentials.push(toPush)
-//         }
-//         return res.status(200).json({ credentials })
-//     } catch (error) {
-//         console.log(err)
-//         return res.status(500).json({ error })
-//     }
-// }
+const cards = async (req, res) => {
+    try {
+        const card = await Card.find({ owner: req.user._id })
+        const credentials = [];
+        for (let i = 0; i < card.length; i++) {
+            var card_number = card[i].credentials.card_number == '' ? '' : cryptr.decrypt(card[i].credentials.card_number)
+            var card_expiry = card[i].credentials.card_expiry == '' ? '' : cryptr.decrypt(card[i].credentials.card_expiry)
+            var card_ccv = card[i].credentials.card_ccv == '' ? '' : cryptr.decrypt(card[i].credentials.card_ccv)
+            var toPush = {
+                card_id: card[i]._id,
+                card_number: card_number,
+                card_expiry: card_expiry,
+                card_ccv: card_ccv
+            }
+            credentials.push(toPush)
+        }
+        return res.status(200).json({ credentials })
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({ error })
+    }
+}
 
-// const removeWifi = async (req, res) => {
-//     try {
-//         await Wifi.deleteMany({ _id: { $in: req.body.ids } })
-//             .then(() => {
-//                 return res.status(200).json({ msg: 'deleted!' })
-//             })
-//     } catch (error) {
-//         return res.status(500).send(error)
-//     }
-// }
+const removeCard = async (req, res) => {
+    try {
+        await Card.deleteMany({ _id: { $in: req.body.ids } })
+            .then(() => {
+                return res.status(200).json({ msg: 'deleted!' })
+            })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+
 // const updateWifi = async (req, res) => {
 //     const pass = cryptr.encrypt(req.body.pass)
 //     await Wifi.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
@@ -87,5 +89,5 @@ const addCard = async (req, res) => {
 //         })
 // }
 
-module.exports = { addCard }
-    // , wifis, removeWifi, updateWifi
+module.exports = { addCard, cards, removeCard }
+    // , wifis, , updateWifi
