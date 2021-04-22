@@ -12,9 +12,9 @@ export const mutations = {
     // FETCH_WIFI(state, payload) {
     //     state.wifis = payload.filter(id => { return id.wifi_id != state.wifis.wifi_id })
     // },
-    // REMOVE_WIFIS(state) {
-    //     state.wifis = []
-    // },
+    REMOVE_CARDS(state) {
+        state.cards = []
+    },
     // DELETE_WIFIS(state, payload) {
     //     for (let i = 0; i < payload.length; i++) {
     //         var idx = state.wifis.findIndex(index => index.wifi_id === payload[i]);
