@@ -115,4 +115,12 @@ export default {
             }
         )
     },
+
+    addCard(payload) {
+        return apiClient.post('/add-card/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
 }
