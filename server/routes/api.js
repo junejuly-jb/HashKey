@@ -36,5 +36,6 @@ api.put('/update-note/:id', auth, NoteController.updateNote)
 // card routes
 api.post('/add-card', auth, CardController.addCard)
 api.get('/cards', auth, CardController.cards)
+api.post('/delete-card', auth, CardController.removeCard)
 
 module.exports = api

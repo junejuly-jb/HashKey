@@ -55,16 +55,17 @@ const cards = async (req, res) => {
     }
 }
 
-// const removeWifi = async (req, res) => {
-//     try {
-//         await Wifi.deleteMany({ _id: { $in: req.body.ids } })
-//             .then(() => {
-//                 return res.status(200).json({ msg: 'deleted!' })
-//             })
-//     } catch (error) {
-//         return res.status(500).send(error)
-//     }
-// }
+const removeCard = async (req, res) => {
+    try {
+        await Card.deleteMany({ _id: { $in: req.body.ids } })
+            .then(() => {
+                return res.status(200).json({ msg: 'deleted!' })
+            })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+
 // const updateWifi = async (req, res) => {
 //     const pass = cryptr.encrypt(req.body.pass)
 //     await Wifi.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
@@ -88,5 +89,5 @@ const cards = async (req, res) => {
 //         })
 // }
 
-module.exports = { addCard, cards }
-    // , wifis, removeWifi, updateWifi
+module.exports = { addCard, cards, removeCard }
+    // , wifis, , updateWifi
