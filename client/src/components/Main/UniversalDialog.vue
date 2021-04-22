@@ -49,9 +49,13 @@
             :c_number="card.c_number"
             :c_exp="card.c_exp"
             :c_ccv="card.c_ccv"
+            :c_color="card.c_color"
+            :dialog="dialog"
             @change_cnumber="card.c_number = $event"
             @change_cexp="card.c_exp = $event"
             @change_cccv="card.c_ccv = $event"
+            @change_color="card.c_color = $event"
+            @close="dialog = false"
             />
         </div>
 
@@ -109,7 +113,8 @@ export default {
         card: {
             c_number: '',
             c_exp: '',
-            c_ccv: ''
+            c_ccv: '',
+            c_color: 'custom_gray'
         }
     }),
     components: { PasswordInput, WifiInput, NoteInput, CardInput },

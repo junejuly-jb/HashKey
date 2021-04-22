@@ -63,6 +63,7 @@ export default {
                 this.$store.commit('password/REMOVE_PASSWORD')
                 this.$store.commit('wifi/REMOVE_WIFIS')
                 this.$store.commit('note/REMOVE_NOTES')
+                this.$store.commit('card/REMOVE_CARDS')
                 this.$auth.destroyToken()
                 this.$router.push('/')
             }, 1000)

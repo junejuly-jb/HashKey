@@ -5,6 +5,7 @@ import * as user from './Modules/user'
 import * as password from './Modules/password'
 import * as wifi from './Modules/wifi'
 import * as note from './Modules/note'
+import * as card from './Modules/card'
 
 Vue.use(Vuex)
 
@@ -26,7 +27,7 @@ export default new Vuex.Store({
 
   },
   modules: {
-    user, password, wifi, note
+    user, password, wifi, note, card
   },
   plugins: [
     createPersistedState({
