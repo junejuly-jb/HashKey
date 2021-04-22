@@ -109,7 +109,7 @@ export default {
         )
     },
     updateNote(id, payload) {
-        return apiClient.put('/update-note' + id, payload,
+        return apiClient.put('/update-note/' + id, payload,
             {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
