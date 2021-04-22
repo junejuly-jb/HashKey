@@ -21,7 +21,7 @@ export const mutations = {
     REMOVE_NOTES(state) {
         state.notes = []
     },
-    UPDATE_PASSWORD(state, payload) {
+    UPDATE_NOTE(state, payload) {
         var index = state.notes.findIndex(idx => idx.note_id === payload.note_id)
         Object.assign(state.notes[index], payload)
     }

@@ -69,6 +69,7 @@ export default {
             console.log(this.color, this.title, this.content)
             this.$store.commit('SET_LOADING_LOCAL')
             this.$store.dispatch('note/updateNote', {
+                id: this.note_info.note_id,
                 title: this.title,
                 content: this.content,
                 color: this.color

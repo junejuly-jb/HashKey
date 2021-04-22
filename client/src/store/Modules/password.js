@@ -74,4 +74,7 @@ export const actions = {
 }
 
 export const getters = {
+    // getPassByID({state}, payload) {
+    //     return state.
+    // }
 }
