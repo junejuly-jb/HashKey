@@ -66,28 +66,24 @@ const removeCard = async (req, res) => {
     }
 }
 
-// const updateWifi = async (req, res) => {
-//     const pass = cryptr.encrypt(req.body.pass)
-//     await Wifi.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
-//         $set: {
-//             "credentials.wifi_ssid": req.body.ssid,
-//             "credentials.wifi_pass": pass,
-//             "credentials.wifi_security": req.body.security,
-//             "credentials.wifi_status": req.body.status,
-//         }
-//     }, { returnOriginal: false, useFindAndModify: false },
-//         (err, doc) => {
-//             if (err) return res.status(500).send(err)
-//             const credentials = {
-//                 wifi_id: doc._id,
-//                 wifi_ssid: doc.credentials.wifi_ssid,
-//                 wifi_pass: cryptr.decrypt(doc.credentials.wifi_pass),
-//                 wifi_security: doc.credentials.wifi_security,
-//                 wifi_status: doc.credentials.wifi_status
-//             }
-//             return res.status(200).json({ credentials })
-//         })
-// }
+const updateCard = async (req, res) => {
+    await Card.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
+        $set: {
+            "credentials.card_number": cryptr.encrypt(req.body.card_number),
+            "credentials.card_expiry": cryptr.encrypt(req.body.card_expiry),
+            "credentials.card_ccv": cryptr.encrypt(req.body.card_ccv)
+        }
+    }, { returnOriginal: false, useFindAndModify: false },
+        (err, doc) => {
+            if (err) return res.status(500).send(err)
+            const credentials = {
+                card_id: doc._id,
+                card_number: cryptr.decrypt(doc.credentials.card_number),
+                card_expiry: cryptr.decrypt(doc.credentials.card_expiry),
+                card_ccv: cryptr.decrypt(doc.credentials.card_ccv)
+            }
+            return res.status(200).json({ credentials })
+        })
+}
 
-module.exports = { addCard, cards, removeCard }
-    // , wifis, , updateWifi
+module.exports = { addCard, cards, removeCard, updateCard }
