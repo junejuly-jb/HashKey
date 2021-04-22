@@ -13,10 +13,10 @@ const cardSchema = new Schema({
     },
     credentials: {
         card_number: {
-            type: Number
+            type: String
         },
         card_expiry: {
-            type: Date
+            type: String
         },
         card_ccv: {
             type: String
@@ -24,4 +24,4 @@ const cardSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Card', wifiSchema)
+module.exports = mongoose.model('Card', cardSchema)
