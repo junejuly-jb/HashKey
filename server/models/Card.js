@@ -20,6 +20,9 @@ const cardSchema = new Schema({
         },
         card_ccv: {
             type: String
+        },
+        card_color: {
+            type: String
         }
     }
 })

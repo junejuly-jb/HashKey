@@ -12,7 +12,8 @@ const addCard = async (req, res) => {
             credentials: {
                 card_number: card_number,
                 card_expiry: card_expiry,
-                card_ccv: card_ccv
+                card_ccv: card_ccv,
+                card_color: req.body.card_color
             }
         })
         await card.save()
@@ -23,7 +24,8 @@ const addCard = async (req, res) => {
             card_id: card._id,
             card_number: card.credentials.card_number,
             card_expiry: card.credentials.card_expiry,
-            card_ccv: card.credentials.card_ccv
+            card_ccv: card.credentials.card_ccv,
+            card_color: card.credentials.card_color
         }
         return res.status(200).json({ data: creds })
     } catch (error) {
@@ -44,7 +46,8 @@ const cards = async (req, res) => {
                 card_id: card[i]._id,
                 card_number: card_number,
                 card_expiry: card_expiry,
-                card_ccv: card_ccv
+                card_ccv: card_ccv,
+                card_color: card[i].credentials.card_color
             }
             credentials.push(toPush)
         }
@@ -71,7 +74,8 @@ const updateCard = async (req, res) => {
         $set: {
             "credentials.card_number": cryptr.encrypt(req.body.card_number),
             "credentials.card_expiry": cryptr.encrypt(req.body.card_expiry),
-            "credentials.card_ccv": cryptr.encrypt(req.body.card_ccv)
+            "credentials.card_ccv": cryptr.encrypt(req.body.card_ccv),
+            "credentials.card_color": req.body.card_color
         }
     }, { returnOriginal: false, useFindAndModify: false },
         (err, doc) => {
@@ -80,7 +84,8 @@ const updateCard = async (req, res) => {
                 card_id: doc._id,
                 card_number: cryptr.decrypt(doc.credentials.card_number),
                 card_expiry: cryptr.decrypt(doc.credentials.card_expiry),
-                card_ccv: cryptr.decrypt(doc.credentials.card_ccv)
+                card_ccv: cryptr.decrypt(doc.credentials.card_ccv),
+                card_color: doc.credentials.card_ccv
             }
             return res.status(200).json({ credentials })
         })

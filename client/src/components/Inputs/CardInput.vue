@@ -5,7 +5,7 @@ export default {
     props: ['c_number', 'c_exp', 'c_ccv', 'dialog', 'c_color'],
     data: () => ({
         colordialog: false,
-        colours: ['custom_red','custom_orange','custom_yellow','custom_green','custom_teal','custom_blue','custom_darkblue','custom_purple','custom_pink','custom_brown','custom_gray'],
+        colours: ['card_gray','card_orange','card_blue','card_dark_blue','card_red','card_gold','card_silver','card_black','card_dark_green','card_green'],
         dialogStats: false,
         message: '',
         width: '',
@@ -41,7 +41,10 @@ export default {
             console.log(data)
             this.$store.commit('SET_LOADING_LOCAL')
             this.$store.dispatch('card/addCard',{
-                card_number: this.card_number, card_expiry: this.exp, card_ccv: this.ccv
+                card_number: this.card_number,
+                card_expiry: this.exp,
+                card_ccv: this.ccv,
+                card_color: this.color
             })
             .then( res => {
                 if(res === 200){
@@ -56,7 +59,7 @@ export default {
                         })
                         this.$store.commit('SET_LOADING_LOCAL')
                         this.dialogStat = false
-                    }, 2000)
+                    }, 1000)
                 }
                 else if(res === 401){
                     this.dialogStats = true
@@ -73,7 +76,7 @@ export default {
                         text: 'Error occured',
                         position: 'top-right',
                     })
-                    setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 2000)
+                    setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 1000)
                     this.dialogStat = false
                     this.$refs.form.reset()
                 }
