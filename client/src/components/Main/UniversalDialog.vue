@@ -108,7 +108,7 @@ export default {
         note: {
             n_title: '',
             n_note: '',
-            n_color: 'custom_gray'
+            n_color: 'card_gray'
         },
         card: {
             c_number: '',
