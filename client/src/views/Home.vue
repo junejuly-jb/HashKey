@@ -103,8 +103,17 @@ import { mapState } from 'vuex'
               }
             })
             break;
+          case "Cards":
+            this.$store.dispatch('card/fetchCards')
+            .then( res => {
+              if(res == 401){
+                console.log('unauthorize')
+                this.onLogout()
+              }
+            })
+            break;
           default: 
-            console.log('no filter')
+            console.log(this.filtering)
         }
       },
       onLogout(){

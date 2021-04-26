@@ -106,6 +106,20 @@ export default {
                     }
                 })
             }
+            else if (this.filtering === 'Cards'){
+                this.$store.dispatch('card/fetchCards')
+                .then( res => {
+                    if(res === 401){
+                        this.unauthorizeErr()
+                    }
+                    else if( res === 200){
+                        console.log(res)
+                    }
+                    else{
+                        this.unknownErr()
+                    }
+                })
+            }
             else {
                 this.$store.dispatch('wifi/fetchWifis')
                 .then( res => {

@@ -9,9 +9,9 @@ export const mutations = {
     ADD_CARD(state, payload) {
         state.cards.push(payload)
     },
-    // FETCH_WIFI(state, payload) {
-    //     state.wifis = payload.filter(id => { return id.wifi_id != state.wifis.wifi_id })
-    // },
+    FETCH_CARD(state, payload) {
+        state.cards = payload.filter(id => { return id.card_id != state.cards.card_id })
+    },
     REMOVE_CARDS(state) {
         state.cards = []
     },
@@ -39,17 +39,17 @@ export const actions = {
                 return err.response.status
             })
     },
-    // fetchWifis({ commit }) {
-    //     return HashKeyServices.fetchWifis()
-    //         .then(response => {
-    //             // commit('REMOVE_WIFIS')
-    //             commit('FETCH_WIFI', response.data.credentials)
-    //             return response.status
-    //         })
-    //         .catch(err => {
-    //             return err.response.status
-    //         })
-    // },
+    fetchCards({ commit }) {
+        return HashKeyServices.fetchCards()
+            .then(response => {
+                // commit('REMOVE_WIFIS')
+                commit('FETCH_CARD', response.data.credentials)
+                return response.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    },
     // deleteWifis({ commit }, payload) {
     //     return HashKeyServices.deleteWifi(payload)
     //         .then(response => {

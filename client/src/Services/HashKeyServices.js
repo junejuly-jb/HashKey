@@ -123,4 +123,9 @@ export default {
             }
         )
     },
+    fetchCards() {
+        return apiClient.get('/cards', {
+            headers: { Authorization: 'Bearer ' + getToken() }
+        })
+    },
 }
