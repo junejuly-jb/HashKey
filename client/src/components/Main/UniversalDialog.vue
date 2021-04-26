@@ -108,13 +108,13 @@ export default {
         note: {
             n_title: '',
             n_note: '',
-            n_color: 'card_gray'
+            n_color: 'custom_gray'
         },
         card: {
             c_number: '',
             c_exp: '',
             c_ccv: '',
-            c_color: 'custom_gray'
+            c_color: 'card_silver'
         }
     }),
     components: { PasswordInput, WifiInput, NoteInput, CardInput },
