@@ -46,13 +46,13 @@ export default {
             :cols="{default: 2, 1000: 2, 700: 1, 400: 1}"
             :gutter="{default: '30px', 700: '10px'}"
             >
-                <v-card elevation="0" @click="view(note)" v-for="(card, index) in cards" :key="index" :color="card.card_color" class="neo rounded-lg">
+                <v-card elevation="0" @click="view(note)" v-for="(card, index) in cards" :key="index" :color="card.card_color" class="neo rounded-lg mb-5">
                     <v-container>
-                        <div class="mt-8">
+                        <div class="mt-8 px-5">
                             <div class="pb-5">
                                 <pre class="white--text">{{to_chunk(card.card_number)}} {{get_last_digits(card.card_number)}}</pre>
                             </div>
-                            <div>
+                            <div class="my-3">
                                 <pre class="white--text">{{format_date(card.card_expiry)}}</pre>
                                 <pre class="white--text">{{card.card_ccv}}</pre>
                             </div>  

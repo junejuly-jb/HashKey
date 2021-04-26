@@ -1,16 +1,23 @@
 <script>
 import { bus } from '../../main'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
+import {mask} from 'vue-the-mask'
 export default {
+    directives: {mask},
     props: ['c_number', 'c_exp', 'c_ccv', 'dialog', 'c_color'],
     data: () => ({
         colordialog: false,
-        colours: ['card_gray','card_orange','card_blue','card_dark_blue','card_red','card_gold','card_silver','card_black','card_dark_green','card_green'],
+        colours: ['card_orange','card_blue','card_dark_blue','card_red','card_gold','card_silver','card_black','card_dark_green','card_green'],
         dialogStats: false,
         message: '',
         width: '',
         header: '',
-        status: ''
+        status: '',
+        card_no_rules: [
+            (v) => !!v || "This field is required",
+            (v) => (v && v.length <= 16) || "16 digits max",
+            (v) => (v && v.length >= 16) || "16 digits min",
+        ]
     }),
     components: { ConfirmationDialog },
     computed: {
@@ -39,48 +46,60 @@ export default {
     created(){
         bus.$on('onSaveCard', (data) => {
             console.log(data)
-            this.$store.commit('SET_LOADING_LOCAL')
-            this.$store.dispatch('card/addCard',{
-                card_number: this.card_number,
-                card_expiry: this.exp,
-                card_ccv: this.ccv,
-                card_color: this.color
-            })
-            .then( res => {
-                if(res === 200){
-                    setTimeout(() => {
-                        this.$refs.form.reset()
+            if(this.$refs.form.validate()){
+                this.$store.commit('SET_LOADING_LOCAL')
+                this.$store.dispatch('card/addCard',{
+                    card_number: this.card_number,
+                    card_expiry: this.exp,
+                    card_ccv: this.ccv,
+                    card_color: this.color
+                })
+                .then( res => {
+                    if(res === 200){
+                        setTimeout(() => {
+                            this.$refs.form.reset()
+                            this.$vs.notification({
+                                title: 'Success',
+                                color: 'success',
+                                width: 'auto',
+                                text: 'Card credentials has been saved successfully!',
+                                position: 'top-right',
+                            })
+                            this.$store.commit('SET_LOADING_LOCAL')
+                            this.dialogStat = false
+                        }, 1000)
+                    }
+                    else if(res === 401){
+                        this.dialogStats = true
+                        this.message = 'Session has expired pls login to continue'
+                        this.width = '400px',
+                        this.header = 'Unauthorize'
+                        this.status = 'unauthorize'
+                    }
+                    else{
                         this.$vs.notification({
-                            title: 'Success',
-                            color: 'success',
+                            title: 'Error',
+                            color: 'danger',
                             width: 'auto',
-                            text: 'Card credentials has been saved successfully!',
+                            text: 'Error occured',
                             position: 'top-right',
                         })
-                        this.$store.commit('SET_LOADING_LOCAL')
+                        setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 1000)
                         this.dialogStat = false
-                    }, 1000)
-                }
-                else if(res === 401){
-                    this.dialogStats = true
-                    this.message = 'Session has expired pls login to continue'
-                    this.width = '400px',
-                    this.header = 'Unauthorize'
-                    this.status = 'unauthorize'
-                }
-                else{
-                    this.$vs.notification({
-                        title: 'Error',
-                        color: 'danger',
-                        width: 'auto',
-                        text: 'Error occured',
-                        position: 'top-right',
-                    })
-                    setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 1000)
-                    this.dialogStat = false
-                    this.$refs.form.reset()
-                }
-            })
+                        this.$refs.form.reset()
+                    }
+                })
+            }
+            else{
+                this.$vs.notification({
+                    title: 'Error',
+                    color: 'danger',
+                    width: 'auto',
+                    text: 'Invalid credentials',
+                    position: 'top-right',
+                })
+            }
+            
         })
     },
     methods:{
@@ -121,14 +140,14 @@ export default {
                 </v-btn>
             </div>
         </div>
-        <v-form ref="form">
+        <v-form ref="form" >
             <v-text-field prepend-icon="mdi-numeric" rounded filled placeholder="Card Number"
-            v-model="card_number">
+            v-model="card_number" :counter="16" :rules="card_no_rules">
             </v-text-field>
             <v-row>
                 <v-col>
                     <v-text-field prepend-icon="mdi-calendar" rounded filled placeholder="Expiry Date"
-                    v-model="exp" type="date"></v-text-field>
+                    v-model="exp" type="month"></v-text-field>
                 </v-col>
                 <v-col>
                     <v-text-field :min="3" prepend-icon="mdi-credit-card-outline" rounded filled placeholder="CCV"

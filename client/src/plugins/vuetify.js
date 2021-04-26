@@ -18,7 +18,6 @@ export default new Vuetify({
                 custom_pink: "#FDCFE8",
                 custom_brown: "#E6C9A8",
                 custom_gray: "#E8EAED",
-                card_gray: "#E8EAED",
                 card_orange: "#F29100",
                 card_blue: "#3290CC",
                 card_dark_blue: "#105079",
