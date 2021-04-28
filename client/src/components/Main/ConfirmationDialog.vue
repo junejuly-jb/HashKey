@@ -12,8 +12,11 @@
         </div>
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
-            <vs-button @click="doLogout" transparent v-show="status == 'logout' || 'unauthorize'">
+            <vs-button @click="doLogout" transparent v-if="status === 'logout' || status === 'unauthorize'">
                 Logout
+            </vs-button>
+            <vs-button @click="doDeleteCard" transparent v-else>
+                Delete
             </vs-button>
             <vs-button @click="dialog=false" dark transparent>
                 Cancel
@@ -67,6 +70,9 @@ export default {
                 this.$auth.destroyToken()
                 this.$router.push('/')
             }, 1000)
+        },
+        doDeleteCard(){
+            this.$emit('onDelete')
         }
     }
 }
