@@ -128,4 +128,12 @@ export default {
             headers: { Authorization: 'Bearer ' + getToken() }
         })
     },
+
+    deleteCard(payload) {
+        return apiClient.post('/delete-card', { ids: payload },
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    }
 }

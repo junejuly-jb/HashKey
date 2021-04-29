@@ -47,7 +47,8 @@ const cards = async (req, res) => {
                 card_number: card_number,
                 card_expiry: card_expiry,
                 card_ccv: card_ccv,
-                card_color: card[i].credentials.card_color
+                card_color: card[i].credentials.card_color,
+                card_selected: false
             }
             credentials.push(toPush)
         }

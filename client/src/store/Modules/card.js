@@ -15,12 +15,15 @@ export const mutations = {
     REMOVE_CARDS(state) {
         state.cards = []
     },
-    // DELETE_WIFIS(state, payload) {
-    //     for (let i = 0; i < payload.length; i++) {
-    //         var idx = state.wifis.findIndex(index => index.wifi_id === payload[i]);
-    //         state.wifis.splice(idx, 1)
-    //     }
-    // },
+    DELETE_CARDS(state, payload) {
+        for (let i = 0; i < payload.length; i++) {
+            var idx = state.cards.findIndex(index => index.card_id === payload[i]);
+            state.cards.splice(idx, 1)
+        }
+    },
+    SELECTED_TOGGLE(state, payload) {
+        state.cards[payload].card_selected = !state.cards[payload].card_selected
+    }
     // UPDATE_WIFI(state, payload) {
     //     var index = state.wifis.findIndex(idx => idx.wifi_id === payload.wifi_id)
     //     Object.assign(state.wifis[index], payload)
@@ -50,16 +53,17 @@ export const actions = {
                 return err.response.status
             })
     },
-    // deleteWifis({ commit }, payload) {
-    //     return HashKeyServices.deleteWifi(payload)
-    //         .then(response => {
-    //             commit('DELETE_WIFIS', payload)
-    //             return response.status
-    //         })
-    //         .catch(err => {
-    //             return err.response.status
-    //         })
-    // },
+    deleteCards({ commit }, payload) {
+        return HashKeyServices.deleteCard(payload)
+            .then(response => {
+                commit('DELETE_CARDS', payload)
+                return response.status
+                
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    },
     // updateWifi({ commit }, payload) {
     //     return HashKeyServices.updateWifi(payload.id, payload)
     //         .then(response => {
