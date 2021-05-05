@@ -86,7 +86,7 @@ const updateCard = async (req, res) => {
                 card_number: cryptr.decrypt(doc.credentials.card_number),
                 card_expiry: cryptr.decrypt(doc.credentials.card_expiry),
                 card_ccv: cryptr.decrypt(doc.credentials.card_ccv),
-                card_color: doc.credentials.card_ccv
+                card_color: doc.credentials.card_color
             }
             return res.status(200).json({ credentials })
         })
