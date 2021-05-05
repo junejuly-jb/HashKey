@@ -4,7 +4,7 @@ import ConfirmationDialog from '../Main/ConfirmationDialog'
 import {mask} from 'vue-the-mask'
 export default {
     directives: {mask},
-    props: ['c_number', 'c_exp', 'c_ccv', 'dialog', 'c_color'],
+    props: ['c_name','c_number', 'c_exp', 'c_ccv', 'dialog', 'c_color'],
     data: () => ({
         colordialog: false,
         colours: ['card_orange','card_blue','card_dark_blue','card_red','card_gold','card_silver','card_black','card_dark_green','card_green'],
@@ -21,6 +21,10 @@ export default {
     }),
     components: { ConfirmationDialog },
     computed: {
+        card_name: {
+            get(){ return this.c_name },
+            set(val){ return this.$emit('change_cname', val) }
+        },
         card_number: {
             get(){ return this.c_number },
             set(val){ return this.$emit('change_cnumber', val) }
@@ -45,14 +49,14 @@ export default {
     },
     created(){
         bus.$on('onSaveCard', (data) => {
-            console.log(data)
             if(this.$refs.form.validate()){
                 this.$store.commit('SET_LOADING_LOCAL')
                 this.$store.dispatch('card/addCard',{
-                    card_number: this.card_number,
-                    card_expiry: this.exp,
-                    card_ccv: this.ccv,
-                    card_color: this.color
+                    card_name: data.c_name,
+                    card_number: data.c_number,
+                    card_expiry: data.c_exp,
+                    card_ccv: data.c_ccv,
+                    card_color: data.c_color
                 })
                 .then( res => {
                     if(res === 200){
@@ -141,6 +145,9 @@ export default {
             </div>
         </div>
         <v-form ref="form" >
+            <v-text-field prepend-icon="mdi-card-account-details-outline" rounded filled placeholder="Name this card"
+            v-model="card_name">
+            </v-text-field>
             <v-text-field prepend-icon="mdi-numeric" rounded filled placeholder="Card Number"
             v-model="card_number" :counter="16" :rules="card_no_rules">
             </v-text-field>

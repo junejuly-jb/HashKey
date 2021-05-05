@@ -46,12 +46,14 @@
             />
             <CardInput 
             v-show="type == 'card'"
+            :c_name="card.c_name"
             :c_number="card.c_number"
             :c_exp="card.c_exp"
             :c_ccv="card.c_ccv"
             :c_color="card.c_color"
             :dialog="dialog"
             @change_cnumber="card.c_number = $event"
+            @change_cname="card.c_name = $event"
             @change_cexp="card.c_exp = $event"
             @change_cccv="card.c_ccv = $event"
             @change_color="card.c_color = $event"
@@ -111,6 +113,7 @@ export default {
             n_color: 'custom_gray'
         },
         card: {
+            c_name: '',
             c_number: '',
             c_exp: '',
             c_ccv: '',

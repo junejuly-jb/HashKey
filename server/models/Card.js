@@ -12,6 +12,9 @@ const cardSchema = new Schema({
         required: true
     },
     credentials: {
+        card_name: {
+            type: String
+        },
         card_number: {
             type: String
         },

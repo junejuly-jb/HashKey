@@ -10,6 +10,7 @@ const addCard = async (req, res) => {
         const card = new Card({
             owner: req.user._id,
             credentials: {
+                card_name: req.body.card_name,
                 card_number: card_number,
                 card_expiry: card_expiry,
                 card_ccv: card_ccv,
@@ -22,6 +23,7 @@ const addCard = async (req, res) => {
         card.credentials.card_ccv = cryptr.decrypt(card.credentials.card_ccv)
         const creds = {
             card_id: card._id,
+            card_name: card.credentials.card_name,
             card_number: card.credentials.card_number,
             card_expiry: card.credentials.card_expiry,
             card_ccv: card.credentials.card_ccv,
@@ -44,6 +46,7 @@ const cards = async (req, res) => {
             var card_ccv = card[i].credentials.card_ccv == '' ? '' : cryptr.decrypt(card[i].credentials.card_ccv)
             var toPush = {
                 card_id: card[i]._id,
+                card_name: card[i].credentials.card_name,
                 card_number: card_number,
                 card_expiry: card_expiry,
                 card_ccv: card_ccv,
@@ -73,6 +76,7 @@ const removeCard = async (req, res) => {
 const updateCard = async (req, res) => {
     await Card.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
         $set: {
+            "credentials.card_name": req.body.card_name,
             "credentials.card_number": cryptr.encrypt(req.body.card_number),
             "credentials.card_expiry": cryptr.encrypt(req.body.card_expiry),
             "credentials.card_ccv": cryptr.encrypt(req.body.card_ccv),
@@ -83,6 +87,7 @@ const updateCard = async (req, res) => {
             if (err) return res.status(500).send(err)
             const credentials = {
                 card_id: doc._id,
+                card_name: doc.credentials.card_name,
                 card_number: cryptr.decrypt(doc.credentials.card_number),
                 card_expiry: cryptr.decrypt(doc.credentials.card_expiry),
                 card_ccv: cryptr.decrypt(doc.credentials.card_ccv),
