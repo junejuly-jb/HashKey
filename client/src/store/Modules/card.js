@@ -23,11 +23,11 @@ export const mutations = {
     },
     SELECTED_TOGGLE(state, payload) {
         state.cards[payload].card_selected = !state.cards[payload].card_selected
+    },
+    UPDATE_CARD(state, payload) {
+        var index = state.cards.findIndex(idx => idx.card_id === payload.card_id)
+        Object.assign(state.cards[index], payload)
     }
-    // UPDATE_WIFI(state, payload) {
-    //     var index = state.wifis.findIndex(idx => idx.wifi_id === payload.wifi_id)
-    //     Object.assign(state.wifis[index], payload)
-    // }
 }
 
 export const actions = {
@@ -64,17 +64,17 @@ export const actions = {
                 return err.response.status
             })
     },
-    // updateWifi({ commit }, payload) {
-    //     return HashKeyServices.updateWifi(payload.id, payload)
-    //         .then(response => {
-    //             commit('UPDATE_WIFI', response.data.credentials)
-    //             return response.status
-    //         })
-    //         .catch(err => {
-    //             console.log(err.response)
-    //             return err.response.status
-    //         })
-    // }
+    updateCard({ commit }, payload) {
+        return HashKeyServices.updateCard(payload.id, payload)
+            .then(response => {
+                commit('UPDATE_CARD', response.data.credentials)
+                return response.status
+            })
+            .catch(err => {
+                console.log(err.response)
+                return err.response.status
+            })
+    }
 }
 
 export const getters = {
