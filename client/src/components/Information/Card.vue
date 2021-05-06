@@ -3,7 +3,12 @@ export default {
     props: ['card_info'],
     data: () => ({
         editing: false,
-        show: false
+        show: false,
+        card_number: '',
+        card_name: '',
+        card_ccv: '',
+        card_expiry: '',
+        card_color: ''
     }),
     methods: {
         format_card_number(str){
@@ -22,13 +27,32 @@ export default {
             let text = str.match(/.{1,4}/g)   
             return text.join(' ')
         },
-        
+
         format_date(date){
             var datePart = date.match(/\d+/g),
             year = datePart[0].substring(2),
             month = datePart[1];
             return month+'/'+year
         },
+
+        copyCardNumber(){
+            this.$vs.notification({
+                title: 'Success',
+                color: 'primary',
+                width: 'auto',
+                text: 'Card number copied successfully!',
+                position: 'top-right',
+            })
+        },
+
+        onClickCardEdit(){
+            this.editing = true
+            this.card_name = this.card_info.card_name
+            this.card_color = this.card_info.card_color
+            this.card_number = this.card_info.card_number
+            this.card_expiry = this.card_info.card_expiry
+            this.card_ccv = this.card_info.card_ccv
+        }
     }
 }
 </script>
@@ -52,7 +76,25 @@ export default {
                 </div>
             </div>
         </div>
-
+        <div v-show="editing">
+            <div> <h3>Edit Card Details</h3> </div>
+            <div class="d-flex align-center pt-7">
+                <i class="bx bx-credit-card mr-5 my-2"></i>
+                <vs-input v-model="card_name" placeholder="Card name"></vs-input>
+            </div>
+            <div class="d-flex align-center pt-2">
+                <i class="bx bx-credit-card mr-5 my-2"></i>
+                <vs-input v-model="card_number" placeholder="Card number"></vs-input>
+            </div>
+            <div class="d-flex align-center pt-2">
+                <i class="bx bx-calendar mr-5 my-2"></i>
+                <vs-input v-model="card_expiry" type="month" placeholder="expiry date"></vs-input>
+            </div>
+            <div class="d-flex align-center pt-2 pb-7">
+                <i class="bx bx-shield mr-5 my-2"></i>
+                <vs-input v-model="card_ccv" placeholder="User name"></vs-input>
+            </div>
+        </div>
 
         <div class="d-flex justify-end">
             <vs-tooltip>
@@ -73,20 +115,36 @@ export default {
                 </template>
             </vs-tooltip>
             <vs-tooltip>
-                <vs-button icon flat v-show="!editing">
+                <vs-button icon flat v-show="!editing" @click="onClickCardEdit">
                     <i class='bx bx-pencil'></i>
                 </vs-button>
                 <template #tooltip>
                     Edit
                 </template>
             </vs-tooltip>
-            
             <vs-tooltip>
                 <vs-button icon flat color="danger" v-show="!editing">
                     <i class='bx bx-trash'></i>
                 </vs-button>
                 <template #tooltip>
                     Delete
+                </template>
+            </vs-tooltip>
+
+            <vs-tooltip>
+                <vs-button icon flat color="danger" @click="editing = false" v-show="editing">
+                    <i class='bx bx-x'></i>
+                </vs-button>
+                <template #tooltip>
+                    Cancel
+                </template>
+            </vs-tooltip>
+            <vs-tooltip>
+                <vs-button icon flat v-show="editing" @click="onClickUpdateCard">
+                    <i class='bx bx-check'></i>
+                </vs-button>
+                <template #tooltip>
+                    Update
                 </template>
             </vs-tooltip>
         </div>
