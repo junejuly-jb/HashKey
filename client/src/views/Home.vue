@@ -21,6 +21,7 @@
               <Notes v-show="filtering == 'Notes'"/>
               <Info v-show="filtering == 'Personal Information'"/>
               <Card v-show="filtering == 'Cards'"/>
+              <PassGenerator v-show="filtering == 'Password Generator'"/>
               <ConfirmationDialog
               :dialogStats="dialogStats"
               :message="message"
@@ -44,6 +45,7 @@ import Wifi from '../components/Filters/Wifi'
 import Notes from '../components/Filters/Notes'
 import Info from '../components/Filters/Info'
 import Card from '../components/Filters/Card'
+import PassGenerator from '../components/Filters/PassGenerator'
 import ConfirmationDialog from '@/components/Main/ConfirmationDialog'
 
 import { bus } from '../main'
@@ -51,7 +53,7 @@ import { bus } from '../main'
 import { mapState } from 'vuex'
 
   export default {
-    components: { Passwords, Wifi, Notes, Info, Card, ConfirmationDialog },
+    components: { Passwords, Wifi, Notes, Info, Card, ConfirmationDialog, PassGenerator },
     computed: {
       ...mapState('user', ['filtering'])
     },
