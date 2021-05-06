@@ -1,24 +1,21 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import UniversalDialog from '../Main/UniversalDialog'
-import ConfirmationDialog from '../Main/ConfirmationDialog'
+import InformationDialog from '../Main/InformationDialog'
 export default {
     computed: {
         ...mapState('card', ['cards']),
         ...mapGetters('card', ['getCardById'])
     },
-    components: { UniversalDialog, ConfirmationDialog },
+    components: { UniversalDialog, InformationDialog },
     data: () => ({
         dialogStat: false,
         infoDialogStat: false,
-        note_info: {},
+        card_info: {},
         header: 'Add Payment Card Details',
         type: 'card',
 
-        // confirmation dialog
-        dialogStats: false,
         message: "",
-        width: "400px",
         header_delete: "",
         status: "",
         // colours: ['card_orange','card_blue','card_dark_blue','card_red','card_gold','card_silver','card_black','card_dark_green','card_green'],
@@ -57,7 +54,11 @@ export default {
 
             return month+'/'+year
         },
-
+        
+        view(card){
+            this.card_info = card
+            this.infoDialogStat = true
+        }
     }
 }
 </script>
@@ -69,7 +70,7 @@ export default {
             :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"
             :gutter="{default: '15px', 700: '10px'}"
             >
-                <v-card elevation="0" v-for="(card, index) in cards" :key="index" :color="card.card_color" class="neo rounded-lg mb-5">
+                <v-card elevation="0" @click="view(card)" v-for="(card, index) in cards" :key="index" :color="card.card_color" class="neo rounded-lg mb-5">
                     <v-container>
                         <div class="pt-3">
                             <h4 class="white--text">{{card.card_name}}</h4>
@@ -77,7 +78,7 @@ export default {
                         <div class="pt-4">
                             <pre class="white--text">{{to_chunk(card.card_number)}} {{get_last_digits(card.card_number)}}</pre>
                         </div>
-                        <div class="pt-3 d-flex align-center">
+                        <div class="pt-2 d-flex align-center">
                             <small class="white--text pr-2">expiration date</small>
                             <pre class="white--text">{{format_date(card.card_expiry)}}</pre>
                         </div>
@@ -88,19 +89,18 @@ export default {
                 </v-card>
             </masonry>
         </div>
-        <ConfirmationDialog 
-        :dialogStats="dialogStats"
-        :message="message"
-        :width="width"
-        :header="header"
-        :status="status"
-        @close="dialogStats = false"
-        />
         <UniversalDialog 
         :header="header"
         :type="type"
         :dialogStat="dialogStat"
         @close="dialogStat = false"
+        />
+
+        <InformationDialog 
+        :infoDialogStat="infoDialogStat"
+        :card_info="card_info"
+        :type="type"
+        @close="infoDialogStat = false"
         />
     </v-container>
 </template>

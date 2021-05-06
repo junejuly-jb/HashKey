@@ -2,10 +2,11 @@
 import Password from '../Information/Password'
 import Wifi from '../Information/Wifi'
 import Note from '../Information/Note'
+import Card from '../Information/Card'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 import { mapState } from 'vuex'
 export default {
-    components: { Password, ConfirmationDialog, Wifi, Note },
+    components: { Password, ConfirmationDialog, Wifi, Note, Card },
     data: () => ({
         dialogStats: false,
         message: '',
@@ -19,6 +20,7 @@ export default {
         pass_info : { type: Object, required: false },
         wifi_info : { type: Object, required: false },
         note_info : { type: Object, required: false },
+        card_info : { type: Object, required: false },
     },
     computed: {
         ...mapState(['isLoadingLocal']),
@@ -55,6 +57,13 @@ export default {
                 <Wifi
                 v-else-if="type === 'wifi'"
                 :wifi_info="wifi_info"
+                :infoDialogStat="infoDialogStat"
+                @close="dialog = false"
+                @error401="error401"
+                />
+                <Card
+                v-else-if="type === 'card'"
+                :card_info="card_info"
                 :infoDialogStat="infoDialogStat"
                 @close="dialog = false"
                 @error401="error401"
