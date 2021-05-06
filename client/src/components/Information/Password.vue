@@ -164,8 +164,8 @@ export default {
         <div class="d-flex justify-end">
             <vs-tooltip>
                 <vs-button icon flat @click="show = !show" v-show="!editing">
-                    <i class='bx bx-hide' v-show="show"></i>
-                    <i class='bx bx-show-alt' v-show="!show"></i>
+                    <i class='bx bx-hide' v-show="!show"></i>
+                    <i class='bx bx-show-alt' v-show="show"></i>
                 </vs-button>
                 <template #tooltip>
                     Hide / Show
