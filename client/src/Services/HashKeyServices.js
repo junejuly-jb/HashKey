@@ -135,5 +135,14 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+
+    updateCard(id, payload) {
+        return apiClient.put('/update-card/' + id, payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
+
 }
