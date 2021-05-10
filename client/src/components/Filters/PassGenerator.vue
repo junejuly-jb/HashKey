@@ -1,6 +1,11 @@
 <script>
+import { osVersion, osName, browserName, fullBrowserVersion } from 'mobile-device-detect';
 export default {
     data: () => ({
+        osversion: osVersion,
+        osName: osName,
+        browserName: browserName,
+        fullBrowserVersion: fullBrowserVersion,
         password: "",
         length: 9,
         characters: 
@@ -51,8 +56,11 @@ export default {
     <v-container>
         <div class="text-center py-5">
             <h1>{{this.password}}</h1>
+            <h1>{{osName}}</h1>
+            <h1>{{browserName}}</h1>
+            <h1>{{fullBrowserVersion}}</h1>
         </div>
-        <div class="pt-10 input-container pb-5" width="50%">
+        <div class="pt-3 input-container pb-3" width="50%">
             <v-slider
             v-model="length"
             label="Password Length"
