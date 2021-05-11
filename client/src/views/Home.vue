@@ -116,7 +116,7 @@ import { mapState } from 'vuex'
             })
             break;
           default: 
-            console.log(this.filtering)
+            return
         }
       },
       onLogout(){
