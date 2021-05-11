@@ -45,6 +45,16 @@ export default {
                 result += charactersVal.charAt(Math.floor(Math.random() * charactersVal.length))
             }
             this.password = result
+        },
+
+        copy(){
+            this.$vs.notification({
+                title: 'Success',
+                color: 'primary',
+                width: 'auto',
+                text: 'Password copied successfully!',
+                position: 'top-right',
+            })
         }
     },
     mounted(){
@@ -55,10 +65,10 @@ export default {
 <template>
     <v-container>
         <div class="text-center py-5">
-            <h1>{{this.password}}</h1>
-            <h1>{{osName}}</h1>
+            <h1>{{password}}</h1>
+            <!-- <h1>{{osName}}</h1>
             <h1>{{browserName}}</h1>
-            <h1>{{fullBrowserVersion}}</h1>
+            <h1>{{fullBrowserVersion}}</h1> -->
         </div>
         <div class="pt-3 input-container pb-3" width="50%">
             <v-slider
@@ -76,13 +86,14 @@ export default {
                 :label="check.name"
                 ></v-checkbox>
             </div>
-            <div class="mt-3">
+            <div class="mt-3 d-flex">
                 <!-- <v-btn @click="generate">Generate</v-btn> -->
-                <vs-button
+                <vs-button gradient
                     @click="generate"
                 >
                     Generate Password
                 </vs-button>
+                <vs-button gradient v-clipboard:copy="password" @click="copy">Copy</vs-button>
             </div>
         </div>
         
