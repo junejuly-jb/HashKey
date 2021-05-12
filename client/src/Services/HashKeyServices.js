@@ -143,6 +143,15 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+
+    // Settings Page
+    updateTokenTimeout(payload) {
+        return apiClient.post('/update-user-timeout/', payload, 
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
 
 }

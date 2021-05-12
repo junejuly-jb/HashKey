@@ -8,6 +8,7 @@ export const state = {
         name: '',
         profile: '',
         pin: '',
+        token_timeout: ''
     },
     current_index: 0,
     filtering: 'Passwords'
@@ -18,6 +19,8 @@ export const mutations = {
         state.user_info.id = payload._id
         state.user_info.profile = payload.profile.profile_photo
         state.user_info.name = payload.name
+        state.user_info.token_timeout = payload.user_settings.vault_timeout
+        console.log(typeof payload.user_settings.vault_timeout)
         if (Object.prototype.hasOwnProperty.call(payload, "google")) {
             state.user_info.email = payload.google.email
         }
@@ -40,6 +43,7 @@ export const mutations = {
         state.user_info.name = ''
         state.user_info.email = ''
         state.user_info.pin = ''
+        state.user_info.token_timeout = ''
         state.filtering = 'Passwords'
         state.current_index = 0
     },
@@ -49,12 +53,14 @@ export const mutations = {
     SET_APP_STATE(state, payload) {
         state.filtering = payload.action
         state.current_index = payload.index
+    },
+    UPDATE_TOKEN_TIMEOUT(state, payload) {
+        state.user_info.token_timeout = payload.timeout
     }
 }
 
 export const actions = {
     addPin({ commit }, payload) {
-        console.log('from action!', payload)
         return HashKeyServices.addPin(payload)
         .then((res) => {
             console.log('api response from mutation', res)
@@ -64,6 +70,16 @@ export const actions = {
         .catch((err) => {
             return err
         })
+    },
+    updateTokenTimeout({commit}, payload) {
+        return HashKeyServices.updateTokenTimeout(payload)
+            .then((res) => {
+                commit('UPDATE_TOKEN_TIMEOUT', payload)
+                return res.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
     }
 }
 
