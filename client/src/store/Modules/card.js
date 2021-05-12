@@ -79,8 +79,4 @@ export const actions = {
 
 export const getters = {
 
-    getCardById: state => id => {
-        return state.cards.find( card => card.card_id == id)
-    }
-
 }

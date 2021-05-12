@@ -1,14 +1,38 @@
 <script>
+import { mapState } from 'vuex' 
 export default {
     data: () => ({
         switch1: false,
         switch2: false,
-        value: '15m',
+        value: '',
+        counter: 0
     }),
+    computed: {
+        ...mapState('user', ['user_info'])
+    },
     methods: {
         onChangeSelect(){
-            console.log(this.value)
+            this.$store.dispatch('user/updateTokenTimeout', { timeout: this.value })
+            .then( res => {
+                if(res == 200){
+                    console.log('success')
+                }
+                else if(res == 401){
+                    console.log('unauthorize')
+                }
+                else{
+                    console.log('error')
+                }
+            })
+        },
+        passValue(){
+            this.value = this.user_info.token_timeout
         }
+    },
+    mounted(){
+        // this.value = this.user_info.token_timeout
+        this.passValue()
+        console.log(this.counter)
     }
 }
 </script>
@@ -47,7 +71,7 @@ export default {
                             <vs-option  label="1 hour" value="1hr" >
                                 1 hour
                             </vs-option>
-                            <vs-option label="15 minutes" value="2h" >
+                            <vs-option label="2 hours" value="2h" >
                                 2 hours
                             </vs-option>
                             <vs-option label="Never" value="never" >
