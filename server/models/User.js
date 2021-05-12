@@ -68,7 +68,7 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function (next) {
     try {
-
+        console.log('pre save')
         if (this.method != 'local') {
             next()
         }
@@ -84,6 +84,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.isValidPassword = async function (newPassword) {
     try {
+        console.log('isvalid')
         return bcrypt.compare(newPassword, this.local.password)
     } catch (error) {
         throw new Error(error)
