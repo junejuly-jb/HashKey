@@ -5,6 +5,7 @@ const PasswordController = require('../controllers/PasswordController')
 const WifiController = require('../controllers/WifiController')
 const NoteController = require('../controllers/NoteController')
 const CardController = require('../controllers/CardController')
+const SettingController = require('../controllers/SettingController')
 const passport = require('passport')
 const passportConf = require('../passport')
 const auth = require('../auth')
@@ -38,5 +39,8 @@ api.post('/add-card', auth, CardController.addCard)
 api.get('/cards', auth, CardController.cards)
 api.post('/delete-card', auth, CardController.removeCard)
 api.put('/update-card/:id', auth, CardController.updateCard)
+
+//user settings
+api.post('/update-user-timeout', auth, SettingController.changeTimeout)
 
 module.exports = api

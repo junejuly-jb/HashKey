@@ -80,14 +80,13 @@ export default {
             thumb-label="always"
             ></v-slider>
             <div v-for="(check, index) in characters" :key="index">
-                <v-checkbox
-                dense
+                <v-switch
                 v-model="check.checked"
+                inset
                 :label="check.name"
-                ></v-checkbox>
+                ></v-switch>
             </div>
             <div class="mt-3 d-flex">
-                <!-- <v-btn @click="generate">Generate</v-btn> -->
                 <vs-button gradient
                     @click="generate"
                 >
