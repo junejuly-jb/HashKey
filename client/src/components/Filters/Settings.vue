@@ -5,17 +5,22 @@ export default {
         switch1: false,
         switch2: false,
         value: '',
-        counter: 0
+        counter: 0,
+        local: true
     }),
     computed: {
         ...mapState('user', ['user_info'])
     },
     methods: {
         onChangeSelect(){
+            if(this.counter == 0){
+                return this.counter++
+            }
             this.$store.dispatch('user/updateTokenTimeout', { timeout: this.value })
             .then( res => {
                 if(res == 200){
                     console.log('success')
+                    console.log('on success', this.counter)
                 }
                 else if(res == 401){
                     console.log('unauthorize')
@@ -30,9 +35,7 @@ export default {
         }
     },
     mounted(){
-        // this.value = this.user_info.token_timeout
         this.passValue()
-        console.log(this.counter)
     }
 }
 </script>
@@ -74,8 +77,8 @@ export default {
                             <vs-option label="2 hours" value="2h" >
                                 2 hours
                             </vs-option>
-                            <vs-option label="Never" value="never" >
-                                Never
+                            <vs-option label="7 days" value="7d" >
+                                7 days
                             </vs-option>
                      </vs-select>
                 </v-list-item-content>
@@ -98,11 +101,12 @@ export default {
                     <v-switch
                     v-model="switch1"
                     inset
+                    :disabled="user_info.login_via != 'local'"
                     ></v-switch>
                 </v-list-item-action>
                 <v-list-item-content>
                     <v-list-item-title>Easy Access</v-list-item-title>
-                    <v-list-item-subtitle>Show profiles on login page for easy access</v-list-item-subtitle>
+                    <v-list-item-subtitle>Show profiles on login page for easy access (not applicable for 3rd party logins.)</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
             <v-list-item>
@@ -110,11 +114,12 @@ export default {
                     <v-switch
                     v-model="switch2"
                     inset
+                    :disabled="user_info.login_via != 'local'"
                     ></v-switch>
                 </v-list-item-action>
                 <v-list-item-content>
                     <v-list-item-title>Notification</v-list-item-title>
-                    <v-list-item-subtitle>Notify me for unsuccessful login.</v-list-item-subtitle>
+                    <v-list-item-subtitle>Notify me for unsuccessful login. (not applicable for 3rd party logins.)</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
             </v-list>

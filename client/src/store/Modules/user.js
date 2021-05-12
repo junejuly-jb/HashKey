@@ -8,7 +8,8 @@ export const state = {
         name: '',
         profile: '',
         pin: '',
-        token_timeout: ''
+        token_timeout: '',
+        login_via: ''
     },
     current_index: 0,
     filtering: 'Passwords'
@@ -23,12 +24,15 @@ export const mutations = {
         console.log(typeof payload.user_settings.vault_timeout)
         if (Object.prototype.hasOwnProperty.call(payload, "google")) {
             state.user_info.email = payload.google.email
+            state.user_info.login_via = 'google'
         }
         else if (Object.prototype.hasOwnProperty.call(payload, "facebook")) {
             state.user_info.email = payload.facebook.email
+            state.user_info.login_via = 'facebook'
         }
         else {
             state.user_info.email = payload.local.email
+            state.user_info.login_via = 'local'
         }
         if (payload.safety_pin !== null) {
             state.user_info.pin = true
@@ -44,6 +48,7 @@ export const mutations = {
         state.user_info.email = ''
         state.user_info.pin = ''
         state.user_info.token_timeout = ''
+        state.user_info.login_via = ''
         state.filtering = 'Passwords'
         state.current_index = 0
     },
