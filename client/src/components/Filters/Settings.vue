@@ -2,11 +2,11 @@
 import { mapState } from 'vuex' 
 export default {
     data: () => ({
-        switch1: false,
-        switch2: false,
         value: '',
         counter: 0,
-        local: true
+        local: true,
+        easy_access: false,
+        notification: false
     }),
     computed: {
         ...mapState('user', ['user_info'])
@@ -32,6 +32,8 @@ export default {
         },
         passValue(){
             this.value = this.user_info.token_timeout
+            this.easy_access = this.user_info.easy_access,
+            this.notification = this.user_info.notification
         }
     },
     mounted(){
@@ -99,7 +101,7 @@ export default {
             <v-list-item>
                 <v-list-item-action>
                     <v-switch
-                    v-model="switch1"
+                    v-model="easy_access"
                     inset
                     :disabled="user_info.login_via != 'local'"
                     ></v-switch>
@@ -112,7 +114,7 @@ export default {
             <v-list-item>
                 <v-list-item-action>
                     <v-switch
-                    v-model="switch2"
+                    v-model="notification"
                     inset
                     :disabled="user_info.login_via != 'local'"
                     ></v-switch>
