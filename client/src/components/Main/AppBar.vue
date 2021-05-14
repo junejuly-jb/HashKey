@@ -120,6 +120,12 @@ export default {
                     }
                 })
             }
+            else if(this.filtering === 'Settings'){
+                return
+            }
+            else if(this.filtering === 'Password Generator'){
+                return
+            }
             else {
                 this.$store.dispatch('wifi/fetchWifis')
                 .then( res => {
