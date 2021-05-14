@@ -58,7 +58,9 @@ const userSchema = new Schema({
     user_settings: {
         ask_pin: { type: Boolean, default: true },
         vault_timeout: { type: String, default: '15m'},
-        vault_timeout_action: { type: String, default: 'lock'}  
+        vault_timeout_action: { type: String, default: 'lock' },
+        easy_access: { type: Boolean, default: false },
+        notification: { type: Boolean, default: false }
     },
     subscription: {
         type: String,

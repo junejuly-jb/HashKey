@@ -9,7 +9,9 @@ export const state = {
         profile: '',
         pin: '',
         token_timeout: '',
-        login_via: ''
+        login_via: '',
+        easy_access: '',
+        notification: ''
     },
     current_index: 0,
     filtering: 'Passwords'
@@ -21,7 +23,8 @@ export const mutations = {
         state.user_info.profile = payload.profile.profile_photo
         state.user_info.name = payload.name
         state.user_info.token_timeout = payload.user_settings.vault_timeout
-        console.log(typeof payload.user_settings.vault_timeout)
+        state.user_info.easy_access = payload.user_settings.easy_access
+        state.user_info.notification = payload.user_settings.notification
         if (Object.prototype.hasOwnProperty.call(payload, "google")) {
             state.user_info.email = payload.google.email
             state.user_info.login_via = 'google'
@@ -61,6 +64,9 @@ export const mutations = {
     },
     UPDATE_TOKEN_TIMEOUT(state, payload) {
         state.user_info.token_timeout = payload.timeout
+    },
+    UPDATE_EASY_ACCESS(state, payload) {
+        state.user_info.easy_access = payload
     }
 }
 
