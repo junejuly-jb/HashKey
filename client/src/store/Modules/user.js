@@ -14,7 +14,8 @@ export const state = {
         notification: ''
     },
     current_index: 0,
-    filtering: 'Passwords'
+    filtering: 'Passwords',
+    easy_access_list: []
 }
 
 export const mutations = {
@@ -66,7 +67,13 @@ export const mutations = {
         state.user_info.token_timeout = payload.timeout
     },
     UPDATE_EASY_ACCESS(state, payload) {
-        state.user_info.easy_access = payload
+        state.user_info.easy_access = payload.easy_access
+    },
+    ADD_USER_EASY_ACCESS(state, payload) {
+        state.easy_access_list.push(payload)
+    },
+    REMOVE_USER_EASY_ACCESS(state, payload) {
+        state.easy_access_list.file(user => { return user.id != payload.id })
     }
 }
 
@@ -86,6 +93,16 @@ export const actions = {
         return HashKeyServices.updateTokenTimeout(payload)
             .then((res) => {
                 commit('UPDATE_TOKEN_TIMEOUT', payload)
+                return res.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    },
+    updateEasyAccess({ commit }, payload) {
+        return HashKeyServices.updateEasyAccess(payload)
+            .then((res) => {
+                commit('UPDATE_EASY_ACCESS', payload)
                 return res.status
             })
             .catch(err => {

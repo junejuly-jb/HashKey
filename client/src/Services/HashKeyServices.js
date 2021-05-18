@@ -152,6 +152,13 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+    updateEasyAccess(payload) {
+        return apiClient.post('/update-easy-access/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
 
 }
