@@ -12,36 +12,6 @@ export default {
     computed: {
         ...mapState('user', ['user_info'])
     },
-
-    // watch: {
-    //     easy_access(newVal){
-    //         // this.$store.dispatch('user/updateEasyAccess', { easy_access: newVal })
-    //         // .then( res => {
-    //         //     if(res == 200){
-    //         //         this.$vs.notification({
-    //         //             title: 'Success',
-    //         //             color: 'success',
-    //         //             width: 'auto',
-    //         //             text: 'Settings are up to date.',
-    //         //             position: 'top-right',
-    //         //         })
-    //         //     }
-    //         //     else if(res == 401){
-    //         //         console.log('unauthorize')
-    //         //     }
-    //         //     else{
-    //         //         this.$vs.notification({
-    //         //             title: 'Error',
-    //         //             color: 'danger',
-    //         //             width: 'auto',
-    //         //             text: 'Something went wrong',
-    //         //             position: 'top-right',
-    //         //         })
-    //         //     }
-    //         // })
-    //     }
-    // },
-
     methods: {
         onChangeStateEasyAccess(){
             this.$store.dispatch('user/updateEasyAccess', { easy_access: this.easy_access })
@@ -54,6 +24,18 @@ export default {
                         text: 'Settings are up to date.',
                         position: 'top-right',
                     })
+                    if(this.easy_access){
+                        var user = {
+                            id: this.user_info.id,
+                            name: this.user_info.name,
+                            profile: this.user_info.profile
+                        }
+                        this.$store.commit('access/ADD_USER_EASY_ACCESS', user)
+                    }
+                    else{
+                        this.$store.commit('access/REMOVE_USER_EASY_ACCESS', this.user_info.id)
+                    }
+                    
                 }
                 else if(res == 401){
                     console.log('unauthorize')

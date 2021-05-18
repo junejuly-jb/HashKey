@@ -14,8 +14,7 @@ export const state = {
         notification: ''
     },
     current_index: 0,
-    filtering: 'Passwords',
-    easy_access_list: []
+    filtering: 'Passwords'
 }
 
 export const mutations = {
@@ -68,12 +67,6 @@ export const mutations = {
     },
     UPDATE_EASY_ACCESS(state, payload) {
         state.user_info.easy_access = payload.easy_access
-    },
-    ADD_USER_EASY_ACCESS(state, payload) {
-        state.easy_access_list.push(payload)
-    },
-    REMOVE_USER_EASY_ACCESS(state, payload) {
-        state.easy_access_list.file(user => { return user.id != payload.id })
     }
 }
 
