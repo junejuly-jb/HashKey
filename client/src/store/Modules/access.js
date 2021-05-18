@@ -10,7 +10,6 @@ export const mutations = {
         state.easy_access_list.push(payload)
     },
     REMOVE_USER_EASY_ACCESS(state, payload) {
-        // state.easy_access_list.file(user => { return user.id != payload })
         var idx = state.easy_access_list.findIndex(i => i.id === payload)
         state.easy_access_list.splice(idx, 1)
     }

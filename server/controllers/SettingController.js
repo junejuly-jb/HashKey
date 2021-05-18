@@ -29,6 +29,21 @@ const changeEasyAccess = async (req, res) => {
         return res.status(500).send(error)
     }
 }
+
+const changeNotifications = async (req, res) => {
+    try {
+        await User.findOneAndUpdate({ _id: req.user._id },
+            { $set: { "user_settings.notification": req.body.notification } },
+            { returnOriginal: false, useFindAndModify: false },
+            (err, doc) => {
+                if (err) return res.status(500).send(err)
+                return res.status(200).json({ msg: "updated successfully!" })
+        }
+        )
+    } catch (error) {
+        
+    }
+}
 module.exports = {
-    changeTimeout, changeEasyAccess
+    changeTimeout, changeEasyAccess, changeNotifications
 }
