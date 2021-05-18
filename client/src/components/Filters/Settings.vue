@@ -1,13 +1,21 @@
 <script>
-import { mapState } from 'vuex' 
+import { mapState } from 'vuex'
+import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
+    components: { ConfirmationDialog },
     data: () => ({
         value: '',
         counter: 0,
         switch1_counter: 0,
         local: true,
         easy_access: false,
-        notification: false
+        notification: false,
+
+        dialogStats: false,
+        message: '',
+        width: '',
+        header: '',
+        status: ''
     }),
     computed: {
         ...mapState('user', ['user_info'])
@@ -38,7 +46,11 @@ export default {
                     
                 }
                 else if(res == 401){
-                    console.log('unauthorize')
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
                 }
                 else{
                     this.$vs.notification({
@@ -67,7 +79,41 @@ export default {
                     })
                 }
                 else if(res == 401){
-                    console.log('unauthorize')
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
+                }
+                else{
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                }
+            })
+        },
+        onChangeStateNotification(){
+            this.$store.dispatch('user/updateNotification', { notification: this.notification })
+            .then( res => {
+                if(res == 200){
+                    this.$vs.notification({
+                        title: 'Success',
+                        color: 'success',
+                        width: 'auto',
+                        text: 'Settings are up to date.',
+                        position: 'top-right',
+                    })
+                }
+                else if(res == 401){
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
                 }
                 else{
                     this.$vs.notification({
@@ -168,6 +214,7 @@ export default {
                     v-model="notification"
                     inset
                     :disabled="user_info.login_via != 'local'"
+                    @change="onChangeStateNotification"
                     ></v-switch>
                 </v-list-item-action>
                 <v-list-item-content>
@@ -177,6 +224,15 @@ export default {
             </v-list-item>
             </v-list>
         </div>
+
+        <ConfirmationDialog
+        :dialogStats="dialogStats"
+        :message="message"
+        :width="width"
+        :header="header"
+        :status="status"
+        @close="dialogStats = false"
+        />
     </v-container>
 </template>
 

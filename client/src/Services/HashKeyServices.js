@@ -159,6 +159,13 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+    updateNotification(payload) {
+        return apiClient.post('/update-notification/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
 
 }

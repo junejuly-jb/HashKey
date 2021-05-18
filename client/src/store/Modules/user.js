@@ -67,7 +67,10 @@ export const mutations = {
     },
     UPDATE_EASY_ACCESS(state, payload) {
         state.user_info.easy_access = payload.easy_access
-    }
+    },
+    UPDATE_NOTIFICATION(state, payload) {
+        state.user_info.notification = payload.notification
+     }
 }
 
 export const actions = {
@@ -96,6 +99,16 @@ export const actions = {
         return HashKeyServices.updateEasyAccess(payload)
             .then((res) => {
                 commit('UPDATE_EASY_ACCESS', payload)
+                return res.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    },
+    updateNotification({ commit }, payload) {
+        return HashKeyServices.updateNotification(payload)
+            .then((res) => {
+                commit('UPDATE_NOTIFICATION', payload)
                 return res.status
             })
             .catch(err => {
