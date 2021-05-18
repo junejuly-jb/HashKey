@@ -43,5 +43,6 @@ api.put('/update-card/:id', auth, CardController.updateCard)
 //user settings
 api.post('/update-user-timeout', auth, SettingController.changeTimeout)
 api.post('/update-easy-access', auth, SettingController.changeEasyAccess)
+api.post('/update-notification', auth, SettingController.changeNotifications)
 
 module.exports = api
