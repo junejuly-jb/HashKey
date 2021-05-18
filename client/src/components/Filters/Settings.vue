@@ -4,6 +4,7 @@ export default {
     data: () => ({
         value: '',
         counter: 0,
+        switch1_counter: 0,
         local: true,
         easy_access: false,
         notification: false
@@ -11,7 +12,63 @@ export default {
     computed: {
         ...mapState('user', ['user_info'])
     },
+
+    // watch: {
+    //     easy_access(newVal){
+    //         // this.$store.dispatch('user/updateEasyAccess', { easy_access: newVal })
+    //         // .then( res => {
+    //         //     if(res == 200){
+    //         //         this.$vs.notification({
+    //         //             title: 'Success',
+    //         //             color: 'success',
+    //         //             width: 'auto',
+    //         //             text: 'Settings are up to date.',
+    //         //             position: 'top-right',
+    //         //         })
+    //         //     }
+    //         //     else if(res == 401){
+    //         //         console.log('unauthorize')
+    //         //     }
+    //         //     else{
+    //         //         this.$vs.notification({
+    //         //             title: 'Error',
+    //         //             color: 'danger',
+    //         //             width: 'auto',
+    //         //             text: 'Something went wrong',
+    //         //             position: 'top-right',
+    //         //         })
+    //         //     }
+    //         // })
+    //     }
+    // },
+
     methods: {
+        onChangeStateEasyAccess(){
+            this.$store.dispatch('user/updateEasyAccess', { easy_access: this.easy_access })
+            .then( res => {
+                if(res == 200){
+                    this.$vs.notification({
+                        title: 'Success',
+                        color: 'success',
+                        width: 'auto',
+                        text: 'Settings are up to date.',
+                        position: 'top-right',
+                    })
+                }
+                else if(res == 401){
+                    console.log('unauthorize')
+                }
+                else{
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                }
+            })
+        },
         onChangeSelect(){
             if(this.counter == 0){
                 return this.counter++
@@ -19,14 +76,25 @@ export default {
             this.$store.dispatch('user/updateTokenTimeout', { timeout: this.value })
             .then( res => {
                 if(res == 200){
-                    console.log('success')
-                    console.log('on success', this.counter)
+                    this.$vs.notification({
+                        title: 'Success',
+                        color: 'success',
+                        width: 'auto',
+                        text: 'Settings are up to date.',
+                        position: 'top-right',
+                    })
                 }
                 else if(res == 401){
                     console.log('unauthorize')
                 }
                 else{
-                    console.log('error')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
                 }
             })
         },
@@ -104,6 +172,7 @@ export default {
                     v-model="easy_access"
                     inset
                     :disabled="user_info.login_via != 'local'"
+                    @change="onChangeStateEasyAccess"
                     ></v-switch>
                 </v-list-item-action>
                 <v-list-item-content>
