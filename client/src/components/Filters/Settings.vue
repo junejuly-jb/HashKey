@@ -1,8 +1,10 @@
 <script>
 import { mapState } from 'vuex'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
+import UpdateProfile from '../SettingsDialogs/UpdateProfile'
+import ActivityLogs from '../SettingsDialogs/ActivityLog'
 export default {
-    components: { ConfirmationDialog },
+    components: { ConfirmationDialog, UpdateProfile, ActivityLogs},
     data: () => ({
         value: '',
         counter: 0,
@@ -15,7 +17,11 @@ export default {
         message: '',
         width: '',
         header: '',
-        status: ''
+        status: '',
+
+        // Dialogs 
+        profile_update_dialog: false,
+        activity_log_dialog: false,
     }),
     computed: {
         ...mapState('user', ['user_info'])
@@ -147,13 +153,13 @@ export default {
             >
             <v-subheader>User Controls</v-subheader>
             <v-list-item>
-                <v-list-item-content>
+                <v-list-item-content @click="profile_update_dialog = true">
                 <v-list-item-title>Update Profile</v-list-item-title>
                 <v-list-item-subtitle>Manage profile and other confidential data.</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
             <v-list-item>
-                <v-list-item-content>
+                <v-list-item-content @click="activity_log_dialog = true">
                 <v-list-item-title>Login Activity</v-list-item-title>
                 <v-list-item-subtitle>Manage devices that you are currently logged-in</v-list-item-subtitle>
                 </v-list-item-content>
@@ -232,6 +238,16 @@ export default {
         :header="header"
         :status="status"
         @close="dialogStats = false"
+        />
+
+        <UpdateProfile
+        :profile_update_dialog="profile_update_dialog"
+        @close="profile_update_dialog = false"
+        />
+
+        <ActivityLogs
+        :activity_log_dialog="activity_log_dialog"
+        @close="activity_log_dialog = false"
         />
     </v-container>
 </template>
