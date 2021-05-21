@@ -3,8 +3,9 @@ import { mapState } from 'vuex'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 import UpdateProfile from '../SettingsDialogs/UpdateProfile'
 import ActivityLogs from '../SettingsDialogs/ActivityLog'
+import ChangePass from '../SettingsDialogs/ChangePass'
 export default {
-    components: { ConfirmationDialog, UpdateProfile, ActivityLogs},
+    components: { ConfirmationDialog, UpdateProfile, ActivityLogs, ChangePass },
     data: () => ({
         value: '',
         counter: 0,
@@ -22,6 +23,7 @@ export default {
         // Dialogs 
         profile_update_dialog: false,
         activity_log_dialog: false,
+        change_pass_dialog: false,
     }),
     computed: {
         ...mapState('user', ['user_info'])
@@ -188,7 +190,7 @@ export default {
                 </v-list-item-content>
             </v-list-item>
             <v-list-item>
-                <v-list-item-content>
+                <v-list-item-content @click="change_pass_dialog = true">
                 <v-list-item-title>Security Settings</v-list-item-title>
                 <v-list-item-subtitle>Change master password, pin is required using this feature</v-list-item-subtitle>
                 </v-list-item-content>
@@ -248,6 +250,11 @@ export default {
         <ActivityLogs
         :activity_log_dialog="activity_log_dialog"
         @close="activity_log_dialog = false"
+        />
+
+        <ChangePass
+        :change_pass_dialog="change_pass_dialog"
+        @close="change_pass_dialog = false"
         />
     </v-container>
 </template>
