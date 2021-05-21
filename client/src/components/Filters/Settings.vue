@@ -4,8 +4,9 @@ import ConfirmationDialog from '../Main/ConfirmationDialog'
 import UpdateProfile from '../SettingsDialogs/UpdateProfile'
 import ActivityLogs from '../SettingsDialogs/ActivityLog'
 import ChangePass from '../SettingsDialogs/ChangePass'
+import ExportDialog from '../SettingsDialogs/Export'
 export default {
-    components: { ConfirmationDialog, UpdateProfile, ActivityLogs, ChangePass },
+    components: { ConfirmationDialog, UpdateProfile, ActivityLogs, ChangePass, ExportDialog },
     data: () => ({
         value: '',
         counter: 0,
@@ -24,6 +25,7 @@ export default {
         profile_update_dialog: false,
         activity_log_dialog: false,
         change_pass_dialog: false,
+        export_dialog: false,
     }),
     computed: {
         ...mapState('user', ['user_info'])
@@ -196,7 +198,7 @@ export default {
                 </v-list-item-content>
             </v-list-item>
             <v-list-item>
-                <v-list-item-content>
+                <v-list-item-content @click="export_dialog = true">
                 <v-list-item-title>Export Credentials</v-list-item-title>
                 <v-list-item-subtitle>Export important credentials via .csv file.</v-list-item-subtitle>
                 </v-list-item-content>
@@ -256,6 +258,12 @@ export default {
         :change_pass_dialog="change_pass_dialog"
         @close="change_pass_dialog = false"
         />
+
+        <ExportDialog
+        :export_dialog="export_dialog"
+        @close="export_dialog = false"
+        />
+
     </v-container>
 </template>
 
