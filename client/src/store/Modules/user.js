@@ -11,7 +11,8 @@ export const state = {
         token_timeout: '',
         login_via: '',
         easy_access: '',
-        notification: ''
+        notification: '',
+        initials: ''
     },
     current_index: 0,
     filtering: 'Passwords'
@@ -25,6 +26,7 @@ export const mutations = {
         state.user_info.token_timeout = payload.user_settings.vault_timeout
         state.user_info.easy_access = payload.user_settings.easy_access
         state.user_info.notification = payload.user_settings.notification
+        state.user_info.initials = payload.initials
         if (Object.prototype.hasOwnProperty.call(payload, "google")) {
             state.user_info.email = payload.google.email
             state.user_info.login_via = 'google'
@@ -54,6 +56,7 @@ export const mutations = {
         state.user_info.login_via = ''
         state.filtering = 'Passwords'
         state.current_index = 0
+        state.user_info.initials = ''
     },
     SET_PIN_STATUS(state) {
         state.user_info.pin = true
