@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const dotevn = require('dotenv')
 const cors = require('cors')
@@ -18,7 +17,8 @@ mongoose.connect(process.env.DB_CONNECT, {
 
 //Middlewares
 app.use(morgan('dev'))
-app.use(bodyParser.json())
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors())
 
 //Routes

@@ -12,7 +12,7 @@ export default {
     data: () => ({
       myFile: '',
       base64: '',
-      profile: false
+      profile: 'https://cdn.ndtv.com/tech/images/gadgets/pikachu_hi_pokemon.jpg'
     }),
     methods: {
       async onChangeFileInput(){
@@ -20,8 +20,7 @@ export default {
       
         var promise = this.getBase64(this.myFile);
         this.base64 = await promise;
-        this.profile = true
-        console.log(this.base64)
+        
       },
 
       getBase64(file) {
@@ -46,18 +45,18 @@ export default {
 
         <div class="con-content">
           <div class="text-center">
-            <v-avatar color="blue" size="90" v-if="!this.profile">
+            <!-- <v-avatar color="blue" size="90" v-if="this.profile == ''">
               <span class="white--text headline">{{this.user_info.initials}}</span>
-            </v-avatar>
+            </v-avatar> -->
 
-            <v-avatar color="blue" size="90" v-else>
-              <img :src="base64" :alt="this.user_info.name">
+            <v-avatar color="blue" size="90">
+              <img :src="profile" :alt="this.user_info.name">
             </v-avatar>
             <div class="d-flex justify-center">
               <vs-button circle size="small" success @click="$refs.file.click()"><i class="bx bxs-pencil"></i> Edit</vs-button>
           
             </div>
-            <input type="file" style="display: none" ref="file" @change="onChangeFileInput">
+            <input accept="image/png, image/gif, image/jpeg" type="file" style="display: none" ref="file" @change="onChangeFileInput">
             <div class="pt-5">
               <h4>{{this.user_info.name}}</h4>
               <small>{{this.user_info.email}}</small>

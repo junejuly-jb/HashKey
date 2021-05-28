@@ -111,6 +111,21 @@ const addPin = async (req, res) => {
         return res.status(400).send('Error occured')
     }
 }
+
+const updateProfile = async (req, res) => {
+    try {
+        await User.findOneAndUpdate({ _id: req.user._id },
+            { $set: { "profile.profile_photo": req.body.photo } },
+            { returnOriginal: false, useFindAndModify: false },
+            (err, doc) => {
+                if (err) return res.status(500).send(err)
+                return res.status(200).json({ msg: "updated successfully", data: doc.profile.profile_photo })
+            }
+        )
+    } catch (error) {
+        return res.status(500).send('Error occured')
+    }
+}
 module.exports = {
-    register, login, googleAuth, facebookAuth, addPin
+    register, login, googleAuth, facebookAuth, addPin, updateProfile
 }

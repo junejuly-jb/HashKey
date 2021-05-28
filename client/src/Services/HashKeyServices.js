@@ -166,6 +166,13 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             }
         )
+    },
+    updateProfilePhoto(payload) {
+        return apiClient.post('/update-profile-photo/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken()}
+            }
+        )
     }
 
 }
