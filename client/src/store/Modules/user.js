@@ -73,7 +73,10 @@ export const mutations = {
     },
     UPDATE_NOTIFICATION(state, payload) {
         state.user_info.notification = payload.notification
-     }
+    },
+    UPDATE_PROFILE_PHOTO(state, payload) {
+        state.user_info.profile = payload
+    }
 }
 
 export const actions = {
@@ -112,6 +115,16 @@ export const actions = {
         return HashKeyServices.updateNotification(payload)
             .then((res) => {
                 commit('UPDATE_NOTIFICATION', payload)
+                return res.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    },
+    updateProfilePhoto({ commit }, payload) {
+        return HashKeyServices.updateProfilePhoto(payload)
+            .then((res) => {
+                commit('UPDATE_PROFILE_PHOTO', res.data)
                 return res.status
             })
             .catch(err => {
