@@ -36,6 +36,10 @@ export default {
             reader.onerror = reject;
             reader.readAsDataURL(file);
         });
+      },
+
+      removeProfile(){
+        console.log('hello')
       }
     }
 }
@@ -58,6 +62,7 @@ export default {
               <img :src="this.user_info.profile" :alt="this.user_info.name">
             </v-avatar>
             <div class="d-flex justify-center">
+              <vs-button circle size="small" danger @click="removeProfile"><i class="bx bxs-trash"></i></vs-button>
               <vs-button circle size="small" success @click="$refs.file.click()"><i class="bx bxs-pencil"></i> Edit</vs-button>
             </div>
             <input accept="image/png, image/gif, image/jpeg" type="file" style="display: none" ref="file" @change="onChangeFileInput">

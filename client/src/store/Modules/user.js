@@ -76,6 +76,9 @@ export const mutations = {
     },
     UPDATE_PROFILE_PHOTO(state, payload) {
         state.user_info.profile = payload
+    },
+    REMOVE_PROFILE_PHOTO(state) {
+        state.user_info.profile = ''
     }
 }
 
