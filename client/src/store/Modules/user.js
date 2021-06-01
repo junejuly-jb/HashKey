@@ -124,7 +124,7 @@ export const actions = {
     updateProfilePhoto({ commit }, payload) {
         return HashKeyServices.updateProfilePhoto(payload)
             .then((res) => {
-                commit('UPDATE_PROFILE_PHOTO', res.data)
+                commit('UPDATE_PROFILE_PHOTO', res.data.data)
                 return res.status
             })
             .catch(err => {

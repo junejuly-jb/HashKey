@@ -67,12 +67,12 @@ export default {
 <template>
     <v-sheet rounded="lg" style="background-color: #EAEAF4">
         <div class="d-flex align-center justify-center">
-            <vs-avatar circle size="80" v-if="user_info.profile != ''">
-                <img :src="user_info.profile.profile_photo" alt="">
-            </vs-avatar>
-            <vs-avatar circle size="80" v-else>
-                <i class='bx bx-user'></i>
-            </vs-avatar>
+            <v-avatar color="blue" size="90" v-if="this.user_info.profile == ''">
+              <span class="white--text headline">{{this.user_info.initials}}</span>
+            </v-avatar>
+            <v-avatar color="blue" size="90">
+              <img :src="this.user_info.profile" :alt="this.user_info.name">
+            </v-avatar>
         </div>
         <div class="my-3">
             <h5 class="text-center">{{ user_info.name }}</h5>
