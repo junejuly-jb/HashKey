@@ -1,7 +1,9 @@
 <script>
 import { mapState} from 'vuex'
+import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
     props: [ 'profile_update_dialog' ],
+    components: { ConfirmationDialog },
     computed: {
         dialog: {
             get(){ return this.profile_update_dialog },
@@ -11,7 +13,13 @@ export default {
     },
     data: () => ({
       myFile: '',
-      base64: ''
+      base64: '',
+
+      dialogStats: false,
+      message: 'Session has expired pls login to continue',
+      width: '400px',
+      header: 'Unauthorize',
+      status: 'unauthorize'
     }),
     methods: {
       async onChangeFileInput(){
@@ -22,7 +30,27 @@ export default {
         
         this.$store.dispatch('user/updateProfilePhoto', { photo: this.base64 })
         .then( res => {
-          console.log(res)
+            if(res == 200){
+                this.$vs.notification({
+                    title: 'Success',
+                    color: 'success',
+                    width: 'auto',
+                    text: 'Profile updated',
+                    position: 'top-right',
+                })
+            }
+            else if(res == 401){
+                this.dialogStats = true
+            }
+            else{
+                this.$vs.notification({
+                    title: 'Error',
+                    color: 'danger',
+                    width: 'auto',
+                    text: 'Something went wrong',
+                    position: 'top-right',
+                })
+            }
         })
         .catch( err => {
           console.log(err)
@@ -36,6 +64,10 @@ export default {
             reader.onerror = reject;
             reader.readAsDataURL(file);
         });
+      },
+
+      removeProfile(){
+        console.log('hello')
       }
     }
 }
@@ -58,6 +90,7 @@ export default {
               <img :src="this.user_info.profile" :alt="this.user_info.name">
             </v-avatar>
             <div class="d-flex justify-center">
+              <vs-button circle size="small" danger @click="removeProfile"><i class="bx bxs-trash"></i></vs-button>
               <vs-button circle size="small" success @click="$refs.file.click()"><i class="bx bxs-pencil"></i> Edit</vs-button>
             </div>
             <input accept="image/png, image/gif, image/jpeg" type="file" style="display: none" ref="file" @change="onChangeFileInput">
@@ -75,5 +108,13 @@ export default {
             </vs-button>
           </div>
         </template>
+        <ConfirmationDialog
+        :dialogStats="dialogStats"
+        :message="message"
+        :width="width"
+        :header="header"
+        :status="status"
+        @close="dialogStats = false"
+        />
       </vs-dialog>
 </template>
