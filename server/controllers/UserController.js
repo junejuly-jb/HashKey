@@ -126,6 +126,20 @@ const updateProfile = async (req, res) => {
         return res.status(500).send('Error occured')
     }
 }
-module.exports = {
-    register, login, googleAuth, facebookAuth, addPin, updateProfile
+
+const removeProfilePhoto = async (req, res) => {
+    try {
+        await User.findOneAndUpdate({ _id: req.params.id },
+            { $set: { "profile.profile_photo": "" } },
+            { returnOriginal: false, useFindAndModify: false },
+            (err, doc) => {
+                if (err) return res.status(500).send(err)
+                return res.status(200).json({ msg: 'profile remove successfully' })
+            }
+        )
+    } catch (err) {
+        return res.status(500).send('Error occured')
+    }
 }
+
+module.exports = { register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto }
