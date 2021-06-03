@@ -17,17 +17,41 @@ export default {
           </h4>
         </template>
 
-
         <div class="con-content">
-          <p>
-            Vuesax is a relatively new framework with a refreshing design and in the latest trends, vuesax based on vuejs which means that we go hand in hand with one of the most popular javascript frameworks in the world and with a huge community with which you will have all the help and documentation to create and make your project
-          </p>
+          <v-list subheader>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Profile photo</v-list-item-title>
+                <v-list-item-subtitle>Change your Google+ profile photo</v-list-item-subtitle>
+              </v-list-item-content>
+
+              <v-list-item-icon>
+                <v-btn icon fab>
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+                
+              </v-list-item-icon>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Profile photo</v-list-item-title>
+                <v-list-item-subtitle>Change your Google+ profile photo</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-icon>
+                <v-btn icon fab>
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-list-item-icon>
+            </v-list-item>
+
+          </v-list>
         </div>
 
         <template #footer>
-          <div class="con-footer">
-            <vs-button @click="active=false" transparent>
-              Ok
+          <div class="con-footer d-flex flex-row-reverse">
+            <vs-button @click="dialog=false" transparent>
+              Close
             </vs-button>
           </div>
         </template>

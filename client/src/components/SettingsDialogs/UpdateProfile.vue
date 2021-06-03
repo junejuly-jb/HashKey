@@ -115,8 +115,6 @@ export default {
             Update Profile
           </h4>
         </template>
-
-
         <div class="con-content">
           <div class="text-center">
             <v-avatar color="blue" size="90" v-if="this.user_info.profile == ''">
