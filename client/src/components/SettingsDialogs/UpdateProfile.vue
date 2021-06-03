@@ -1,6 +1,7 @@
 <script>
 import { mapState} from 'vuex'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
+import HashKeyServ from '../../services/HashKeyServices'
 export default {
     props: [ 'profile_update_dialog' ],
     components: { ConfirmationDialog },
@@ -67,7 +68,42 @@ export default {
       },
 
       removeProfile(){
-        console.log('hello')
+        if(this.user_info.profile == '') return
+        HashKeyServ.removeProfilePhoto(this.user_info.id)
+          .then(res => 
+          {
+            if(res.status == 200){
+              this.$store.commit('user/REMOVE_PROFILE_PHOTO')
+              this.$vs.notification({
+                  title: 'Success',
+                  color: 'success',
+                  width: 'auto',
+                  text: res.data.msg,
+                  position: 'top-right',
+              })
+            }
+            else if(res.status == 401){
+              this.dialogStats = true
+            }
+            else{
+              this.$vs.notification({
+                title: 'Error',
+                color: 'danger',
+                width: 'auto',
+                text: 'Something went wrong',
+                position: 'top-right',
+              })
+            }
+          })
+          .catch(err => {
+            this.$vs.notification({
+                title: 'Error',
+                color: 'danger',
+                width: 'auto',
+                text: err.response.status,
+                position: 'top-right',
+            })
+          })
       }
     }
 }
@@ -86,7 +122,7 @@ export default {
             <v-avatar color="blue" size="90" v-if="this.user_info.profile == ''">
               <span class="white--text headline">{{this.user_info.initials}}</span>
             </v-avatar>
-            <v-avatar color="blue" size="90">
+            <v-avatar color="blue" size="90" v-else>
               <img :src="this.user_info.profile" :alt="this.user_info.name">
             </v-avatar>
             <div class="d-flex justify-center">
@@ -102,9 +138,9 @@ export default {
         </div>
 
         <template #footer>
-          <div class="con-footer">
-            <vs-button @click="active=false" transparent>
-              Ok
+          <div class="con-footer d-flex flex-row-reverse">
+            <vs-button @click="dialog=false" transparent>
+              Done
             </vs-button>
           </div>
         </template>

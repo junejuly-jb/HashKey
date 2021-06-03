@@ -173,6 +173,13 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken()}
             }
         )
+    },
+    removeProfilePhoto(id) {
+        return apiClient.delete('/remove-profile-photo/' + id,
+            {
+                headers: { Authorization: 'Bearer ' + getToken()}
+            }
+        )
     }
 
 }

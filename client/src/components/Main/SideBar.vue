@@ -70,7 +70,7 @@ export default {
             <v-avatar color="blue" size="90" v-if="this.user_info.profile == ''">
               <span class="white--text headline">{{this.user_info.initials}}</span>
             </v-avatar>
-            <v-avatar color="blue" size="90">
+            <v-avatar color="blue" size="90" v-else>
               <img :src="this.user_info.profile" :alt="this.user_info.name">
             </v-avatar>
         </div>

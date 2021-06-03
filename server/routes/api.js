@@ -45,5 +45,6 @@ api.post('/update-user-timeout', auth, SettingController.changeTimeout)
 api.post('/update-easy-access', auth, SettingController.changeEasyAccess)
 api.post('/update-notification', auth, SettingController.changeNotifications)
 api.post('/update-profile-photo', auth, UserController.updateProfile)
+api.delete('/remove-profile-photo/:id', auth, UserController.removeProfilePhoto)
 
 module.exports = api
