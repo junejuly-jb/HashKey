@@ -6,7 +6,10 @@ export default {
             get(){ return this.activity_log_dialog },
             set(val){ if(!val) return this.$emit('close') }
         }
-    }
+    },
+    // watch: {
+    //   cod
+    // }
 }
 </script>
 <template>
@@ -26,7 +29,7 @@ export default {
               </v-list-item-content>
 
               <v-list-item-icon>
-                <v-btn icon fab>
+                <v-btn icon>
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
                 
@@ -39,7 +42,7 @@ export default {
                 <v-list-item-subtitle>Change your Google+ profile photo</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
-                <v-btn icon fab>
+                <v-btn icon>
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-list-item-icon>
