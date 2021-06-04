@@ -9,9 +9,21 @@ export default {
             set(val){ if(!val) return this.$emit('close') }
         }
     },
+    watch: {
+      code: function(val){
+        if(val.length >= 4){
+          this.fire()
+        }
+      }
+    },
     data: () => ({
       code: ''
-    })
+    }),
+    methods: {
+      fire(){
+        console.log('fire')
+      }
+    }
 }
 </script>
 <template>
@@ -29,7 +41,6 @@ export default {
             <div class="input-wrapper py-4">
               <PincodeInput
                 v-model="code"
-                placeholder=""
                 :secure = true
                 :autofocus= true
               />
@@ -44,14 +55,14 @@ export default {
                     Clear
                 </template>
             </vs-tooltip>
-            <vs-tooltip>
+            <!-- <vs-tooltip>
                 <vs-button icon flat>
                     <i class='bx bx-check'></i>
                 </vs-button>
                 <template #tooltip>
                     Proceed
                 </template>
-            </vs-tooltip>
+            </vs-tooltip> -->
           </div>
         </div>
 
@@ -65,17 +76,4 @@ export default {
       </vs-dialog>
 </template>
 <style scoped>
-  .box{
-    border: 1px solid black;
-    width: 40px;
-    height: 40px;
-  }
-  input[type=password] {
-    padding: 10px;
-    border: 1px solid #ddd;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    font-size: 30px;
-  }
 </style>
