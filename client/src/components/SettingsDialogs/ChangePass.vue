@@ -1,10 +1,10 @@
 <script>
 import PincodeInput from 'vue-pincode-input';
 import HashKeyServices from '../../services/HashKeyServices';
-// import HashKeyServices from '../../services/HashKeyServices'
+import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
     props: [ 'change_pass_dialog' ],
-    components: { PincodeInput },
+    components: { PincodeInput, ConfirmationDialog },
     computed: {
         dialog: {
             get(){ return this.change_pass_dialog },
@@ -20,15 +20,51 @@ export default {
       code: '',
       isLoading: false,
       success: false,
-      finCode: ''
+      finCode: '',
+
+      dialogStats: false,
+      message: 'Session has expired pls login to continue',
+      width: '400px',
+      header: 'Unauthorize',
+      status: 'unauthorize'
     }),
     methods: {
       fire(val){
-        this.isLoading = true
+        
         if (val.length == 6){
+          this.isLoading = true
           HashKeyServices.authPin(val)
           .then( result => {
             console.log(result)
+            if(result.data.success){
+              this.isLoading = false 
+              this.success = true
+            }
+            else{ 
+              this.isLoading = false
+              this.success = false
+              this.$vs.notification({
+                  title: 'Error',
+                  color: 'danger',
+                  width: 'auto',
+                  text: 'Pin authentication failed',
+                  position: 'top-right',
+              })
+            }
+          })
+          .catch(err => { 
+            if(err.response.status == 401){
+              this.dialogStats = true
+            }
+            else{ 
+              this.$vs.notification({
+                  title: 'Error',
+                  color: 'danger',
+                  width: 'auto',
+                  text: 'Something went wrong',
+                  position: 'top-right',
+              })
+            }
           })
         }
       }
@@ -78,6 +114,14 @@ export default {
             </vs-button>
           </div>
         </template>
+        <ConfirmationDialog
+        :dialogStats="dialogStats"
+        :message="message"
+        :width="width"
+        :header="header"
+        :status="status"
+        @close="dialogStats = false"
+        />
       </vs-dialog>
 </template>
 <style scoped>
