@@ -20,7 +20,11 @@ export default {
       code: '',
       isLoading: false,
       success: false,
+      isMatchOldNew: Boolean,
       finCode: '',
+      old_pass: '',
+      new_pass: '',
+      conf_new_pass: '',
 
       dialogStats: false,
       message: 'Session has expired pls login to continue',
@@ -30,7 +34,6 @@ export default {
     }),
     methods: {
       fire(val){
-        
         if (val.length == 6){
           this.isLoading = true
           HashKeyServices.authPin(val)
@@ -67,7 +70,26 @@ export default {
             }
           })
         }
+      },
+      changePass(){
+        if(this.new_pass != this.conf_new_pass){
+          this.isMatchOldNew = false
+          this.$vs.notification({
+              title: 'Error',
+              color: 'danger',
+              width: 'auto',
+              text: 'New password and confirmation password mismatch',
+              position: 'top-right',
+          })
+        }
+        else{
+          this.isMatchOldNew = true
+          console.log('matched')
+        }
       }
+    },
+    mounted(){
+      console.log("state", this.isMatchOldNew)
     }
 }
 </script>
@@ -78,8 +100,6 @@ export default {
             Change Password
           </h4>
         </template>
-
-
         <div class="con-content">
           <div class="text-center py-3" v-if="!success">
             <h3>Enter Pin</h3>
@@ -103,14 +123,28 @@ export default {
             </div>
           </div>
           <div class="py-3" v-else>
-            Success
+            <div class="d-flex align-center pt-5">
+                <i class="bx bx-lock mr-5 my-2"></i>
+                <vs-input type="password" v-model="old_pass" label-placeholder="Old password"></vs-input>
+            </div>
+            <div class="d-flex align-center pt-5">
+                <i class="bx bx-lock mr-5 my-2"></i>
+                <vs-input :state="!isMatchOldNew ? 'danger' : '' " type="password" v-model="new_pass" label-placeholder="New password"></vs-input>
+            </div>
+            <div class="d-flex align-center pt-5">
+                <i class="bx bx-lock mr-5 my-2"></i>
+                <vs-input :state="!isMatchOldNew ? 'danger' : '' " type="password" v-model="conf_new_pass" label-placeholder="Confirm new password"></vs-input>
+            </div>
           </div>
         </div>
 
         <template #footer>
           <div class="con-footer d-flex flex-row-reverse">
-            <vs-button @click="dialog=false" transparent>
+            <vs-button @click="dialog=false" transparent v-if="!success">
               Done
+            </vs-button>
+            <vs-button @click="changePass" transparent v-else>
+              Change Password
             </vs-button>
           </div>
         </template>
