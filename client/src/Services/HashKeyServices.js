@@ -180,6 +180,12 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken()}
             }
         )
-    }
-
+    },
+    authPin(payload) {
+        return apiClient.post('/auth-pin', { pin: payload },
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
 }
