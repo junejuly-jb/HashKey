@@ -47,5 +47,6 @@ api.post('/update-notification', auth, SettingController.changeNotifications)
 api.post('/update-profile-photo', auth, UserController.updateProfile)
 api.delete('/remove-profile-photo/:id', auth, UserController.removeProfilePhoto)
 api.post('/auth-pin', auth, UserController.authenticatePin)
+api.post('/check-if-matched', auth, UserController.checkIfMatchPass)
 
 module.exports = api

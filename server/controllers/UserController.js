@@ -3,6 +3,7 @@ const User = require('../models/User')
 const JWT = require('jsonwebtoken')
 const Cryptr = require('cryptr')
 const cryptr = new Cryptr('HellNaw!')
+const bcrypt = require('bcryptjs')
 
 const register = async (req, res) => {
 
@@ -146,11 +147,23 @@ const authenticatePin = async (req, res) => {
     try {
         const pin = await User.findOne({ _id: req.user._id })
         const user_pin = cryptr.decrypt(pin.safety_pin)
-        console.log(user_pin)
         if (user_pin == req.body.pin) return res.status(200).json({ success: true })
         return res.status(200).json({ success: false })
     } catch (error) {
         return res.send(500)
     }
 }
-module.exports = { register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto, authenticatePin }
+
+const checkIfMatchPass = async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.user._id })
+        const isMatch = await bcrypt.compare(req.body.password, user.local.password)
+        if (!isMatch) return res.status(200).json({ success: false })
+        return res.status(200).json({ success: true })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+module.exports = {
+    register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto, authenticatePin,
+    checkIfMatchPass }
