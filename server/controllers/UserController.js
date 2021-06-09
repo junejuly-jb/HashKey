@@ -142,4 +142,15 @@ const removeProfilePhoto = async (req, res) => {
     }
 }
 
-module.exports = { register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto }
+const authenticatePin = async (req, res) => {
+    try {
+        const pin = await User.findOne({ _id: req.user._id })
+        const user_pin = cryptr.decrypt(pin.safety_pin)
+        console.log(user_pin)
+        if (user_pin == req.body.pin) return res.status(200).json({ success: true })
+        return res.status(200).json({ success: false })
+    } catch (error) {
+        return res.send(500)
+    }
+}
+module.exports = { register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto, authenticatePin }

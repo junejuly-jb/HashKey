@@ -46,5 +46,6 @@ api.post('/update-easy-access', auth, SettingController.changeEasyAccess)
 api.post('/update-notification', auth, SettingController.changeNotifications)
 api.post('/update-profile-photo', auth, UserController.updateProfile)
 api.delete('/remove-profile-photo/:id', auth, UserController.removeProfilePhoto)
+api.post('/auth-pin', auth, UserController.authenticatePin)
 
 module.exports = api
