@@ -164,6 +164,21 @@ const checkIfMatchPass = async (req, res) => {
         return res.status(500).send(error)
     }
 }
+
+const updatePassword = async (req, res) => {
+    try {
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+        await User.findOneAndUpdate({ _id: req.user._id }, { $set: { "local.password": hashedPassword } },
+            { returnOriginal: false, useFindAndModify: false }, function (err, doc) {
+                if (err) return res.status(500).send(err)
+                return res.status(200).json({ success: true })
+            }
+        )
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
 module.exports = {
     register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto, authenticatePin,
-    checkIfMatchPass }
+    checkIfMatchPass, updatePassword }
