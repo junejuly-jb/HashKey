@@ -48,6 +48,6 @@ api.post('/update-profile-photo', auth, UserController.updateProfile)
 api.delete('/remove-profile-photo/:id', auth, UserController.removeProfilePhoto)
 api.post('/auth-pin', auth, UserController.authenticatePin)
 api.post('/check-if-matched', auth, UserController.checkIfMatchPass)
-api.post('/change-password', auth, UserController.updatePassword)
+api.post('/change-user-password', auth, UserController.updatePassword)
 
 module.exports = api

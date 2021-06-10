@@ -85,6 +85,46 @@ export default {
         }
         else{
           this.isMatchNewConf = true
+          this.isLoading = true
+          HashKeyServices.changeUserPassword(this.new_pass)
+          .then( result => {
+            if(result.data.success){
+              this.isLoading = false
+              this.success = false
+              this.dialog = false
+              this.$vs.notification({
+                  title: 'Success',
+                  color: 'success',
+                  width: 'auto',
+                  text: 'Password successfully changed',
+                  position: 'top-right',
+              })
+            }
+            else{ 
+              this.isLoading = false
+              this.$vs.notification({
+                  title: 'Error',
+                  color: 'danger',
+                  width: 'auto',
+                  text: 'Pin authentication failed',
+                  position: 'top-right',
+              })
+            }
+          })
+          .catch(err => {
+            if(err.response.status == 401){
+              this.dialogStats = true
+            }
+            else{ 
+              this.$vs.notification({
+                  title: 'Error',
+                  color: 'danger',
+                  width: 'auto',
+                  text: 'Something went wrong',
+                  position: 'top-right',
+              })
+            }
+          })
         }
       },
       checkIsMatch(){
