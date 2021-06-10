@@ -188,4 +188,12 @@ export default {
             }
         )
     },
+
+    checkIsMatch(payload) {
+        return apiClient.post('/check-if-matched', { password: payload },
+            {
+                headers: { Authorization: 'Bearer ' + getToken()}
+            }
+        )
+    }
 }

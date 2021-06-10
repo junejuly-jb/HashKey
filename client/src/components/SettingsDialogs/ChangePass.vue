@@ -20,7 +20,8 @@ export default {
       code: '',
       isLoading: false,
       success: false,
-      isMatchOldNew: Boolean,
+      isMatchNewConf: Boolean,
+      isMatchOldPass: Boolean,
       finCode: '',
       old_pass: '',
       new_pass: '',
@@ -73,7 +74,7 @@ export default {
       },
       changePass(){
         if(this.new_pass != this.conf_new_pass){
-          this.isMatchOldNew = false
+          this.isMatchNewConf = false
           this.$vs.notification({
               title: 'Error',
               color: 'danger',
@@ -83,13 +84,41 @@ export default {
           })
         }
         else{
-          this.isMatchOldNew = true
-          console.log('matched')
+          this.isMatchNewConf = true
         }
+      },
+      checkIsMatch(){
+        HashKeyServices.checkIsMatch(this.old_pass)
+        .then( result => {
+          if(!result.data.success){ 
+            this.isMatchOldPass = false
+            this.$vs.notification({
+              title: 'Error',
+              color: 'danger',
+              width: 'auto',
+              text: 'Old password does not match with the current password',
+              position: 'top-right',
+            })
+          }
+          else{ 
+            this.isMatchOldPass = true 
+          }
+        })
+        .catch(err => {
+          if(err.response.status == 401){
+              this.dialogStats = true
+          }
+          else{ 
+            this.$vs.notification({
+                title: 'Error',
+                color: 'danger',
+                width: 'auto',
+                text: 'Something went wrong',
+                position: 'top-right',
+            })
+          }
+        })
       }
-    },
-    mounted(){
-      console.log("state", this.isMatchOldNew)
     }
 }
 </script>
@@ -125,15 +154,15 @@ export default {
           <div class="py-3" v-else>
             <div class="d-flex align-center pt-5">
                 <i class="bx bx-lock mr-5 my-2"></i>
-                <vs-input type="password" v-model="old_pass" label-placeholder="Old password"></vs-input>
+                <vs-input :state="!isMatchOldPass ? 'danger' : '' " @blur="checkIsMatch" type="password" v-model="old_pass" label-placeholder="Old password"></vs-input>
             </div>
             <div class="d-flex align-center pt-5">
                 <i class="bx bx-lock mr-5 my-2"></i>
-                <vs-input :state="!isMatchOldNew ? 'danger' : '' " type="password" v-model="new_pass" label-placeholder="New password"></vs-input>
+                <vs-input :state="!isMatchNewConf ? 'danger' : '' " type="password" v-model="new_pass" label-placeholder="New password"></vs-input>
             </div>
             <div class="d-flex align-center pt-5">
                 <i class="bx bx-lock mr-5 my-2"></i>
-                <vs-input :state="!isMatchOldNew ? 'danger' : '' " type="password" v-model="conf_new_pass" label-placeholder="Confirm new password"></vs-input>
+                <vs-input :state="!isMatchNewConf ? 'danger' : '' " type="password" v-model="conf_new_pass" label-placeholder="Confirm new password"></vs-input>
             </div>
           </div>
         </div>
