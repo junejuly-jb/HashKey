@@ -1,4 +1,5 @@
 import axios from 'axios'
+// import { updatePassword } from '../../../server/controllers/UserController'
 
 const getToken = function () {
     const token = localStorage.getItem('token')
@@ -191,6 +192,13 @@ export default {
 
     checkIsMatch(payload) {
         return apiClient.post('/check-if-matched', { password: payload },
+            {
+                headers: { Authorization: 'Bearer ' + getToken()}
+            }
+        )
+    },
+    changeUserPassword(payload) {
+        return apiClient.post('/change-user-password', { password: payload },
             {
                 headers: { Authorization: 'Bearer ' + getToken()}
             }
