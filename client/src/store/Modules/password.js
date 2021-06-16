@@ -4,7 +4,8 @@ export const namespaced = true
 export const state = {
     passwords: [],
     websites: ['Others', 'Instagram', 'Gmail', 'MongoDB', 'Facebook', 'Reddit', '9gag', 'Twitter', 'Github', 'Dev', 'Linkedin',
-    'Apple', 'Google', 'Shopee']
+        'Apple', 'Google', 'Shopee'],
+    allCredentials: []
 }
 
 export const mutations = {
@@ -26,6 +27,9 @@ export const mutations = {
     UPDATE_PASSWORD(state, payload) {
         var index = state.passwords.findIndex(idx => idx.log_id === payload.log_id)
         Object.assign(state.passwords[index], payload)
+    },
+    GET_ALL_PASSWORD_CREDS(state, payload) {
+        state.allCredentials = payload
     }
 }
 
@@ -65,6 +69,16 @@ export const actions = {
         return HashKeyServices.updatePassword(payload.id, payload)
             .then(response => {
                 commit('UPDATE_PASSWORD', response.data.credentials)
+                return response.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    },
+    getAllPasswordCreds({ commit }) {
+        return HashKeyServices.fetchAllPasswordCredentials()
+            .then(response => {
+                commit('GET_ALL_PASSWORD_CREDS', response.data.data)
                 return response.status
             })
             .catch(err => {
