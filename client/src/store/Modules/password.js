@@ -29,6 +29,7 @@ export const mutations = {
         Object.assign(state.passwords[index], payload)
     },
     GET_ALL_PASSWORD_CREDS(state, payload) {
+        console.log('state update')
         state.allCredentials = payload
     }
 }
@@ -75,8 +76,8 @@ export const actions = {
                 return err.response.status
             })
     },
-    getAllPasswordCreds({ commit }) {
-        return HashKeyServices.fetchAllPasswordCredentials()
+    async getAllPasswordCreds({ commit }) {
+        return await HashKeyServices.fetchAllPasswordCredentials()
             .then(response => {
                 commit('GET_ALL_PASSWORD_CREDS', response.data.data)
                 return response.status
@@ -88,7 +89,14 @@ export const actions = {
 }
 
 export const getters = {
-    // getPassByID({state}, payload) {
-    //     return state.
-    // }
+    getWeakPasswords: (state) => {
+        let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+        const weakPass = []
+        for (let i = 0; i < state.allCredentials.length; i++) {
+            if (!strongPassword.test(state.allCredentials[i].pass)) {
+                weakPass.push(state.allCredentials[i])
+            }
+        }
+        return weakPass
+    }
 }

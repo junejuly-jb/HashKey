@@ -1,59 +1,68 @@
 <script>
+import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
+    computed: {
+        ...mapState('password', ['allCredentials']),
+        ...mapGetters('password', ['getWeakPasswords'])
+    },
     data: () => ({
-        passwords: [
-            {
-                user: 'username1',
-                password: 'pass123'
-            },
-            {
-                user: 'username1',
-                password: '@letMeIN1'
-            },
-            {
-                user: 'username3',
-                password: 'hehe123'
-            }
-        ],
-        weak_passwords: []
+        weak_passwords: [],
+        hover: false,
+        hovered_index: -1
     }),
     methods: {
-        onClick(pass){ 
-            this.checkPassword(pass)
+        onHover(i){
+            this.hover = true
+            this.hovered_index = i
         },
-        checkPassword(passwords){
-            let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
-            for(let i = 0; i < passwords.length; i++){
-                if(!strongPassword.test(passwords[i].password)){
-                    this.weak_passwords.push(passwords[i])
-                }
-            }
-            console.log('weak pass', this.weak_passwords)
+        onHoverOut(){
+            this.hover = false
+            this.hovered_index = -1
         }
+    },
+    mounted(){
     }
 }
 </script>
 <template>
     <v-container>
         <div> Password health score </div>
-        <div class="py-5 text-center">
-            <div><div style="font-size: 70px">0</div></div>
-            <div>out of 100</div>
-            <div class="py-2"><v-btn small color="primary" @click="onClick(passwords)">Refresh</v-btn></div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="py-5 text-center">
+                    <div><div style="font-size: 70px; color: red;">{{getWeakPasswords.length}}</div></div>
+                    <div>out of {{allCredentials.length}}</div>
+                    <div class="py-2"><v-btn small outlined color="primary" @click="onClick(passwords)">Refresh</v-btn></div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="px-2">
+                    <small>TIPS :</small>
+                    <br>
+                    <small>To make your password strength strong, it must contain (1) special character, (1) capital letter and (1) numeric.</small>
+                </div>
+            </div>
         </div>
-        <small> AT RISKS PASSWORDS: </small>
-        <div>
-            <div class="row">
-                <div class="col-1">asd</div>
-                <div class="col">123</div>
-            </div>
-            <div class="row">
-                <div class="col-1">asd</div>
-                <div class="col">123</div>
-            </div>
-            <div class="row">
-                <div class="col-1">asd</div>
-                <div class="col">123</div>
+        
+        <div class="pt-5 px-4">
+            <small> AT RISKS PASSWORDS: </small>
+            <div class="row" v-for="(weak, i) in getWeakPasswords" :key="i" @mouseover="onHover(i)" @mouseleave="onHoverOut">
+                <div class="col-md-4">
+                    <h4>{{weak.name}}</h4>
+                    <small>{{weak.cred_type}}</small>
+                </div>
+                <div class="col">
+                    <v-icon color="error">mdi-alert-circle-outline</v-icon>&nbsp;&nbsp;<small>extremely weak</small>
+                </div>
+                <div class="col text-right">
+                    <span class="px-2">
+                        <v-btn v-show="hover && i == hovered_index" small color="primary" outlined>change password</v-btn>
+                    </span>
+                    <span>
+                        <v-btn v-show="hover && i == hovered_index" icon x-small color="error"><v-icon>mdi-block-helper</v-icon></v-btn>
+                    </span>
+                </div>
             </div>
         </div>
     </v-container>
