@@ -108,6 +108,15 @@ import { mapState } from 'vuex'
               }
             })
             break;
+          case "Password Status":
+            this.$store.dispatch('password/getAllPasswordCreds')
+            .then( res => {
+              if(res == 401){
+                console.log('unauthorize')
+                this.onLogout()
+              }
+            })
+            break;
           case "Cards":
             this.$store.dispatch('card/fetchCards')
             .then( res => {
