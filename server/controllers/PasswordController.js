@@ -5,7 +5,7 @@ const cryptr = new Cryptr('HellNaw!')
 
 const addPass = async (req, res) => {
     try {
-        const { l_logname, l_website, l_url, l_user } = req.body
+        const { l_logname, l_website, l_url, l_user, isSecure } = req.body
         const l_pass = cryptr.encrypt(req.body.l_pass)
         const password = new Password({
             owner: req.user._id,
@@ -15,6 +15,7 @@ const addPass = async (req, res) => {
                 log_url: l_url,
                 log_email: l_user,
                 log_password: l_pass,
+                isSecure: isSecure
             }
         })
         await password.save()
