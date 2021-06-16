@@ -15,6 +15,7 @@ api.post('/login', passport.authenticate('local', { session: false }), UserContr
 api.post('/oauth/googleplus', UserController.googleAuth)
 api.post('/oauth/facebook', passport.authenticate('facebookToken', { session: false }), UserController.facebookAuth)
 api.post('/add-pin', auth, UserController.addPin)
+api.get('/fetch-all-password-credentials', auth, PasswordController.fetchAllPasswordCredentials)
 
 // password route
 api.post('/add-password', auth, PasswordController.addPass)
@@ -39,6 +40,7 @@ api.post('/add-card', auth, CardController.addCard)
 api.get('/cards', auth, CardController.cards)
 api.post('/delete-card', auth, CardController.removeCard)
 api.put('/update-card/:id', auth, CardController.updateCard)
+
 
 //user settings
 api.post('/update-user-timeout', auth, SettingController.changeTimeout)

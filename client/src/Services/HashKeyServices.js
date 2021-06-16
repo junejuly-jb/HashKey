@@ -203,5 +203,12 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken()}
             }
         )
+    },
+    fetchAllPasswordCredentials() {
+        return apiClient.get('/fetch-all-password-credentials',
+            {
+                headers: { Authorization: 'Bearer ' + getToken()}
+            }
+        )
     }
 }
