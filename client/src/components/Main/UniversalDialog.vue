@@ -101,11 +101,13 @@ export default {
             l_url: '',
             l_user: '',
             l_pass: '',
+            isSecure: Boolean,
         },
         wifi: {
             w_ssid: '',
             w_pass: '',
-            w_security: ''
+            w_security: '',
+            isSecure: Boolean,
         },
         note: {
             n_title: '',

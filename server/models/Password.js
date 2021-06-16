@@ -26,6 +26,9 @@ const loginSchema = new Schema({
         },
         log_password: {
             type: String
+        },
+        isSecure: {
+            type: Boolean
         }
     }
 })
