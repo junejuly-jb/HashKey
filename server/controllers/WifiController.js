@@ -4,7 +4,7 @@ const cryptr = new Cryptr('HellNaw!')
 
 const addWifi = async (req, res) => {
     try {
-        const { w_ssid, w_security, w_status } = req.body
+        const { w_ssid, w_security, w_status, isSecure } = req.body
         const w_pass = cryptr.encrypt(req.body.w_pass)
         const wifi = new Wifi({
             owner: req.user._id,
@@ -12,7 +12,8 @@ const addWifi = async (req, res) => {
                 wifi_ssid: w_ssid,
                 wifi_pass: w_pass,
                 wifi_security: w_security,
-                wifi_status: w_status
+                wifi_status: w_status,
+                isSecure: isSecure
             }
         })
         await wifi.save()

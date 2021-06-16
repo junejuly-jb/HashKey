@@ -24,6 +24,9 @@ const wifiSchema = new Schema({
         wifi_status: {
             type: Boolean,
             required: false
+        },
+        isSecure: {
+            type: Boolean
         }
     }
 })
