@@ -90,10 +90,10 @@ const updatePass = async (req, res) => {
         })
 }
     
-const fetchAllPasswordCredentials = async (req, res) => {
+const fetchSecuredCredentials = async (req, res) => {
     try {
-        const wifis = await Wifi.find({})
-        const passwords = await Password.find({})
+        const wifis = await Wifi.find({ owner: req.user._id, "credentials.isSecure": true })
+        const passwords = await Password.find({ owner: req.user._id, "credentials.isSecure": true })
         const creds = []
         for (let i = 0; i < wifis.length; i++) {
             creds.push({
@@ -116,4 +116,4 @@ const fetchAllPasswordCredentials = async (req, res) => {
         return res.status(500).send(error)
     }
 } 
-module.exports = { addPass, deletePass, passwords, updatePass, fetchAllPasswordCredentials }
+module.exports = { addPass, deletePass, passwords, updatePass, fetchSecuredCredentials }

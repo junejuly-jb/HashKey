@@ -76,7 +76,7 @@ export const actions = {
                 return err.response.status
             })
     },
-    async getAllPasswordCreds({ commit }) {
+    async fetchSecuredCredentials({ commit }) {
         return await HashKeyServices.fetchAllPasswordCredentials()
             .then(response => {
                 commit('GET_ALL_PASSWORD_CREDS', response.data.data)

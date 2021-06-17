@@ -15,7 +15,7 @@ api.post('/login', passport.authenticate('local', { session: false }), UserContr
 api.post('/oauth/googleplus', UserController.googleAuth)
 api.post('/oauth/facebook', passport.authenticate('facebookToken', { session: false }), UserController.facebookAuth)
 api.post('/add-pin', auth, UserController.addPin)
-api.get('/fetch-all-password-credentials', auth, PasswordController.fetchAllPasswordCredentials)
+api.get('/fetch-secured-credentials', auth, PasswordController.fetchSecuredCredentials)
 
 // password route
 api.post('/add-password', auth, PasswordController.addPass)
