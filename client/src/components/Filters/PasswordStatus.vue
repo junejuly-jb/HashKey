@@ -1,15 +1,25 @@
 <script>
 import { mapState } from 'vuex'
-// import { mapGetters } from 'vuex'
+import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
     computed: {
         ...mapState('password', ['allCredentials', 'totalCredentials']),
-        // ...mapGetters('password', ['getWeakPasswords'])
     },
+    components: { ConfirmationDialog },
     data: () => ({
         weak_passwords: [],
         hover: false,
-        hovered_index: -1
+        hovered_index: -1,
+        
+        ignored_id: '',
+
+        // dialog
+        dialogStats: false,
+        message: '',
+        width: '',
+        header: '',
+        status: ''
+
     }),
     methods: {
         onHover(i){
@@ -19,6 +29,18 @@ export default {
         onHoverOut(){
             this.hover = false
             this.hovered_index = -1
+        },
+        ignore(id){
+            this.dialogStats = true
+            this.status = "ignore",
+            this.header = "Ignore",
+            this.message = "Do you wish to mark this credential as a secure password/login?",
+            this.width = "400px"
+
+            this.ignored_id = id
+        },
+        onIgnore(){
+            console.log(this.ignored_id)
         }
     },
     mounted(){
@@ -68,12 +90,21 @@ export default {
                     </span> 
                     <span>
                         <!-- <v-btn v-show="hover && i == hovered_index" icon x-small color="error"><v-icon>mdi-block-helper</v-icon></v-btn> -->
-                        <vs-button v-show="hover && i == hovered_index" gradient danger size="small">
+                        <vs-button @click="ignore(weak.id)" v-show="hover && i == hovered_index" gradient danger size="small">
                             ignore
                         </vs-button>
                     </span>
                 </div>
             </div>
         </div>
+        <ConfirmationDialog
+        :dialogStats="dialogStats"
+        :message="message"
+        :width="width"
+        :header="header"
+        :status="status"
+        @close="dialogStats = false"
+        @onIgnore="onIgnore"
+        />
     </v-container>
 </template>

@@ -15,6 +15,9 @@
             <vs-button @click="doLogout" transparent v-if="status === 'logout' || status === 'unauthorize'">
                 Logout
             </vs-button>
+            <vs-button @click="doIgnore" transparent v-else-if="status === 'ignore'">
+                Continue anyway
+            </vs-button>
             <vs-button @click="doDeleteCard" transparent v-else>
                 Delete
             </vs-button>
@@ -73,6 +76,9 @@ export default {
         },
         doDeleteCard(){
             this.$emit('onDelete')
+        },
+        doIgnore(){
+            this.$emit('onIgnore')
         }
     }
 }
