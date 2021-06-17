@@ -204,8 +204,8 @@ export default {
             }
         )
     },
-    fetchAllPasswordCredentials() {
-        return apiClient.get('/fetch-all-password-credentials',
+    fetchSecuredCredentials() {
+        return apiClient.get('/fetch-secured-credentials',
             {
                 headers: { Authorization: 'Bearer ' + getToken()}
             }
