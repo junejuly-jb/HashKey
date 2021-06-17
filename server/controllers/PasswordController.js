@@ -92,26 +92,31 @@ const updatePass = async (req, res) => {
     
 const fetchSecuredCredentials = async (req, res) => {
     try {
-        const wifis = await Wifi.find({ owner: req.user._id, "credentials.isSecure": true })
-        const passwords = await Password.find({ owner: req.user._id, "credentials.isSecure": true })
+        const wifis = await Wifi.find({ owner: req.user._id })
+        const passwords = await Password.find({ owner: req.user._id })
+        const total = wifis.length + passwords.length
         const creds = []
         for (let i = 0; i < wifis.length; i++) {
-            creds.push({
-                id: wifis[i]._id,
-                name: wifis[i].credentials.wifi_ssid,
-                pass: cryptr.decrypt(wifis[i].credentials.wifi_pass),
-                cred_type: wifis[i].credential_type
-            })
+            if (wifis[i].credentials.isSecure) {
+                creds.push({
+                    id: wifis[i]._id,
+                    name: wifis[i].credentials.wifi_ssid,
+                    pass: cryptr.decrypt(wifis[i].credentials.wifi_pass),
+                    cred_type: wifis[i].credential_type
+                })
+            }
         }
         for (let j = 0; j < passwords.length; j++) {
-            creds.push({
-                id: passwords[j]._id,
-                name: passwords[j].credentials.log_name,
-                pass: cryptr.decrypt(passwords[j].credentials.log_password),
-                cred_type: passwords[j].credential_type
-            })
+            if (passwords[j].credentials.isSecure) {
+                creds.push({
+                    id: passwords[j]._id,
+                    name: passwords[j].credentials.log_name,
+                    pass: cryptr.decrypt(passwords[j].credentials.log_password),
+                    cred_type: passwords[j].credential_type
+                })
+            }
         }
-        return res.status(200).json({ data: creds })
+        return res.status(200).json({ data: creds, data_length: total })
     } catch (error) {
         return res.status(500).send(error)
     }
