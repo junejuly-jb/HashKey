@@ -109,7 +109,7 @@ import { mapState } from 'vuex'
             })
             break;
           case "Password Status":
-            this.$store.dispatch('password/getAllPasswordCreds')
+            this.$store.dispatch('password/fetchSecuredCredentials')
             .then( res => {
               if(res == 401){
                 console.log('unauthorize')
