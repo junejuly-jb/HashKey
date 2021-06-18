@@ -120,5 +120,19 @@ const fetchSecuredCredentials = async (req, res) => {
     } catch (error) {
         return res.status(500).send(error)
     }
-} 
-module.exports = { addPass, deletePass, passwords, updatePass, fetchSecuredCredentials }
+}
+
+const changeSecurity = async (req, res) => {
+    try {
+        await Password.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, { $set: { "credentials.isSecure": true } })
+            .then(() => {
+                res.status(200).json({ msg: 'ignored successfully'})
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
+    } catch (error) {
+        res.status(500).send(err)
+    }
+}
+module.exports = { addPass, deletePass, passwords, updatePass, fetchSecuredCredentials, changeSecurity }
