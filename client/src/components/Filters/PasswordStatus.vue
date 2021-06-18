@@ -34,7 +34,7 @@ export default {
             this.dialogStats = true
             this.status = "ignore",
             this.header = "Ignore",
-            this.message = "Do you wish to mark this credential as a secure password/login?",
+            this.message = "Do you wish to mark this credential as a secured password/login?",
             this.width = "400px"
 
             this.ignored_id = id
