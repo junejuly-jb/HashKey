@@ -124,13 +124,26 @@ const fetchSecuredCredentials = async (req, res) => {
 
 const changeSecurity = async (req, res) => {
     try {
-        await Password.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, { $set: { "credentials.isSecure": true } })
-            .then(() => {
-                res.status(200).json({ msg: 'ignored successfully'})
-            })
-            .catch(err => {
-                res.status(500).send(err)
-            })
+        if (req.body.cred_type == 'password') {
+            await Password.findOneAndUpdate({ _id: req.params.id, owner: req.user._id}, { $set: { "credentials.isSecure": false } }, { useFindAndModify: false })
+                .then(() => {
+                    res.status(200).send('password ignored successfully')
+                })
+                .catch(error => {
+                    res.status(500).send(error)
+                })
+        }
+        else {
+            await Wifi.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, { $set: { "credentials.isSecure": false } }, { useFindAndModify: false })
+                .then(() => {
+                    res.status(200).send('password ignored successfully')
+                })
+                .catch(error => {
+                    res.status(500).send(error)
+                })
+        }
+        
+        return res.status(200).json({ pass })
     } catch (error) {
         res.status(500).send(err)
     }
