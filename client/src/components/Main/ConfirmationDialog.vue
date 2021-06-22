@@ -1,5 +1,5 @@
 <template>
-    <vs-dialog :width="width" not-center v-model="dialog" blur prevent-close :loading="isLoading">
+    <vs-dialog :width="width" not-close not-center v-model="dialog" blur prevent-close :loading="isLoading">
         <template #header>
             <h4 class="not-margin">
             <b>{{header}}</b>
@@ -67,6 +67,7 @@ export default {
                 this.dialog = false
                 this.$store.commit('user/REMOVE_USER_INFO')
                 this.$store.commit('password/REMOVE_PASSWORD')
+                this.$store.commit('password/REMOVE_ALL_UNSECURED_CREDENTIALS')
                 this.$store.commit('wifi/REMOVE_WIFIS')
                 this.$store.commit('note/REMOVE_NOTES')
                 this.$store.commit('card/REMOVE_CARDS')

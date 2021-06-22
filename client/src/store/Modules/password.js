@@ -36,6 +36,9 @@ export const mutations = {
     REMOVE_IGNORED_CREDENTIAL(state, payload) {
         var idx = state.allCredentials.findIndex(i => i.id === payload.id)
         state.allCredentials.splice(idx, 1)
+    },
+    REMOVE_ALL_UNSECURED_CREDENTIALS(state) {
+        state.allCredentials = []
     }
 }
 
