@@ -97,7 +97,7 @@ const fetchSecuredCredentials = async (req, res) => {
         const total = wifis.length + passwords.length
         const creds = []
         for (let i = 0; i < wifis.length; i++) {
-            if (wifis[i].credentials.isSecure) {
+            if (!wifis[i].credentials.isSecure) {
                 creds.push({
                     id: wifis[i]._id,
                     name: wifis[i].credentials.wifi_ssid,
@@ -107,7 +107,7 @@ const fetchSecuredCredentials = async (req, res) => {
             }
         }
         for (let j = 0; j < passwords.length; j++) {
-            if (passwords[j].credentials.isSecure) {
+            if (!passwords[j].credentials.isSecure) {
                 creds.push({
                     id: passwords[j]._id,
                     name: passwords[j].credentials.log_name,
@@ -125,7 +125,7 @@ const fetchSecuredCredentials = async (req, res) => {
 const changeSecurity = async (req, res) => {
     try {
         if (req.body.cred_type == 'password') {
-            await Password.findOneAndUpdate({ _id: req.params.id, owner: req.user._id}, { $set: { "credentials.isSecure": false } }, { useFindAndModify: false })
+            await Password.findOneAndUpdate({ _id: req.params.id, owner: req.user._id}, { $set: { "credentials.isSecure": true } }, { useFindAndModify: false })
                 .then(() => {
                     res.status(200).send('password ignored successfully')
                 })
@@ -134,7 +134,7 @@ const changeSecurity = async (req, res) => {
                 })
         }
         else {
-            await Wifi.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, { $set: { "credentials.isSecure": false } }, { useFindAndModify: false })
+            await Wifi.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, { $set: { "credentials.isSecure": true } }, { useFindAndModify: false })
                 .then(() => {
                     res.status(200).send('password ignored successfully')
                 })
