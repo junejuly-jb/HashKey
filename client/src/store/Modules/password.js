@@ -32,6 +32,10 @@ export const mutations = {
     GET_ALL_PASSWORD_CREDS(state, payload) {
         state.allCredentials = payload.data
         state.totalCredentials = payload.total
+    },
+    REMOVE_IGNORED_CREDENTIAL(state, payload) {
+        var idx = state.allCredentials.findIndex(i => i.id === payload.id)
+        state.allCredentials.splice(idx, 1)
     }
 }
 
@@ -81,6 +85,16 @@ export const actions = {
         return await HashKeyServices.fetchSecuredCredentials()
             .then(response => {
                 commit('GET_ALL_PASSWORD_CREDS', { data: response.data.data, total: response.data.data_length })
+                return response.status
+            })
+            .catch(err => {
+                return err.response.status
+            })
+    },
+    async ignoreSecurity({ commit }, payload) {
+        return await HashKeyServices.ignoreSecurity(payload)
+            .then((response) => {
+                commit('REMOVE_IGNORED_CREDENTIAL', payload)
                 return response.status
             })
             .catch(err => {

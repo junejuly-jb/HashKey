@@ -210,5 +210,12 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken()}
             }
         )
+    },
+    ignoreSecurity(payload) {
+        return apiClient.put('/ignore-password/' + payload.id, payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken()}
+            }
+        )
     }
 }
