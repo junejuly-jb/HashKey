@@ -13,7 +13,7 @@ export default {
         
         ignored_id: '',
         ignored_cred_type: '',
-
+        refresh_button_state: false,
         // dialog
         dialogStats: false,
         message: '',
@@ -24,6 +24,38 @@ export default {
 
     }),
     methods: {
+        refresh(){
+            this.refresh_button_state = true
+            this.$store.dispatch('password/fetchSecuredCredentials')
+            .then( res => {
+                if(res === 200){
+                    this.refresh_button_state = false
+                    return
+                }
+                else if(res === 401){
+                        this.refresh_button_state = false
+                        this.dialogStats = true
+                        this.message = 'Session has expired pls login to continue'
+                        this.width = '400px',
+                        this.header = 'Unauthorize'
+                        this.status = 'unauthorize'
+                }
+                else{
+                    this.refresh_button_state = false
+                    return
+                }
+            })
+            .catch(() => {
+                this.refresh_button_state = false
+                this.$vs.notification({
+                    title: 'Error',
+                    color: 'danger',
+                    width: 'auto',
+                    text: 'Error occured',
+                    position: 'top-right',
+                })
+            })
+        },
         onHover(i){
             this.hover = true
             this.hovered_index = i
@@ -106,7 +138,7 @@ export default {
                     <div><div style="font-size: 70px; color: red;">{{allCredentials.length}}</div></div>
                     <div>out of {{totalCredentials}}</div>
                     <div class="py-2 d-flex justify-center">
-                        <vs-button size="small" @click="refresh">
+                        <vs-button size="small" @click="refresh" :loading="refresh_button_state">
                             Refresh
                             <template #animate >
                                 <i class='bx bx-refresh' ></i>
