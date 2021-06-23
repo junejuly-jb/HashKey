@@ -21,7 +21,7 @@
             <vs-button @click="doDeleteCard" transparent v-else>
                 Delete
             </vs-button>
-            <vs-button @click="dialog=false" dark transparent>
+            <vs-button v-show="status !== 'logout'" @click="dialog=false" dark transparent>
                 Cancel
             </vs-button>
             </div>
