@@ -14,13 +14,21 @@ export default {
         ignored_id: '',
         ignored_cred_type: '',
         refresh_button_state: false,
+        change_pass_dialog: false,
         // dialog
         dialogStats: false,
         message: '',
         width: '',
         header: '',
         status: '',
-        loading: ''
+        loading: '',
+
+        cred: {
+            id: '',
+            cred_type: '',
+            pass: '',
+            name: ''
+        }
 
     }),
     methods: {
@@ -125,6 +133,13 @@ export default {
                     position: 'top-right',
                 })
             })
+        },
+        change_pass(payload){
+            this.cred.cred_type = payload.cred_type
+            this.cred.id = payload.id
+            this.cred.pass = payload.pass
+            this.cred.name = payload.name
+            this.change_pass_dialog = true
         }
     }
 }
@@ -168,10 +183,9 @@ export default {
                 </div>
                 <div class="col text-right d-flex justify-end align-center">
                     <span class="px-2">
-                        <vs-button v-show="hover && i == hovered_index" gradient size="small">change password</vs-button>
+                        <vs-button v-show="hover && i == hovered_index" gradient size="small" @click="change_pass(weak)">change password</vs-button>
                     </span> 
                     <span>
-                        <!-- <v-btn v-show="hover && i == hovered_index" icon x-small color="error"><v-icon>mdi-block-helper</v-icon></v-btn> -->
                         <vs-button @click="ignore(weak)" v-show="hover && i == hovered_index" gradient danger size="small">
                             ignore
                         </vs-button>
@@ -188,5 +202,39 @@ export default {
         @close="dialogStats = false"
         @onIgnore="onIgnore"
         />
+        <vs-dialog blur not-center v-model="change_pass_dialog">
+            <template #header>
+                <span>Change Password for</span>&nbsp;<span><b>{{cred.name}}</b></span>
+            </template>
+            <div class="con-content">
+                <v-container>
+                    <div class="d-flex align-center">
+                        <i class="bx bx-info-circle"></i>
+                        <div class="px-2"></div>
+                        <span>{{cred.name}}</span>
+                    </div>
+                    <div class="py-1"></div>
+                    <div class="d-flex align-center">
+                        <i v-if="cred.cred_type == 'wifi'" class="bx bx-wifi"></i>
+                        <i v-else class="bx bx-globe"></i>
+                        <div class="px-2"></div>
+                        <span>{{cred.cred_type}}</span>
+                    </div>
+                    <div class="py-1"></div>
+                    <div class="d-flex align-center">
+                        <i class="bx bx-lock"></i>
+                        <div class="px-2"></div>
+                        <vs-input placeholder="Password" type="password" v-model="cred.pass"></vs-input>
+                    </div>
+                </v-container>
+            </div>
+            <template #footer>
+                <div class="con-footer d-flex flex-row-reverse">
+                    <vs-button @click="change_pass_dialog=false" transparent>
+                    Update
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
     </v-container>
 </template>
