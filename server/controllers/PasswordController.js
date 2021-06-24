@@ -148,4 +148,45 @@ const changeSecurity = async (req, res) => {
         res.status(500).send(err)
     }
 }
-module.exports = { addPass, deletePass, passwords, updatePass, fetchSecuredCredentials, changeSecurity }
+
+const changeWeakPassword = async (req, res) => {
+    try {
+        let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+        if (!strongPassword.test(req.body.pass)) {
+            return res.status(200).json({ success: false, message: 'password is weak'})
+        }
+        else {
+            if (req.body.cred_type == 'wifi') {
+                await Wifi.findOneAndUpdate({ _id: req.body.id, owner: req.user._id },
+                    {
+                        $set: { "credentials.wifi_pass": req.body.pass }
+                    },
+                    { returnOriginal: false, useFindAndModify: false },
+                )
+                    .then(() => {
+                        return res.status(200).json({ success: true, msg: "change password successfully" })
+                    })
+                    .catch(err => {
+                        return res.status(500).send(err)
+                    })
+            }
+            else {
+                await Password.findOneAndUpdate({ _id: req.body, owner: req.user._id },
+                    {
+                        $set: { "credentials.log_password": req.body.pass }
+                    },
+                    { returnOriginal: false, useFindAndModify: false }
+                )
+                    .then(() => {
+                        return res.status(200).json({ success: true, msg: "change password successfully" })
+                    })
+                    .catch(err => {
+                        return res.status(500).send(err)
+                    })
+            }
+        }
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+module.exports = { addPass, deletePass, passwords, updatePass, fetchSecuredCredentials, changeSecurity, changeWeakPassword }

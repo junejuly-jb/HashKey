@@ -217,5 +217,12 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken()}
             }
         )
+    },
+    changeWeakPassword(id, payload) {
+        return apiClient.put('/change-weak-password/' + id, payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     }
 }

@@ -17,6 +17,7 @@ api.post('/oauth/facebook', passport.authenticate('facebookToken', { session: fa
 api.post('/add-pin', auth, UserController.addPin)
 api.get('/fetch-secured-credentials', auth, PasswordController.fetchSecuredCredentials)
 api.put('/ignore-password/:id', auth, PasswordController.changeSecurity)
+api.put('/change-weak-password/:id', auth, PasswordController.changeWeakPassword)
 
 // password route
 api.post('/add-password', auth, PasswordController.addPass)
