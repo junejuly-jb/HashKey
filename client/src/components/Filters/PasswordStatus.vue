@@ -29,7 +29,8 @@ export default {
             cred_type: '',
             pass: '',
             name: ''
-        }
+        },
+        change_pass_dialog_status: false,
 
     }),
     methods: {
@@ -209,7 +210,7 @@ export default {
         @close="dialogStats = false"
         @onIgnore="onIgnore"
         />
-        <vs-dialog blur not-center v-model="change_pass_dialog">
+        <vs-dialog blur not-center :loading="change_pass_dialog_status" v-model="change_pass_dialog">
             <template #header>
                 <span>Change Password for</span>&nbsp;<span><b>{{cred.name}}</b></span>
             </template>

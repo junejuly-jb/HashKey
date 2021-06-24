@@ -159,7 +159,7 @@ const changeWeakPassword = async (req, res) => {
             if (req.body.cred_type == 'wifi') {
                 await Wifi.findOneAndUpdate({ _id: req.body.id, owner: req.user._id },
                     {
-                        $set: { "credentials.wifi_pass": req.body.pass }
+                        $set: { "credentials.wifi_pass": cryptr.encrypt(req.body.pass) }
                     },
                     { returnOriginal: false, useFindAndModify: false },
                 )
@@ -173,7 +173,7 @@ const changeWeakPassword = async (req, res) => {
             else {
                 await Password.findOneAndUpdate({ _id: req.body, owner: req.user._id },
                     {
-                        $set: { "credentials.log_password": req.body.pass }
+                        $set: { "credentials.log_password": cryptr.encrypt(req.body.pass) }
                     },
                     { returnOriginal: false, useFindAndModify: false }
                 )

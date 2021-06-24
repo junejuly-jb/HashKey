@@ -126,8 +126,8 @@ import { mapState } from 'vuex'
               }
             })
             break;
-          default: 
-            return
+          default:
+            break;
         }
       },
       onLogout(){

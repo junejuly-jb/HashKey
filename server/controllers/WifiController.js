@@ -49,8 +49,8 @@ const wifis = async (req, res) => {
         }
         return res.status(200).json({ credentials })
     } catch (error) {
-        console.log(err)
-        return res.status(500).json({ error })
+        console.error(error)
+        return res.status(500).send(error)
     }
 }
     
