@@ -1,6 +1,7 @@
 <script>
 import { mapState } from 'vuex'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
+import HashKeyServices from '../../services/HashKeyServices'
 export default {
     computed: {
         ...mapState('password', ['allCredentials', 'totalCredentials']),
@@ -140,6 +141,12 @@ export default {
             this.cred.pass = payload.pass
             this.cred.name = payload.name
             this.change_pass_dialog = true
+        }, 
+        onClickChangePass(){
+            HashKeyServices.changeWeakPassword(this.cred.id, this.cred)
+            .then( res => {
+                console.log(res)
+            })
         }
     }
 }
@@ -230,8 +237,8 @@ export default {
             </div>
             <template #footer>
                 <div class="con-footer d-flex flex-row-reverse">
-                    <vs-button @click="change_pass_dialog=false" transparent>
-                    Update
+                    <vs-button @click="onClickChangePass" transparent>
+                    save
                     </vs-button>
                 </div>
             </template>
