@@ -39,6 +39,10 @@ export const mutations = {
     },
     REMOVE_ALL_UNSECURED_CREDENTIALS(state) {
         state.allCredentials = []
+    },
+    REMOVE_STRONG_PASSWORD(state, payload) {
+        var idx = state.allCredentials.findIndex(i => i.id === payload)
+        state.allCredentials.splice(idx, 1)
     }
 }
 
@@ -96,25 +100,38 @@ export const actions = {
     },
     async ignoreSecurity({ commit }, payload) {
         return await HashKeyServices.ignoreSecurity(payload)
-            .then((response) => {
-                commit('REMOVE_IGNORED_CREDENTIAL', payload)
-                return response.status
-            })
-            .catch(err => {
-                return err.response.status
-            })
+        .then((response) => {
+            commit('REMOVE_IGNORED_CREDENTIAL', payload)
+            return response.status
+        })
+        .catch(err => {
+            return err.response.status
+        })
+    },
+    async changeWeakPassword({ commit }, payload) {
+        return await HashKeyServices.changeWeakPassword(payload)
+        .then((response) => {
+            if (response.data.success) {
+                commit('REMOVE_STRONG_PASSWORD', payload.id)
+            }
+            var credentials = {
+                success: response.data.success,
+                status_code: response.status,
+                message: response.data.message
+            }
+            return credentials
+        })
+        .catch(err => {
+            var credentials = {
+                success: false,
+                status_code: err.response.status,
+                message: ''
+            }
+            return credentials
+        })
     }
 }
 
 export const getters = {
-    // getWeakPasswords: (state) => {
-    //     let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
-    //     const weakPass = []
-    //     for (let i = 0; i < state.allCredentials.length; i++) {
-    //         if (!strongPassword.test(state.allCredentials[i].pass)) {
-    //             weakPass.push(state.allCredentials[i])
-    //         }
-    //     }
-    //     return weakPass
-    // }
+    
 }

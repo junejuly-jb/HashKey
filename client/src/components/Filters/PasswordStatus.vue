@@ -144,9 +144,10 @@ export default {
             this.change_pass_dialog = true
         }, 
         onClickChangePass(){
+            this.change_pass_dialog_status = true
             HashKeyServices.changeWeakPassword(this.cred.id, this.cred)
             .then( res => {
-                console.log(res)
+                console.log(res.data)
             })
         }
     }
@@ -210,7 +211,7 @@ export default {
         @close="dialogStats = false"
         @onIgnore="onIgnore"
         />
-        <vs-dialog blur not-center :loading="change_pass_dialog_status" v-model="change_pass_dialog">
+        <vs-dialog blur not-center prevent-close :loading="change_pass_dialog_status" v-model="change_pass_dialog">
             <template #header>
                 <span>Change Password for</span>&nbsp;<span><b>{{cred.name}}</b></span>
             </template>
