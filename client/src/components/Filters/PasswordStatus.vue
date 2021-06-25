@@ -1,7 +1,6 @@
 <script>
 import { mapState } from 'vuex'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
-import HashKeyServices from '../../services/HashKeyServices'
 export default {
     computed: {
         ...mapState('password', ['allCredentials', 'totalCredentials']),
@@ -145,9 +144,48 @@ export default {
         }, 
         onClickChangePass(){
             this.change_pass_dialog_status = true
-            HashKeyServices.changeWeakPassword(this.cred.id, this.cred)
+            this.$store.dispatch('password/changeWeakPassword', this.cred)
             .then( res => {
-                console.log(res.data)
+                this.change_pass_dialog_status = false
+                if(res.status_code === 200){
+                    console.log(res)
+                    if(!res.success){
+                        this.$vs.notification({
+                            title: 'Error',
+                            color: 'danger',
+                            width: 'auto',
+                            text: res.message,
+                            position: 'top-right',
+                        })
+                    }
+                    else{
+                        this.change_pass_dialog = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: res.message,
+                            position: 'top-right',
+                        })
+                    }
+                    
+                }
+                else if(res.status_code === 401){
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
+                }
+                else{
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Error occured',
+                        position: 'top-right',
+                    })
+                }
             })
         }
     }

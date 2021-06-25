@@ -109,15 +109,16 @@ export const actions = {
         })
     },
     async changeWeakPassword({ commit }, payload) {
-        return await HashKeyServices.changeWeakPassword(payload)
-        .then((response) => {
+        return await HashKeyServices.changeWeakPassword(payload.id, payload)
+            .then((response) => {
+            console.log(response)
             if (response.data.success) {
                 commit('REMOVE_STRONG_PASSWORD', payload.id)
             }
             var credentials = {
                 success: response.data.success,
                 status_code: response.status,
-                message: response.data.message
+                message: response.data.msg
             }
             return credentials
         })
