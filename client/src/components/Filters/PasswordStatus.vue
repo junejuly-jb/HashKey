@@ -1,7 +1,6 @@
 <script>
 import { mapState } from 'vuex'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
-import HashKeyServices from '../../services/HashKeyServices'
 export default {
     computed: {
         ...mapState('password', ['allCredentials', 'totalCredentials']),
@@ -144,9 +143,49 @@ export default {
             this.change_pass_dialog = true
         }, 
         onClickChangePass(){
-            HashKeyServices.changeWeakPassword(this.cred.id, this.cred)
+            this.change_pass_dialog_status = true
+            this.$store.dispatch('password/changeWeakPassword', this.cred)
             .then( res => {
-                console.log(res)
+                this.change_pass_dialog_status = false
+                if(res.status_code === 200){
+                    console.log(res)
+                    if(!res.success){
+                        this.$vs.notification({
+                            title: 'Error',
+                            color: 'danger',
+                            width: 'auto',
+                            text: res.message,
+                            position: 'top-right',
+                        })
+                    }
+                    else{
+                        this.change_pass_dialog = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: res.message,
+                            position: 'top-right',
+                        })
+                    }
+                    
+                }
+                else if(res.status_code === 401){
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
+                }
+                else{
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Error occured',
+                        position: 'top-right',
+                    })
+                }
             })
         }
     }
@@ -210,7 +249,7 @@ export default {
         @close="dialogStats = false"
         @onIgnore="onIgnore"
         />
-        <vs-dialog blur not-center :loading="change_pass_dialog_status" v-model="change_pass_dialog">
+        <vs-dialog blur not-center prevent-close :loading="change_pass_dialog_status" v-model="change_pass_dialog">
             <template #header>
                 <span>Change Password for</span>&nbsp;<span><b>{{cred.name}}</b></span>
             </template>

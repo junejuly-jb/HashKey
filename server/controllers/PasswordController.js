@@ -152,7 +152,9 @@ const changeSecurity = async (req, res) => {
 const changeWeakPassword = async (req, res) => {
     try {
         let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+        console.log(strongPassword.test(req.body))
         if (!strongPassword.test(req.body.pass)) {
+            
             return res.status(200).json({ success: false, message: 'password is weak'})
         }
         else {
