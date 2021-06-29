@@ -152,16 +152,14 @@ const changeSecurity = async (req, res) => {
 const changeWeakPassword = async (req, res) => {
     try {
         let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
-        console.log(strongPassword.test(req.body))
         if (!strongPassword.test(req.body.pass)) {
-            
-            return res.status(200).json({ success: false, message: 'password is weak'})
+            return res.status(200).json({ success: false, msg: 'password is weak'})
         }
         else {
             if (req.body.cred_type == 'wifi') {
-                await Wifi.findOneAndUpdate({ _id: req.body.id, owner: req.user._id },
+                await Wifi.findOneAndUpdate({ _id: req.params.id, owner: req.user._id },
                     {
-                        $set: { "credentials.wifi_pass": cryptr.encrypt(req.body.pass) }
+                        $set: { "credentials.wifi_pass": cryptr.encrypt(req.body.pass), "credentials.isSecure": true }
                     },
                     { returnOriginal: false, useFindAndModify: false },
                 )
@@ -173,9 +171,9 @@ const changeWeakPassword = async (req, res) => {
                     })
             }
             else {
-                await Password.findOneAndUpdate({ _id: req.body, owner: req.user._id },
+                await Password.findOneAndUpdate({ _id: req.params.id, owner: req.user._id },
                     {
-                        $set: { "credentials.log_password": cryptr.encrypt(req.body.pass) }
+                        $set: { "credentials.log_password": cryptr.encrypt(req.body.pass), "credentials.isSecure": true }
                     },
                     { returnOriginal: false, useFindAndModify: false }
                 )
