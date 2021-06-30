@@ -1,5 +1,5 @@
 <template>
-    <vs-dialog width="500px" :loading="isLoadingLocal" not-center v-model="dialog" blur prevent-close>
+    <vs-dialog width="500px" :loading="isLoadingLocal" not-center v-model="dialog" prevent-close>
         <template #header>
             <h4 class="not-margin">
             <b>{{header}}</b>
@@ -59,6 +59,9 @@
             @change_color="card.c_color = $event"
             @close="dialog = false"
             />
+            <ContactInput
+            v-show="type == 'contact'"
+            />
         </div>
 
         <template #footer>
@@ -90,6 +93,7 @@ import PasswordInput from '../Inputs/PasswordInput'
 import WifiInput from '../Inputs/WifiInput'
 import NoteInput from '../Inputs/NoteInput'
 import CardInput from '../Inputs/CardInput'
+import ContactInput from '../Inputs/ContactInput'
 import { bus } from '../../main'
 import { mapState } from 'vuex'
 export default {
@@ -120,9 +124,26 @@ export default {
             c_exp: '',
             c_ccv: '',
             c_color: 'card_silver'
+        },
+        info_contact: {
+            c_fname: '',
+            c_lname: '',
+            c_contact: '',
+            c_email: '',
+        },
+        info_drivers_license: {
+            d_name: '',
+            d_l_number: '',
+            d_d_issued: '',
+            d_d_expiration: ''
+        },
+        info_id: {
+            i_id_no: '',
+            i_name: '',
+            i_contact: ''
         }
     }),
-    components: { PasswordInput, WifiInput, NoteInput, CardInput },
+    components: { PasswordInput, WifiInput, NoteInput, CardInput, ContactInput },
     props: ['dialogStat', 'header', 'type'],
     computed: {
         ...mapState(['isLoadingLocal']),
