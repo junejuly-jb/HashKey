@@ -61,6 +61,15 @@
             />
             <ContactInput
             v-show="type == 'contact'"
+            :c_fname="info_contact.c_fname"
+            :c_lname="info_contact.c_lname"
+            :c_contact="info_contact.c_contact"
+            :c_email="info_contact.c_email"
+            @change_fname="info_contact.c_fname = $event"
+            @change_lname="info_contact.c_lname = $event"
+            @change_contact="info_contact.c_contact = $event"
+            @change_email="info_contact.c_email = $event"
+            @close="dialog = false"
             />
         </div>
 
@@ -80,6 +89,9 @@
             </vs-button>
             <vs-button @click="addCard" transparent v-show="type == 'card'">
                 Save Card
+            </vs-button>
+            <vs-button @click="addContact" transparent v-show="type == 'contact'">
+                Save Contact
             </vs-button>
             <vs-button @click="onClickCancel" dark transparent>
                 Cancel
