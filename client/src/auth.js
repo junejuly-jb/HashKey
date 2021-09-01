@@ -23,7 +23,7 @@ export default function (Vue) {
         destroyToken() {
             localStorage.removeItem('token')
             localStorage.removeItem('expiration')
-            localStorage.removeItem('vuex')
+            // localStorage.removeItem('vuex')
         },
 
         isAuthenticated() {

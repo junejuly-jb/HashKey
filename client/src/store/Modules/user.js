@@ -48,6 +48,8 @@ export const mutations = {
     },
     REMOVE_USER_INFO(state) {
         state.user_info.id = ''
+        state.user_info.easy_access = ''
+        state.user_info.notification = ''
         state.user_info.profile = ''
         state.user_info.name = ''
         state.user_info.email = ''

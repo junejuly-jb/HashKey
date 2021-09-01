@@ -11,12 +11,33 @@
                     All in one vault for your <br> passwords & etc.
                 </div>
             </div>
-            <div class="text-center img d-flex align-center justify-center">
+            <div class="d-flex" v-if="easy_access_list">
+                <div v-for="list in easy_access_list" :key="list.id">
+                    <AccessCard :access_list="list"/>
+                </div>
+            </div>
+            <div v-if="!easy_access_list" class="text-center img d-flex align-center justify-center">
                 <img src="../../assets/resources/Illustration1.png" alt="">
             </div>
         </v-container>
     </v-app>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+import AccessCard from './AccessCard.vue'
+
+export default {
+    data: () => ({
+
+    }),
+    components: { AccessCard },
+    computed: {
+        ...mapState('access', ['easy_access_list']),
+        ...mapState(['isLoadingLocal'])
+    },
+}
+</script>
 
 <style scoped>
 .left-body{
