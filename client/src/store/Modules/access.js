@@ -1,7 +1,29 @@
 export const namespaced = true
 
 export const state = {
-    easy_access_list: []
+    easy_access_list: [{
+            id: 1,
+            name: 'June Aragoncillo',
+            profile: 'https://static3.cbrimages.com/wordpress/wp-content/uploads/2019/11/Tanjiro-Kamado.jpg'
+        },
+        {
+            id: 2,
+            name: 'June Amante Aragoncillo',
+            profile: 'https://static3.cbrimages.com/wordpress/wp-content/uploads/2019/11/Tanjiro-Kamado.jpg'
+        },
+        {
+            id: 3,
+            name: 'June Brianne',
+            profile: 'https://static3.cbrimages.com/wordpress/wp-content/uploads/2019/11/Tanjiro-Kamado.jpg'
+
+        },
+        {
+            id: 4,
+            name: 'Junie boi',
+            profile: 'https://static3.cbrimages.com/wordpress/wp-content/uploads/2019/11/Tanjiro-Kamado.jpg'
+
+        }
+    ]
 }
 
 export const mutations = {
