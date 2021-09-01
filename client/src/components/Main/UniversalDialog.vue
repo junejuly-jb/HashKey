@@ -175,6 +175,7 @@ export default {
         addWifi(){ bus.$emit('onSaveWifi', this.wifi) },
         addNote(){ bus.$emit('onSaveNote', this.note) },
         addCard(){ bus.$emit('onSaveCard', this.card) },
+        addContact(){ bus.$emit('onSaveContact', this.info_contact) },
         onClickCancel(){ 
             this.dialog = false
             bus.$emit('onClickCancel') 

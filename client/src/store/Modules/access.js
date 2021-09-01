@@ -1,4 +1,3 @@
-// import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
