@@ -11,10 +11,18 @@
                     All in one vault for your <br> passwords & etc.
                 </div>
             </div>
-            <div class="d-flex" v-if="easy_access_list">
-                <div v-for="list in easy_access_list" :key="list.id">
-                    <AccessCard :access_list="list"/>
-                </div>
+            <div class="ml-5">
+                <h5 class="text--white brand">Recent logins</h5>
+            </div>
+            <div v-if="easy_access_list" class="mt-3">
+                <masonry
+                :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"
+                :gutter="{default: '0px', 700: '10px'}"
+                >
+                    <div class="mb-10" v-for="list in easy_access_list" :key="list.id">
+                        <AccessCard :access_list="list"/>
+                    </div>
+                </masonry>
             </div>
             <div v-if="!easy_access_list" class="text-center img d-flex align-center justify-center">
                 <img src="../../assets/resources/Illustration1.png" alt="">
@@ -42,12 +50,12 @@ export default {
 <style scoped>
 .left-body{
     background-color: #003ECB;
-    height: 100%;
+    height: 100vh;
 }
 .brand{
     color: white;
     font-weight: bold;
-    height: 10%;
+    height: 8%;
 }
 .sub{
     height: 20%;
