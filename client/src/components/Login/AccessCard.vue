@@ -5,7 +5,21 @@
     <v-img
       :src="access_list.profile"
       height="150px"
-    ></v-img>
+    >
+    <div class="float-right mr-2 mt-2">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon
+            @click="onClickRemoveEasyAccess"
+            v-bind="attrs"
+            v-on="on">
+              <v-icon color="white">mdi-close-circle-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>Remove</span>
+        </v-tooltip>                                
+    </div>
+    </v-img>
     <v-card-subtitle>
       {{ access_list.name }}
     </v-card-subtitle>
@@ -14,6 +28,12 @@
 
 <script>
   export default {
-    props: ['access_list']
+    props: ['access_list'],
+    methods: {
+      onClickRemoveEasyAccess(){
+        console.log(this.access_list.id)
+        this.$store.commit('access/REMOVE_USER_EASY_ACCESS', this.access_list.id)
+      }
+    }
   }
 </script>
