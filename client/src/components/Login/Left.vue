@@ -19,14 +19,15 @@
                 :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"
                 :gutter="{default: '0px', 700: '10px'}"
                 >
-                    <div class="mb-10" v-for="list in easy_access_list" :key="list.id">
-                        <AccessCard :access_list="list"/>
+                    <div @click="openDialog" class="mb-10" v-for="list in easy_access_list" :key="list.id">
+                        <AccessCard class="pointer" :access_list="list"/>
                     </div>
                 </masonry>
             </div>
             <div v-else class="text-center img d-flex align-center justify-center">
                 <img src="../../assets/resources/Illustration1.png" alt="">
             </div>
+            <QuickLoginDialog :dialog="dialog" @close="dialog = false"/>
         </v-container>
     </v-app>
 </template>
@@ -34,16 +35,22 @@
 <script>
 import { mapState } from 'vuex'
 import AccessCard from './AccessCard.vue'
+import QuickLoginDialog from './QuickLoginDialog.vue'
 
 export default {
     data: () => ({
-
+        dialog: false
     }),
-    components: { AccessCard },
+    components: { AccessCard, QuickLoginDialog },
     computed: {
         ...mapState('access', ['easy_access_list']),
         ...mapState(['isLoadingLocal'])
     },
+    methods: {
+        openDialog(){
+            this.dialog = true
+        }
+    }
 }
 </script>
 
@@ -71,5 +78,8 @@ export default {
 }
 .img img{
     width: 65%;
+}
+.pointer{
+    cursor: pointer;
 }
 </style>
