@@ -6,7 +6,10 @@ export const state = {
 
 export const mutations = {
     ADD_USER_EASY_ACCESS(state, payload) {
-        state.easy_access_list.push(payload)
+        const isFound = state.easy_access_list.some(el => el.id === payload.id)
+        if (!isFound) {
+            state.easy_access_list.push(payload)
+        }
     },
     REMOVE_USER_EASY_ACCESS(state, payload) {
         var idx = state.easy_access_list.findIndex(i => i.id === payload)
