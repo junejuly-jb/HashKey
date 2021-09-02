@@ -120,6 +120,14 @@ export default {
                 .then( (res) => {
                     this.$auth.setToken(res.data.token, res.data.exp)
                     this.$store.commit('user/SET_USER_INFO', res.data.user)
+                    if(res.data.user.user_settings.easy_access){
+                        this.$store.commit('access/ADD_USER_EASY_ACCESS', {
+                            id: res.data.user._id,
+                            name: res.data.user.name,
+                            profile: res.data.user.profile.profile_photo === '' ? res.data.user.initials : res.data.user.profile.profile_photo
+                        })
+                    }
+                    console.log(res.data.user)
                     if(res.data.user.safety_pin !== null){
                         this.$router.push('/home')
                     }

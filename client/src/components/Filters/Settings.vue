@@ -42,18 +42,6 @@ export default {
                         text: 'Settings are up to date.',
                         position: 'top-right',
                     })
-                    if(this.easy_access){
-                        var user = {
-                            id: this.user_info.id,
-                            name: this.user_info.name,
-                            profile: this.user_info.profile
-                        }
-                        this.$store.commit('access/ADD_USER_EASY_ACCESS', user)
-                    }
-                    else{
-                        this.$store.commit('access/REMOVE_USER_EASY_ACCESS', this.user_info.id)
-                    }
-                    
                 }
                 else if(res == 401){
                     this.dialogStats = true
