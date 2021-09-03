@@ -4,6 +4,21 @@
             <div class="text-center">
                 <img :src="user_profile.profile" width="170" alt="" class="profile_icon">
                 <h4>{{user_profile.name}}</h4>
+                <div class="my-8"></div>
+                <v-text-field
+                    dense
+                    filled
+                    rounded
+                    v-model="login_password"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show1 ? 'text' : 'password'"
+                    @click:append="show1 = !show1"
+                    :rules="password_rules"
+                    prepend-inner-icon="mdi-lock"
+                    label="Password"
+                ></v-text-field>
+                <div class="my-8"></div>
+                <a href="#">forgot password?</a>
             </div>
         </div>
         <template #footer>
@@ -21,6 +36,13 @@
 <script>
 export default {
     props: ['dialog', 'user_profile'],
+    data: () => ({
+        login_password: '',
+        show1: false,
+        password_rules: [
+            v => !!v || 'Password is required'
+        ]
+    }),
     computed: {
         loginDialog:{
             get(){
