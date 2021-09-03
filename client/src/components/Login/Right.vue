@@ -124,7 +124,8 @@ export default {
                         this.$store.commit('access/ADD_USER_EASY_ACCESS', {
                             id: res.data.user._id,
                             name: res.data.user.name,
-                            profile: res.data.user.profile.profile_photo === '' ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg' : res.data.user.profile.profile_photo
+                            profile: res.data.user.profile.profile_photo === '' ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg' : res.data.user.profile.profile_photo,
+                            email: res.data.user.local.email
                         })
                     }
                     console.log(res.data.user)

@@ -19,7 +19,7 @@
                 :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"
                 :gutter="{default: '0px', 700: '10px'}"
                 >
-                    <div @click="openDialog" class="mb-10" v-for="list in easy_access_list" :key="list.id">
+                    <div @click="openDialog(list)" class="mb-10" v-for="list in easy_access_list" :key="list.id">
                         <AccessCard class="pointer" :access_list="list"/>
                     </div>
                 </masonry>
@@ -27,7 +27,7 @@
             <div v-else class="text-center img d-flex align-center justify-center">
                 <img src="../../assets/resources/Illustration1.png" alt="">
             </div>
-            <QuickLoginDialog :dialog="dialog" @close="dialog = false"/>
+            <QuickLoginDialog :user_profile="selected_easy_access" :dialog="dialog" @close="dialog = false"/>
         </v-container>
     </v-app>
 </template>
@@ -39,7 +39,8 @@ import QuickLoginDialog from './QuickLoginDialog.vue'
 
 export default {
     data: () => ({
-        dialog: false
+        dialog: false,
+        selected_easy_access: {}
     }),
     components: { AccessCard, QuickLoginDialog },
     computed: {
@@ -47,7 +48,8 @@ export default {
         ...mapState(['isLoadingLocal'])
     },
     methods: {
-        openDialog(){
+        openDialog(val){
+            this.selected_easy_access = val
             this.dialog = true
         }
     }
