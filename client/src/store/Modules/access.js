@@ -1,7 +1,8 @@
 export const namespaced = true
 
 export const state = {
-    easy_access_list: []
+    easy_access_list: [],
+    selected_profile: {}
 }
 
 export const mutations = {

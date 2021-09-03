@@ -10,7 +10,7 @@
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon
-            @click="onClickRemoveEasyAccess"
+            @click.stop="onClickRemoveEasyAccess"
             v-bind="attrs"
             v-on="on">
               <v-icon color="white">mdi-close-circle-outline</v-icon>
@@ -31,7 +31,6 @@
     props: ['access_list'],
     methods: {
       onClickRemoveEasyAccess(){
-        console.log(this.access_list.id)
         this.$store.commit('access/REMOVE_USER_EASY_ACCESS', this.access_list.id)
       }
     }
