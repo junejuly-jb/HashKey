@@ -5,6 +5,11 @@
                 <img :src="user_profile.profile" width="170" alt="" class="profile_icon">
                 <h4>{{user_profile.name}}</h4>
                 <div class="my-8"></div>
+                <v-form
+                ref="form"
+                v-model="isValid"
+                lazy-validation
+                >
                 <v-text-field
                     dense
                     filled
@@ -17,13 +22,14 @@
                     prepend-inner-icon="mdi-lock"
                     label="Password"
                 ></v-text-field>
+                </v-form>
                 <div class="my-8"></div>
                 <a href="#">forgot password?</a>
             </div>
         </div>
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
-                <vs-button >
+                <vs-button @click="login">
                     Login
                 </vs-button>
                 <vs-button @click="loginDialog = false" transparent>
@@ -34,6 +40,7 @@
     </vs-dialog>
 </template>
 <script>
+import HashKeyServices from '../../services/HashKeyServices'
 export default {
     props: ['dialog', 'user_profile'],
     data: () => ({
@@ -41,7 +48,8 @@ export default {
         show1: false,
         password_rules: [
             v => !!v || 'Password is required'
-        ]
+        ],
+        isValid: false
     }),
     computed: {
         loginDialog:{
@@ -53,6 +61,59 @@ export default {
                     return this.$emit('close')
                 }
             }
+        }
+    },
+    methods: {
+        login(){
+            if(this.$refs.form.validate()){
+                this.$store.commit('SET_LOADING_LOCAL')
+                this.openLoading()
+                HashKeyServices.loginLocal({ email: this.user_profile.email, password: this.login_password })
+                .then( (res) => {
+                    this.$auth.setToken(res.data.token, res.data.exp)
+                    this.$store.commit('user/SET_USER_INFO', res.data.user)
+                    if(res.data.user.user_settings.easy_access){
+                        this.$store.commit('access/ADD_USER_EASY_ACCESS', {
+                            id: res.data.user._id,
+                            name: res.data.user.name,
+                            profile: res.data.user.profile.profile_photo === '' ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg' : res.data.user.profile.profile_photo,
+                            email: res.data.user.local.email
+                        })
+                    }
+                    if(res.data.user.safety_pin !== null){
+                        this.$router.push('/home')
+                    }
+                    else{
+                        this.$router.push('/pin')
+                    }
+                })
+                .catch((err)=> {
+                    console.log(err.response)
+                    this.$vs.notification({
+                        title: 'Error',
+                        text: err.response.data,
+                        position: 'top-center',
+                    })
+                    this.closeLoading()
+                })
+                .finally(() => {
+                    this.closeLoading()
+                    this.$store.commit('SET_LOADING_LOCAL')
+                })
+            }
+            else{
+                this.closeLoading()
+            }
+        },
+        openLoading(){
+            this.loading = this.$vs.loading({
+                type: 'circles',
+                background: '#003ECB',
+                color: '#fff'
+            })
+        },
+        closeLoading(){
+            setTimeout(() => { this.loading.close() }, 1000)
         }
     }
 }

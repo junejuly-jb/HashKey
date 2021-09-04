@@ -128,7 +128,6 @@ export default {
                             email: res.data.user.local.email
                         })
                     }
-                    console.log(res.data.user)
                     if(res.data.user.safety_pin !== null){
                         this.$router.push('/home')
                     }
