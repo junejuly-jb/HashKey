@@ -80,6 +80,7 @@ export default {
                             email: res.data.user.local.email
                         })
                     }
+                    this.login_password = ''
                     if(res.data.user.safety_pin !== null){
                         this.$router.push('/home')
                     }
