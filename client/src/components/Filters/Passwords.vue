@@ -22,13 +22,20 @@ export default {
         view(pass){
             this.infoDialogStat = true
             this.pass_info = pass
+        },
+
+        exportPass(){
+            console.log('export')
         }
     }
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="dialogStat = true">+ Password</vs-button>
+        <div class="d-flex">
+            <vs-button gradient @click="dialogStat = true">+ Password</vs-button>
+            <vs-button gradient @click="exportPass">Export</vs-button>
+        </div>
         <div class="mx-2">
             <masonry
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
