@@ -27,13 +27,19 @@ export default {
         view(note){
             this.note_info = note,
             this.infoDialogStat = true
+        },
+        exportNotes(){
+            console.log('export notes')
         }
     }
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="dialogStat = true">+ Note</vs-button>
+        <div class="d-flex">
+            <vs-button gradient @click="dialogStat = true">+ Note</vs-button>
+            <vs-button gradient @click="exportNotes">Export</vs-button>
+        </div>
         <div class="mx-2">
             <masonry
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"

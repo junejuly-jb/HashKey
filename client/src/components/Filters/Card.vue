@@ -17,13 +17,7 @@ export default {
 
         message: "",
         header_delete: "",
-        status: "",
-        // colours: ['card_orange','card_blue','card_dark_blue','card_red','card_gold','card_silver','card_black','card_dark_green','card_green'],
-        // card_no_rules: [
-        //     (v) => !!v || "This field is required",
-        //     (v) => (v && v.length <= 16) || "16 digits max",
-        //     (v) => (v && v.length >= 16) || "16 digits min",
-        // ]
+        status: ""
     }),
     methods: {
         to_chunk(str){
@@ -42,11 +36,6 @@ export default {
             return last_digit
         },
 
-        // format_card(str){
-        //     let text = str.match(/.{1,4}/g)
-        //     return text.join(' ')
-        // },
-
         format_date(date){
             var datePart = date.match(/\d+/g),
             year = datePart[0].substring(2),
@@ -58,13 +47,20 @@ export default {
         view(card){
             this.card_info = card
             this.infoDialogStat = true
+        },
+
+        exportPass(){
+            console.log('export')
         }
     }
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="dialogStat = true">+ Card</vs-button>
+        <div class="d-flex">
+            <vs-button gradient @click="dialogStat = true">+ Card</vs-button>
+            <vs-button gradient @click="exportPass">Export</vs-button>
+        </div>
         <div class="mt-5">
             <masonry
             :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"

@@ -236,7 +236,6 @@ export default {
         @close="change_pass_dialog = false"
         />
 
-
     </v-container>
 </template>
 

@@ -16,13 +16,19 @@ export default {
         view(pass){
             this.wifi_info = pass
             this.infoDialogStat = true
+        },
+        exportWifi(){
+            console.log('export wifi')
         }
     }
 }
 </script>
 <template>
     <v-container>
-        <vs-button gradient @click="dialogStat = true">+ Wifi Key</vs-button>
+        <div class="d-flex">
+            <vs-button gradient @click="dialogStat = true">+ Wifi Key</vs-button>
+            <vs-button gradient @click="exportWifi">Export</vs-button>
+        </div>
         <div class="mx-2">
             <masonry
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
