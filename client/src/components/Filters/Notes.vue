@@ -1,15 +1,17 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
 import InformationDialog from '../Main/InformationDialog'
+import ExportDialog from '../Main/ExportDialog'
 import { mapState } from 'vuex'
 export default {
-    components: { UniversalDialog, InformationDialog },
+    components: { UniversalDialog, InformationDialog, ExportDialog },
     data: () => ({
         dialogStat: false,
         infoDialogStat: false,
         note_info: {},
         header: 'Add Secure Notes',
-        type: 'note'
+        type: 'note',
+        exportDialogStat: false
     }),
     computed: {
         ...mapState('note', ['notes'])
@@ -29,7 +31,7 @@ export default {
             this.infoDialogStat = true
         },
         exportNotes(){
-            console.log('export notes')
+            this.exportDialogStat = true
         }
     }
 }
@@ -69,6 +71,7 @@ export default {
         :type="type"
         @close="infoDialogStat = false"
         />
+        <ExportDialog :dialog="exportDialogStat" @close="exportDialogStat = false" :type="type"/>
     </v-container>
 </template>
 

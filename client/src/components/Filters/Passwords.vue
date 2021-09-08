@@ -1,13 +1,15 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
 import InformationDialog from '../Main/InformationDialog'
+import ExportDialog from '../Main/ExportDialog.vue'
 import { mapState } from 'vuex'
 export default {
     computed: { ...mapState('password', ['passwords']) },
-    components: { UniversalDialog, InformationDialog },
+    components: { UniversalDialog, InformationDialog, ExportDialog },
     data: () => ({
         dialogStat: false,
         infoDialogStat: false,
+        exportDialogStat: false,
         header: 'Add Login',
         type: 'password',
         pass_info: {}
@@ -25,7 +27,7 @@ export default {
         },
 
         exportPass(){
-            console.log('export')
+            this.exportDialogStat = true
         }
     }
 }
@@ -63,6 +65,11 @@ export default {
         :type="type"
         @close="infoDialogStat = false"
         />
+        <ExportDialog 
+        :dialog="exportDialogStat"
+        :credentials="passwords"
+        @close="exportDialogStat = false" 
+        :type="type"/>
     </v-container>
 </template>
 
