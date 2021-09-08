@@ -2,12 +2,13 @@
 import { mapState, mapGetters } from 'vuex'
 import UniversalDialog from '../Main/UniversalDialog'
 import InformationDialog from '../Main/InformationDialog'
+import ExportDialog from '../Main/ExportDialog'
 export default {
     computed: {
         ...mapState('card', ['cards']),
         ...mapGetters('card', ['getCardById'])
     },
-    components: { UniversalDialog, InformationDialog },
+    components: { UniversalDialog, InformationDialog, ExportDialog },
     data: () => ({
         dialogStat: false,
         infoDialogStat: false,
@@ -17,12 +18,12 @@ export default {
 
         message: "",
         header_delete: "",
-        status: ""
+        status: "",
+        exportDialogStat: false
     }),
     methods: {
         to_chunk(str){
             let sliced = str.slice(0, -4)
-            
             var dots = ""
             for(let i = 0; i < sliced.length; i++){
                 dots += "●"
@@ -50,7 +51,7 @@ export default {
         },
 
         exportPass(){
-            console.log('export')
+            this.exportDialogStat = true
         }
     }
 }
@@ -98,5 +99,8 @@ export default {
         :type="type"
         @close="infoDialogStat = false"
         />
+
+        <ExportDialog :dialog="exportDialogStat" @close="exportDialogStat = false" :type="type"/>
+
     </v-container>
 </template>

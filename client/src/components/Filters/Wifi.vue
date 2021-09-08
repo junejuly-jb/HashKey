@@ -1,16 +1,18 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
 import InformationDialog from '../Main/InformationDialog'
+import ExportDialog from '../Main/ExportDialog'
 import { mapState } from 'vuex'
 export default {
     computed: { ...mapState('wifi', ['wifis']) },
-    components: { UniversalDialog, InformationDialog },
+    components: { UniversalDialog, InformationDialog, ExportDialog },
     data: () => ({
         dialogStat: false,
         infoDialogStat: false,
         header: 'Add Wifi Credentials',
         type: 'wifi',
-        wifi_info: {}
+        wifi_info: {},
+        exportDialogStat: false,
     }),
     methods:{
         view(pass){
@@ -18,7 +20,7 @@ export default {
             this.infoDialogStat = true
         },
         exportWifi(){
-            console.log('export wifi')
+            this.exportDialogStat = true
         }
     }
 }
@@ -56,6 +58,7 @@ export default {
         :type="type"
         @close="infoDialogStat = false"
         />
+        <ExportDialog :dialog="exportDialogStat" @close="exportDialogStat = false" :type="type"/>
     </v-container>
 </template>
 <style scoped>
