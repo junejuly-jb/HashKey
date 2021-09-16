@@ -4,7 +4,11 @@ import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
     props: ['c_fname','c_lname', 'c_email', 'c_contact'],
     data: () => ({
-        
+        dialogStats: false,
+        message: '',
+        width: '',
+        header: '',
+        status: '',
     }),
     components: { ConfirmationDialog },
     computed: {

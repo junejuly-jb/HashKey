@@ -58,7 +58,11 @@ export default {
         :type="type"
         @close="infoDialogStat = false"
         />
-        <ExportDialog :dialog="exportDialogStat" @close="exportDialogStat = false" :type="type"/>
+        <ExportDialog 
+        :dialog="exportDialogStat" 
+        :credentials="wifis"
+        @close="exportDialogStat = false" 
+        :type="type"/>
     </v-container>
 </template>
 <style scoped>

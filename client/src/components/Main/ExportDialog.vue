@@ -1,12 +1,15 @@
 <template>
-    <vs-dialog v-model="dialogStat" width="500px" not-center prevent-close>
+    <vs-dialog v-model="dialogStat" width="300px" not-center prevent-close>
         <template #header>
             <h4 class="not-margin">
                 <b>Export Credentials</b>
             </h4>
         </template>
-        <div class="con-content">
-            {{credentials ? credentials.length : ''}}
+        <div v-if="credentials.length != 0" class="con-content mb-10 mt-3">
+            <p>Are you willing to export <b>{{ credentials ? credentials.length : ''}} </b> {{ type }} crendentials?</p>
+        </div>
+        <div v-else class="con-content mb-10 mt-3">
+            <p>Cannot export data</p>
         </div>
         <template #footer>
             <div class="con-footer d-flex flex-row-reverse">
