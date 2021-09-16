@@ -169,7 +169,7 @@ export default {
                 }
             }
         }
-    },
+    }, 
     methods: {
         addPass(){ bus.$emit('onSavePassword', this.login) },
         addWifi(){ bus.$emit('onSaveWifi', this.wifi) },

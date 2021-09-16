@@ -100,7 +100,11 @@ export default {
         @close="infoDialogStat = false"
         />
 
-        <ExportDialog :dialog="exportDialogStat" @close="exportDialogStat = false" :type="type"/>
+        <ExportDialog 
+        :dialog="exportDialogStat" 
+        :credentials="cards"
+        @close="exportDialogStat = false"
+        :type="type"/>
 
     </v-container>
 </template>

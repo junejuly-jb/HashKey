@@ -25,7 +25,7 @@ export default {
             this.infoDialogStat = true
             this.pass_info = pass
         },
-
+ 
         exportPass(){
             this.exportDialogStat = true
         }
