@@ -62,7 +62,7 @@ export default {
             <vs-button gradient @click="dialogStat = true">+ Card</vs-button>
             <vs-button gradient @click="exportPass">Export</vs-button>
         </div>
-        <div class="mt-5">
+        <div class="mt-5" v-if="cards.length > 0">
             <masonry
             :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"
             :gutter="{default: '15px', 700: '10px'}"
@@ -86,6 +86,12 @@ export default {
                 </v-card>
             </masonry>
         </div>
+        <div v-else class="mt-5 no_content_found">
+            <div class="text-center">
+                <h1>No card credentials to show</h1>
+                <pre>Click the <v-icon color="blue darken-2">mdi-card-plus</v-icon> to add new credential.</pre>
+            </div>
+        </div>
         <UniversalDialog 
         :header="header"
         :type="type"
@@ -108,3 +114,14 @@ export default {
 
     </v-container>
 </template>
+<style scoped>
+    .no_content_found{
+        display: flex;
+        height: 50vh;
+        align-items: center;
+        justify-content: center;
+    }
+    .no_content_found > div > h1 {
+        color: rgb(87, 87, 87);
+    }
+</style>

@@ -50,7 +50,7 @@ export default {
         <div v-else class="mx-2 no_content_found">
             <div class="text-center">
                 <h1>No wifi credentials to show</h1>
-                <pre>Click the <v-icon color="blue darken-2">mdi-lock-plus</v-icon> to add new credentials</pre>
+                <pre>Click the <v-icon color="blue darken-2">mdi-key-plus</v-icon> to add new credentials</pre>
             </div>
         </div>
         <UniversalDialog 

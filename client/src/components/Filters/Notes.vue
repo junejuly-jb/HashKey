@@ -42,7 +42,7 @@ export default {
             <vs-button gradient @click="dialogStat = true">+ Note</vs-button>
             <vs-button gradient @click="exportNotes">Export</vs-button>
         </div>
-        <div class="mx-2">
+        <div class="mx-2" v-if="notes.length > 0">
             <masonry
             :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
             :gutter="{default: '30px', 700: '10px'}"
@@ -59,6 +59,12 @@ export default {
                     </v-container>
                 </v-card>
             </masonry>
+        </div>
+        <div v-else class="mx-2 no_content_found">
+            <div class="text-center">
+                <h1>No notes</h1>
+                <pre>Click the <v-icon color="blue darken-2">mdi-note-plus</v-icon> to add new note.</pre>
+            </div>
         </div>
         <UniversalDialog 
         :dialogStat="dialogStat"
@@ -88,5 +94,14 @@ export default {
     }
     .pointer{
         cursor: pointer;
+    }
+    .no_content_found{
+        display: flex;
+        height: 50vh;
+        align-items: center;
+        justify-content: center;
+    }
+    .no_content_found > div > h1 {
+        color: rgb(87, 87, 87);
     }
 </style>
