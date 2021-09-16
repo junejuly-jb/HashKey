@@ -14,11 +14,10 @@ export default {
         exportDialogStat: false
     }),
     computed: {
-        ...mapState('note', ['notes'])
+        ...mapState('note', ['notes', 'notes_isLoading'])
     },
     methods: {
         subStr(string){
-
             return string.substring(0, 300)
         },
         checkStrLen(string){
@@ -42,30 +41,40 @@ export default {
             <vs-button gradient @click="dialogStat = true">+ Note</vs-button>
             <vs-button gradient @click="exportNotes">Export</vs-button>
         </div>
-        <div class="mx-2" v-if="notes.length > 0">
-            <masonry
-            :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
-            :gutter="{default: '30px', 700: '10px'}"
-            >
-                <v-card elevation="0" @click="view(note)" v-for="(note, index) in notes" :key="index" :color="note.note_color" class="neo rounded-lg">
-                    <v-container>
-                        <div class="">
-                            <h5 class="">{{note.note_title ? note.note_title : 'No Title'}}</h5>
-                            <small>{{note.note_content ? subStr(note.note_content) : 'No Content'}}
-                                {{checkStrLen(note.note_content) ? ' . . . ' : ''}}
-                                <v-chip class="pointer" v-show="checkStrLen(note.note_content)" small outlined>see more</v-chip>
-                            </small>
-                        </div>
-                    </v-container>
-                </v-card>
-            </masonry>
+        <div class="progress__bar__container" v-if="notes_isLoading">
+            <v-progress-circular
+            :size="50"
+            color="primary"
+            indeterminate
+            ></v-progress-circular>
         </div>
-        <div v-else class="mx-2 no_content_found">
-            <div class="text-center">
-                <h1>No notes</h1>
-                <pre>Click the <v-icon color="blue darken-2">mdi-note-plus</v-icon> to add new note.</pre>
+        <div v-else>
+            <div class="mx-2" v-if="notes.length > 0">
+                <masonry
+                :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
+                :gutter="{default: '30px', 700: '10px'}"
+                >
+                    <v-card elevation="0" @click="view(note)" v-for="(note, index) in notes" :key="index" :color="note.note_color" class="neo rounded-lg">
+                        <v-container>
+                            <div class="">
+                                <h5 class="">{{note.note_title ? note.note_title : 'No Title'}}</h5>
+                                <small>{{note.note_content ? subStr(note.note_content) : 'No Content'}}
+                                    {{checkStrLen(note.note_content) ? ' . . . ' : ''}}
+                                    <v-chip class="pointer" v-show="checkStrLen(note.note_content)" small outlined>see more</v-chip>
+                                </small>
+                            </div>
+                        </v-container>
+                    </v-card>
+                </masonry>
+            </div>
+            <div v-else class="mx-2 no_content_found">
+                <div class="text-center">
+                    <h1>No notes</h1>
+                    <pre>Click the <v-icon color="blue darken-2">mdi-note-plus</v-icon> to add new note.</pre>
+                </div>
             </div>
         </div>
+        
         <UniversalDialog 
         :dialogStat="dialogStat"
         :header="header"
@@ -103,5 +112,11 @@ export default {
     }
     .no_content_found > div > h1 {
         color: rgb(87, 87, 87);
+    }
+    .progress__bar__container{
+        display: flex;
+        height: 50vh;
+        align-items: center;
+        justify-content: center;
     }
 </style>

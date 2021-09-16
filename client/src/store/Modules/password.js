@@ -3,6 +3,7 @@ export const namespaced = true
 
 export const state = {
     passwords: [],
+    pass_isLoading: false,
     websites: ['Others', 'Instagram', 'Gmail', 'MongoDB', 'Facebook', 'Reddit', '9gag', 'Twitter', 'Github', 'Dev', 'Linkedin',
         'Apple', 'Google', 'Shopee'],
     allCredentials: [],
@@ -14,7 +15,9 @@ export const mutations = {
         state.passwords.push(payload)
     },
     SET_PASSWORD(state, payload) {
+        state.pass_isLoading = false
         state.passwords = payload.filter( p_id => { return p_id.log_id != state.passwords.log_id })
+        
     },
     REMOVE_PASSWORD(state) {
         state.passwords = []
@@ -43,6 +46,9 @@ export const mutations = {
     REMOVE_STRONG_PASSWORD(state, payload) {
         var idx = state.allCredentials.findIndex(i => i.id === payload)
         state.allCredentials.splice(idx, 1)
+    },
+    SET_PASS_TRUE(state) {
+        state.pass_isLoading = true
     }
 }
 
@@ -60,7 +66,6 @@ export const actions = {
     fetchPasswords({ commit }) {
         return HashKeyServices.fetchPassword()
             .then(response => {
-            // commit('REMOVE_PASSWORD')
             commit('SET_PASSWORD', response.data.credentials)
             return response.status
         })

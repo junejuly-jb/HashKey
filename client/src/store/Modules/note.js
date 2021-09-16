@@ -2,7 +2,8 @@ import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
-    notes: []
+    notes: [],
+    notes_isLoading: false
 }
 
 export const mutations = {
@@ -10,6 +11,7 @@ export const mutations = {
         state.notes.push(payload)
     },
     FETCH_NOTES(state, payload) {
+        state.notes_isLoading = false
         state.notes = payload.filter(id => { return id.note_id != state.notes.note_id })
     },
     DELETE_NOTES(state, payload) {
@@ -24,6 +26,9 @@ export const mutations = {
     UPDATE_NOTE(state, payload) {
         var index = state.notes.findIndex(idx => idx.note_id === payload.note_id)
         Object.assign(state.notes[index], payload)
+    },
+    SET_NOTE_LOADING_TRUE(state) {
+        state.notes_isLoading = true
     }
 }
 

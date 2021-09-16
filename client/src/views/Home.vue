@@ -58,7 +58,8 @@ import { mapState } from 'vuex'
   export default {
     components: { Passwords, Wifi, Notes, Info, Card, ConfirmationDialog, PassGenerator, Settings, PassStatus },
     computed: {
-      ...mapState('user', ['filtering'])
+      ...mapState('user', ['filtering']),
+      ...mapState('password', ['pass_isLoading'])
     },
     data: () => ({
       dialogStats: false,
@@ -82,6 +83,7 @@ import { mapState } from 'vuex'
       fetchData(){
         switch(this.filtering){
           case "Passwords":
+            this.$store.commit('password/SET_PASS_TRUE')
             this.$store.dispatch('password/fetchPasswords')
             .then( res => {
               if(res == 401){
@@ -91,6 +93,7 @@ import { mapState } from 'vuex'
             })
             break;
           case "Notes":
+            this.$store.commit('note/SET_NOTE_LOADING_TRUE')
             this.$store.dispatch('note/fetchNotes')
             .then( res => {
               if(res == 401){
