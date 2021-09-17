@@ -2,7 +2,8 @@ import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
-    wifis: []
+    wifis: [],
+    wifi_isLoading: false
 }
 
 export const mutations = {
@@ -10,6 +11,7 @@ export const mutations = {
         state.wifis.push(payload)
     },
     FETCH_WIFI(state, payload) {
+        state.wifi_isLoading = false
         state.wifis = payload.filter(id => { return id.wifi_id != state.wifis.wifi_id })
     },
     REMOVE_WIFIS(state) {
@@ -24,6 +26,9 @@ export const mutations = {
     UPDATE_WIFI(state, payload) {
         var index = state.wifis.findIndex(idx => idx.wifi_id === payload.wifi_id)
         Object.assign(state.wifis[index], payload)
+    },
+    SET_WIFI_LOADING_TRUE(state) {
+        state.wifi_isLoading = true
     }
 }
 

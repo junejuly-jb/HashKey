@@ -2,7 +2,8 @@ import HashKeyServices from '../../services/HashKeyServices'
 export const namespaced = true
 
 export const state = {
-    cards: []
+    cards: [],
+    card_isLoading: false
 }
 
 export const mutations = {
@@ -10,6 +11,7 @@ export const mutations = {
         state.cards.push(payload)
     },
     FETCH_CARD(state, payload) {
+        state.card_isLoading = false
         state.cards = payload.filter(id => { return id.card_id != state.cards.card_id })
     },
     REMOVE_CARDS(state) {
@@ -27,6 +29,9 @@ export const mutations = {
     UPDATE_CARD(state, payload) {
         var index = state.cards.findIndex(idx => idx.card_id === payload.card_id)
         Object.assign(state.cards[index], payload)
+    },
+    SET_CARD_LOADING_TRUE(state) {
+        state.card_isLoading = true
     }
 }
 
