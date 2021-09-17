@@ -4,7 +4,7 @@ import InformationDialog from '../Main/InformationDialog'
 import ExportDialog from '../Main/ExportDialog'
 import { mapState } from 'vuex'
 export default {
-    computed: { ...mapState('wifi', ['wifis']) },
+    computed: { ...mapState('wifi', ['wifis', 'wifi_isLoading']) },
     components: { UniversalDialog, InformationDialog, ExportDialog },
     data: () => ({
         dialogStat: false,
@@ -31,26 +31,35 @@ export default {
             <vs-button gradient @click="dialogStat = true">+ Wifi Key</vs-button>
             <vs-button gradient @click="exportWifi">Export</vs-button>
         </div>
-        <div v-if="wifis.length > 0" class="mx-2">
-            <masonry
-            :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
-            :gutter="{default: '30px', 700: '10px'}"
-            >
-                <div v-for="(wifi, index) in wifis" :key="index" class="neo" @click="view(wifi)">
-                    <v-container>
-                        <div class="text-center">
-                            <img src="../../assets/web-icons/wifi.png" alt="" width="60" class="web_icons">
-                            <h4 class="my-2">{{wifi.wifi_ssid}}</h4>
-                            <small>{{wifi.wifi_security}}</small>
-                        </div>
-                    </v-container>
-                </div>
-            </masonry>
+        <div class="progress__bar__container" v-if="wifi_isLoading">
+            <v-progress-circular
+            :size="50"
+            color="primary"
+            indeterminate
+            ></v-progress-circular>
         </div>
-        <div v-else class="mx-2 no_content_found">
-            <div class="text-center">
-                <h1>No wifi credentials to show</h1>
-                <pre>Click the <v-icon color="blue darken-2">mdi-key-plus</v-icon> to add new credentials</pre>
+        <div v-else>
+            <div v-if="wifis.length > 0" class="mx-2">
+                <masonry
+                :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
+                :gutter="{default: '30px', 700: '10px'}"
+                >
+                    <div v-for="(wifi, index) in wifis" :key="index" class="neo" @click="view(wifi)">
+                        <v-container>
+                            <div class="text-center">
+                                <img src="../../assets/web-icons/wifi.png" alt="" width="60" class="web_icons">
+                                <h4 class="my-2">{{wifi.wifi_ssid}}</h4>
+                                <small>{{wifi.wifi_security}}</small>
+                            </div>
+                        </v-container>
+                    </div>
+                </masonry>
+            </div>
+            <div v-else class="mx-2 no_content_found">
+                <div class="text-center">
+                    <h1>No wifi credentials to show</h1>
+                    <pre>Click the <v-icon color="blue darken-2">mdi-key-plus</v-icon> to add new credentials</pre>
+                </div>
             </div>
         </div>
         <UniversalDialog 
@@ -93,5 +102,11 @@ export default {
     }
     .no_content_found > div > h1 {
         color: rgb(87, 87, 87);
+    }
+    .progress__bar__container{
+        display: flex;
+        height: 50vh;
+        align-items: center;
+        justify-content: center;
     }
 </style>

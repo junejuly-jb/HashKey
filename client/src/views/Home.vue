@@ -103,6 +103,7 @@ import { mapState } from 'vuex'
             })
             break;
           case "Wifi":
+            this.$store.commit('wifi/SET_WIFI_LOADING_TRUE')
             this.$store.dispatch('wifi/fetchWifis')
             .then( res => {
               if(res == 401){
@@ -121,6 +122,7 @@ import { mapState } from 'vuex'
             })
             break;
           case "Cards":
+            this.$store.commit('card/SET_CARD_LOADING_TRUE')
             this.$store.dispatch('card/fetchCards')
             .then( res => {
               if(res == 401){
