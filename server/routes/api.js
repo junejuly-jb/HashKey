@@ -43,7 +43,6 @@ api.get('/cards', auth, CardController.cards)
 api.post('/delete-card', auth, CardController.removeCard)
 api.put('/update-card/:id', auth, CardController.updateCard)
 
-
 //user settings
 api.post('/update-user-timeout', auth, SettingController.changeTimeout)
 api.post('/update-easy-access', auth, SettingController.changeEasyAccess)
