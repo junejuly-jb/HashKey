@@ -27,4 +27,25 @@ const addContact = async (req, res) => {
     }
 }
 
-module.exports = { addContact }
+const contacts = async (req, res) => {
+    try {
+        const contact = await Contact.find({ owner: req.user._id })
+        const credentials = [];
+        for (let i = 0; i < contact.length; i++) {
+            var toPush = {
+                contact_id: contact[i]._id,
+                contact_fname: contact[i].credentials.fname,
+                contact_lname: contact[i].credentials.lname,
+                contact_number: contact[i].credentials.number,
+                contact_email: contact[i].credentials.email
+            }
+            credentials.push(toPush)
+        }
+        return res.status(200).json({ credentials })
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({ error })
+    }
+}
+
+module.exports = { addContact, contacts }

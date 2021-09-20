@@ -46,6 +46,7 @@ api.put('/update-card/:id', auth, CardController.updateCard)
 
 // contact routes
 api.post('/add-contact', auth, ContactController.addContact)
+api.get('/contacts', auth, ContactController.contacts)
 
 //user settings
 api.post('/update-user-timeout', auth, SettingController.changeTimeout)
