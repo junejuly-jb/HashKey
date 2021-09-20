@@ -30,13 +30,15 @@ export default {
         },
     },
     created(){
-
+        bus.$on('onSaveContact', (data) => {
+            console.log(data)
+        })
     },
     methods:{
-        
+         
     },
     beforeDestroy(){
-        bus.$off('onSaveCard')
+        bus.$off('onSaveContact')
     }
 }
 </script>
@@ -65,7 +67,7 @@ export default {
             v-model="contact">
             </v-text-field>
             <v-text-field prepend-icon="mdi-email-outline" rounded filled placeholder="email"
-            v-model="contact">
+            v-model="email">
             </v-text-field>
         </v-form>
     </v-container>
