@@ -25,7 +25,9 @@ export default {
                 action: 'id'
             }
         ],
-        model: -1,
+        model: -2,
+
+        filter: 'contacts'
     }),
     methods: {
         chooseItem(item){
@@ -41,6 +43,17 @@ export default {
 <template>
     <v-container>
         <vs-button gradient @click="id_type_picker = true">+ Info</vs-button>
+        <div class="mt-3">
+            <v-chip class="mr-2" color="primary" :outlined="filter !== 'contacts'"
+            @click="filter = 'contacts'" small
+            > Contacts </v-chip>
+            <v-chip class="mr-2" color="primary" :outlined="filter !== 'license'"
+            @click="filter = 'license'" small
+            > Drivers License </v-chip>
+            <v-chip color="primary" :outlined="filter !== 'id'"
+            @click="filter = 'id'" small
+            > ID </v-chip>
+        </div>
         <UniversalDialog
         :dialogStat="dialogStat" 
         :type="type"

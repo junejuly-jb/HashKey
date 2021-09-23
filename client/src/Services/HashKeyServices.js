@@ -146,6 +146,14 @@ export default {
         )
     },
 
+    addContact(payload) {
+        return apiClient.post('/add-contact/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
+
     // Settings Page
     updateTokenTimeout(payload) {
         return apiClient.post('/update-user-timeout/', payload, 

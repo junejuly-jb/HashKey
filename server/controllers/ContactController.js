@@ -48,4 +48,43 @@ const contacts = async (req, res) => {
     }
 }
 
-module.exports = { addContact, contacts }
+const removeContact = async (req, res) => {
+    try {
+        await Contact.deleteMany({ owner: req.user._id, _id: { $in: req.body.ids } })
+            .then((response) => {
+                if (response.deletedCount == 0) {
+                    throw new Error('Error deleting data')
+                }
+                else {
+                    return res.status(200).json({ msg: 'successfully deleted' })
+                }
+                
+            })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+
+const updateContact = async (req, res) => {
+    await Contact.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
+        $set: {
+            "credentials.fname": req.body.fname,
+            "credentials.lname": req.body.lname,
+            "credentials.number": req.body.number,
+            "credentials.email": req.body.email,
+        }
+    }, { returnOriginal: false, useFindAndModify: false },
+        (err, doc) => {
+            if (err) return res.status(500).send(err)
+            const credentials = {
+                contact_id: doc._id,
+                contact_fname: doc.credentials.fname,
+                contact_lname: doc.credentials.lname,
+                contact_number: doc.credentials.number,
+                contact_email: doc.credentials.email
+            }
+            return res.status(200).json({ credentials })
+        })
+}
+ 
+module.exports = { addContact, contacts, removeContact, updateContact }
