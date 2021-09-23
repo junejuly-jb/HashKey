@@ -154,6 +154,12 @@ export default {
         )
     },
 
+    fetchContacts() {
+        return apiClient.get('/contacts', {
+            headers: { Authorization: 'Bearer ' + getToken() }
+        })
+    },
+
     // Settings Page
     updateTokenTimeout(payload) {
         return apiClient.post('/update-user-timeout/', payload, 
