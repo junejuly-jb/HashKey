@@ -112,6 +112,15 @@ import { mapState } from 'vuex'
               }
             })
             break;
+          case "Personal Information":
+            this.$store.dispatch('contact/fetchContacts')
+            .then( res => {
+              if(res == 401){
+                console.log('unauthorize')
+                this.onLogout()
+              }
+            })
+            break;
           case "Password Status":
             this.$store.dispatch('password/fetchSecuredCredentials')
             .then( res => {
