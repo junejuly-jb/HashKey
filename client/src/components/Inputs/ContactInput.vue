@@ -2,7 +2,7 @@
 import { bus } from '../../main'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 export default {
-    props: ['c_fname','c_lname', 'c_email', 'c_contact'],
+    props: ['c_fname','c_lname', 'c_email', 'c_contact', 'dialog'],
     data: () => ({
         dialogStats: false,
         message: '',
@@ -28,10 +28,55 @@ export default {
             get(){ return this.c_email },
             set(val){ return this.$emit('change_email', val) }
         },
+        dialogStat: {
+            get(){ return this.dialog },
+            set(val){
+                if(!val){ return this.$emit('close') }
+            }
+        }
     },
     created(){
         bus.$on('onSaveContact', (data) => {
-            console.log(data)
+            this.$store.commit('SET_LOADING_LOCAL')
+            this.$store.dispatch('contact/addContact', {
+                c_fname: data.c_fname, c_lname: data.c_lname, c_contact: data.c_contact, c_email: data.c_email
+            })
+            .then( res => {
+                if(res === 200){
+                    setTimeout(() => {
+                        this.$refs.form.reset()
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Contact added successfully',
+                            position: 'top-right',
+                        })
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.dialogStat = false
+                        this.color = "custom_gray"
+                    }, 1000)
+                }
+                else if(res === 401){
+                    this.dialogStats = true
+                    this.message = 'Session has expired pls login to continue'
+                    this.width = '400px',
+                    this.header = 'Unauthorize'
+                    this.status = 'unauthorize'
+                }
+                else{
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Error occured',
+                        position: 'top-right',
+                    })
+                    setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 1000)
+                    this.dialogStat = false
+                    this.$refs.form.reset()
+                }
+            })
         })
     },
     methods:{

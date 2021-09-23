@@ -65,4 +65,26 @@ const removeContact = async (req, res) => {
     }
 }
 
-module.exports = { addContact, contacts, removeContact }
+const updateContact = async (req, res) => {
+    await Contact.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
+        $set: {
+            "credentials.fname": req.body.fname,
+            "credentials.lname": req.body.lname,
+            "credentials.number": req.body.number,
+            "credentials.email": req.body.email,
+        }
+    }, { returnOriginal: false, useFindAndModify: false },
+        (err, doc) => {
+            if (err) return res.status(500).send(err)
+            const credentials = {
+                contact_id: doc._id,
+                contact_fname: doc.credentials.fname,
+                contact_lname: doc.credentials.lname,
+                contact_number: doc.credentials.number,
+                contact_email: doc.credentials.email
+            }
+            return res.status(200).json({ credentials })
+        })
+}
+ 
+module.exports = { addContact, contacts, removeContact, updateContact }

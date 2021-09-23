@@ -65,6 +65,7 @@
             :c_lname="info_contact.c_lname"
             :c_contact="info_contact.c_contact"
             :c_email="info_contact.c_email"
+            :dialog="dialog"
             @change_fname="info_contact.c_fname = $event"
             @change_lname="info_contact.c_lname = $event"
             @change_contact="info_contact.c_contact = $event"
