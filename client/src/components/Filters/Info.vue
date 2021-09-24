@@ -1,8 +1,9 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
 import Contacts from './InfoComponents/Contacts.vue'
+import Chips from './InfoComponents/Chips.vue'
 export default {
-    components: { UniversalDialog, Contacts },
+    components: { UniversalDialog, Contacts, Chips },
     data: () => ({
         dialogStat: false,
         header: 'Add Personal Information',
@@ -27,9 +28,7 @@ export default {
             }
         ],
         model: -2,
-
         filter: 'contacts',
-        colors: ['red', 'pink', 'purple', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'orange', 'brown']
     }),
     methods: {
         chooseItem(item){
@@ -50,17 +49,7 @@ export default {
 <template>
     <v-container>
         <vs-button gradient @click="id_type_picker = true">+ Info</vs-button>
-        <div class="mt-3">
-            <v-chip class="mr-2" color="primary" :outlined="filter !== 'contacts'"
-            @click="filter = 'contacts'" small
-            > Contacts </v-chip>
-            <v-chip class="mr-2" color="primary" :outlined="filter !== 'license'"
-            @click="filter = 'license'" small
-            > Drivers License </v-chip>
-            <v-chip color="primary" :outlined="filter !== 'id'"
-            @click="filter = 'id'" small
-            > ID </v-chip>
-        </div>
+        <Chips :filter="filter" @onChangeFilterValue="filter = $event"/>
         <div class="scroll__view"> 
             <Contacts v-show="filter === 'contacts'"/>
         </div>

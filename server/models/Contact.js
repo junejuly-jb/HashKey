@@ -23,6 +23,9 @@ const contactSchema = new Schema({
         },
         email: {
             type: String
+        },
+        avatar_color: {
+            type: String
         }
     }
 })

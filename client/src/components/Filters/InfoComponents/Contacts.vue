@@ -3,7 +3,7 @@
         <div v-for="(contact, i) in contacts" :key="i" class="contact__list">
             <v-row no-gutters>
                 <v-col class="text-center py-3" md="2" lg="2">
-                    <v-avatar color="pink">
+                    <v-avatar :color="contact.contact_avatar_color">
                         <span class="white--text text-h5">{{ getInitials(contact.contact_fname, contact.contact_lname) }}</span>
                     </v-avatar>
                 </v-col>
