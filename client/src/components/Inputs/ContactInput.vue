@@ -9,6 +9,7 @@ export default {
         width: '',
         header: '',
         status: '',
+        colors: ['red', 'pink', 'purple', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'orange', 'brown'],
     }),
     components: { ConfirmationDialog },
     computed: {
@@ -39,7 +40,11 @@ export default {
         bus.$on('onSaveContact', (data) => {
             this.$store.commit('SET_LOADING_LOCAL')
             this.$store.dispatch('contact/addContact', {
-                c_fname: data.c_fname, c_lname: data.c_lname, c_contact: data.c_contact, c_email: data.c_email
+                c_fname: data.c_fname,
+                c_lname: data.c_lname,
+                c_contact: data.c_contact, 
+                c_email: data.c_email,
+                c_avatar_color: this.colors[Math.floor(Math.random() * this.colors.length)]
             })
             .then( res => {
                 if(res === 200){

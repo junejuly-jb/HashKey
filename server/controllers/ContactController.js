@@ -9,7 +9,8 @@ const addContact = async (req, res) => {
                 fname: req.body.c_fname,
                 lname: req.body.c_lname,
                 number: req.body.c_contact,
-                email: req.body.c_email
+                email: req.body.c_email,
+                avatar_color: req.body.c_avatar_color
             }
         })
         await contact.save()
@@ -19,7 +20,8 @@ const addContact = async (req, res) => {
             contact_fname: contact.credentials.fname,
             contact_lname: contact.credentials.lname,
             contact_number: contact.credentials.number,
-            contact_email: contact.credentials.email
+            contact_email: contact.credentials.email,
+            contact_avatar_color: contact.credentials.avatar_color
         }
         return res.status(200).json({ data: creds })
     } catch (error) {
@@ -37,7 +39,8 @@ const contacts = async (req, res) => {
                 contact_fname: contact[i].credentials.fname,
                 contact_lname: contact[i].credentials.lname,
                 contact_number: contact[i].credentials.number,
-                contact_email: contact[i].credentials.email
+                contact_email: contact[i].credentials.email,
+                contact_avatar_color: contact[i].credentials.avatar_color
             }
             credentials.push(toPush)
         }
