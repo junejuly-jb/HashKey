@@ -1,7 +1,8 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
+import Contacts from './InfoComponents/Contacts.vue'
 export default {
-    components: { UniversalDialog },
+    components: { UniversalDialog, Contacts },
     data: () => ({
         dialogStat: false,
         header: 'Add Personal Information',
@@ -27,7 +28,8 @@ export default {
         ],
         model: -2,
 
-        filter: 'contacts'
+        filter: 'contacts',
+        colors: ['red', 'pink', 'purple', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'orange', 'brown']
     }),
     methods: {
         chooseItem(item){
@@ -36,8 +38,13 @@ export default {
             this.dialogStat = true
             this.type = item.action
             console.log(item)
+        },
+        
+        get_random_color(){
+            var color = this.colors[Math.floor(Math.random() * this.colors.length)];
+            return color
         }
-    }
+    },
 }
 </script>
 <template>
@@ -54,6 +61,10 @@ export default {
             @click="filter = 'id'" small
             > ID </v-chip>
         </div>
+        <div class="scroll__view"> 
+            <Contacts v-show="filter === 'contacts'"/>
+        </div>
+
         <UniversalDialog
         :dialogStat="dialogStat" 
         :type="type"
@@ -87,3 +98,10 @@ export default {
         </vs-dialog>
     </v-container>
 </template>
+<style scoped>
+    .scroll__view{
+        margin-top: 10px;
+        height: 70vh;
+        overflow: auto;
+    }
+</style>
