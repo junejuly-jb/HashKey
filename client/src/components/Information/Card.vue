@@ -139,6 +139,7 @@ export default {
                             position: 'top-right',
                         })
                     }, 1000)
+                    
                 }
                 else{
                     this.$store.commit('SET_LOADING_LOCAL')

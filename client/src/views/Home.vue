@@ -113,6 +113,7 @@ import { mapState } from 'vuex'
             })
             break;
           case "Personal Information":
+            this.$store.commit('contact/SET_CONTACT_LOADING_TRUE')
             this.$store.dispatch('contact/fetchContacts')
             .then( res => {
               if(res == 401){

@@ -36,7 +36,6 @@ export default {
             this.header = `Add new ${item.action}`
             this.dialogStat = true
             this.type = item.action
-            console.log(item)
         },
         
         get_random_color(){

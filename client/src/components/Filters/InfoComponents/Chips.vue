@@ -21,9 +21,6 @@ export default {
                 return this.$emit('onChangeFilterValue', val)
             }
         }
-    },
-    mounted(){
-        console.log(this.filter)
     }
 }
 </script>
