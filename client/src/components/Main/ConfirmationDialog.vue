@@ -21,7 +21,7 @@
             <vs-button @click="doDeleteCard" transparent v-else>
                 Delete
             </vs-button>
-            <vs-button v-show="status !== 'logout'" @click="dialog=false" dark transparent>
+            <vs-button v-show="status !== 'logout' && status !== 'unauthorize'" @click="dialog=false" dark transparent>
                 Cancel
             </vs-button>
             </div>
@@ -70,6 +70,7 @@ export default {
                 this.$store.commit('password/REMOVE_ALL_UNSECURED_CREDENTIALS')
                 this.$store.commit('wifi/REMOVE_WIFIS')
                 this.$store.commit('note/REMOVE_NOTES')
+                this.$store.commit('contact/REMOVE_CONTACTS')
                 this.$store.commit('card/REMOVE_CARDS')
                 this.$auth.destroyToken()
                 this.$router.push('/')

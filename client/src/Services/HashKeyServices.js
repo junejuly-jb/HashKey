@@ -146,6 +146,8 @@ export default {
         )
     },
 
+
+    // contacts api
     addContact(payload) {
         return apiClient.post('/add-contact/', payload,
             {
@@ -158,6 +160,14 @@ export default {
         return apiClient.get('/contacts', {
             headers: { Authorization: 'Bearer ' + getToken() }
         })
+    },
+
+    deleteContacts(payload) {
+        return apiClient.post('/delete-contact', { ids: payload },
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
     },
 
     // Settings Page
