@@ -39,7 +39,7 @@
                                     </v-tooltip>
                                 </template>
                                 <v-list dense>
-                                    <v-list-item link>
+                                    <v-list-item link @click="onClickEdit(contact)">
                                         <v-list-item-icon>
                                             <v-icon>mdi-pencil-outline</v-icon>
                                         </v-list-item-icon>
@@ -71,20 +71,36 @@
         :header="header"
         :status="status"
         />
+
+        <EditDialog 
+        :editDialogStatus="editDialogStatus"
+        :info="selected_contact"
+        @close="editDialogStatus = false"
+        @change_fname="selected_contact.contact_fname = $event"
+        @change_lname="selected_contact.contact_lname = $event"
+        @change_number="selected_contact.contact_number = $event"
+        @change_email="selected_contact.contact_email = $event"
+        />
+
     </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import ConfirmationDialog from '../../Main/ConfirmationDialog'
+import EditDialog from './EditDialog.vue'
 export default {
     data: () => ({
         dialogStats: false,
         header: '',
         message: '',
         status: '',
-        ids: []
+        ids: [],
+
+        // edit dialog
+        editDialogStatus: false,
+        selected_contact: {}
     }),
-    components: { ConfirmationDialog },
+    components: { ConfirmationDialog, EditDialog },
     computed: {
         ...mapState('contact', ['contacts', 'contacts_isLoading'])
     },
@@ -130,6 +146,10 @@ export default {
                 }
             })
         },
+        onClickEdit(contact){
+            this.selected_contact = contact
+            this.editDialogStatus = true
+        }
     }
 }
 </script>
