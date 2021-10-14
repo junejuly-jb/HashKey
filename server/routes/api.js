@@ -6,6 +6,7 @@ const WifiController = require('../controllers/WifiController')
 const NoteController = require('../controllers/NoteController')
 const CardController = require('../controllers/CardController')
 const ContactController = require('../controllers/ContactController')
+const DLicenseController = require('../controllers/DLController')
 const SettingController = require('../controllers/SettingController')
 const passport = require('passport')
 const passportConf = require('../passport')
@@ -49,6 +50,9 @@ api.post('/add-contact', auth, ContactController.addContact)
 api.get('/contacts', auth, ContactController.contacts)
 api.post('/delete-contact', auth, ContactController.removeContact)
 api.put('/update-contact/:id', auth, ContactController.updateContact)
+
+// license routes
+api.post('/add-driver-license', auth, DLicenseController.addDLicense)
 
 //user settings
 api.post('/update-user-timeout', auth, SettingController.changeTimeout)
