@@ -25,7 +25,11 @@ export const mutations = {
     },
     SET_CONTACT_LOADING_TRUE(state) {
         state.contacts_isLoading = true
-    }
+    },
+    UPDATE_CONTACT(state, payload) {
+        var index = state.contacts.findIndex(idx => idx.contact_id === payload.contact_id)
+        Object.assign(state.contacts[index], payload)
+    },
 }
 
 export const actions = {
@@ -59,6 +63,17 @@ export const actions = {
                 return err.response.status
             })
     },
+    updateContact({ commit }, payload) {
+        return HashKeyServices.updateContact(payload.id, payload)
+            .then(response => {
+                commit('UPDATE_CONTACT', response.data.credentials)
+                return response.status
+            })
+            .catch(err => {
+                console.log(err.response)
+                return err.response.status
+            })
+    }
 }
 
 export const getters = {

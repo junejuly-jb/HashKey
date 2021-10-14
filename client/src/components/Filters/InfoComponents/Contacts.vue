@@ -39,7 +39,7 @@
                                     </v-tooltip>
                                 </template>
                                 <v-list dense>
-                                    <v-list-item link>
+                                    <v-list-item link @click="onClickEdit(contact)">
                                         <v-list-item-icon>
                                             <v-icon>mdi-pencil-outline</v-icon>
                                         </v-list-item-icon>
@@ -71,20 +71,43 @@
         :header="header"
         :status="status"
         />
+
+        <EditDialog 
+        :editDialogStatus="editDialogStatus"
+        :info="selected_contact"
+        @close="editDialogStatus = false"
+        @change_fname="selected_contact.fname = $event"
+        @change_lname="selected_contact.lname = $event"
+        @change_number="selected_contact.contact = $event"
+        @change_email="selected_contact.email = $event"
+        @error401="error401"
+        />
+
     </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import ConfirmationDialog from '../../Main/ConfirmationDialog'
+import EditDialog from './EditDialog.vue'
 export default {
     data: () => ({
         dialogStats: false,
         header: '',
         message: '',
         status: '',
-        ids: []
+        ids: [],
+
+        // edit dialog
+        editDialogStatus: false,
+        selected_contact: {
+            id: '',
+            fname: '',
+            lname: '',
+            contact: '',
+            email: ''
+        }
     }),
-    components: { ConfirmationDialog },
+    components: { ConfirmationDialog, EditDialog },
     computed: {
         ...mapState('contact', ['contacts', 'contacts_isLoading'])
     },
@@ -129,6 +152,21 @@ export default {
                     this.ids = []
                 }
             })
+        },
+        onClickEdit(contact){
+            this.selected_contact.id = contact.contact_id
+            this.selected_contact.fname = contact.contact_fname
+            this.selected_contact.lname = contact.contact_lname
+            this.selected_contact.contact = contact.contact_number
+            this.selected_contact.email = contact.contact_email
+            this.editDialogStatus = true
+        },
+        error401(){
+            this.dialogStats = true
+            this.message = 'Session has expired pls login to continue'
+            this.width = '400px',
+            this.header = 'Unauthorize'
+            this.status = 'unauthorize'
         },
     }
 }

@@ -170,6 +170,14 @@ export default {
         )
     },
 
+    updateContact(id, payload) {
+        return apiClient.put('/update-contact/' + id, payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
+
     // Settings Page
     updateTokenTimeout(payload) {
         return apiClient.post('/update-user-timeout/', payload, 
