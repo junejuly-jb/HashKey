@@ -50,22 +50,22 @@ const licenses = async (req, res) => {
     }
 }
 
-// const removeContact = async (req, res) => {
-//     try {
-//         await Contact.deleteMany({ owner: req.user._id, _id: { $in: req.body.ids } })
-//             .then((response) => {
-//                 if (response.deletedCount == 0) {
-//                     throw new Error('Error deleting data')
-//                 }
-//                 else {
-//                     return res.status(200).json({ msg: 'successfully deleted' })
-//                 }
+const removeLicenses = async (req, res) => {
+    try {
+        await DLicense.deleteMany({ owner: req.user._id, _id: { $in: req.body.ids } })
+            .then((response) => {
+                if (response.deletedCount == 0) {
+                    throw new Error('Error deleting data')
+                }
+                else {
+                    return res.status(200).json({ msg: 'successfully deleted' })
+                }
 
-//             })
-//     } catch (error) {
-//         return res.status(500).send(error)
-//     }
-// }
+            })
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
 
 // const updateContact = async (req, res) => {
 //     await Contact.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
@@ -89,4 +89,4 @@ const licenses = async (req, res) => {
 //         })
 // }
 
-module.exports = { addDLicense, licenses }
+module.exports = { addDLicense, licenses, removeLicenses }

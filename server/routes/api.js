@@ -54,6 +54,7 @@ api.put('/update-contact/:id', auth, ContactController.updateContact)
 // license routes
 api.post('/add-driver-license', auth, DLicenseController.addDLicense)
 api.get('/licenses', auth, DLicenseController.licenses)
+api.post('/delete-license', auth, DLicenseController.removeLicenses)
 
 //user settings
 api.post('/update-user-timeout', auth, SettingController.changeTimeout)
