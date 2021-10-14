@@ -67,26 +67,26 @@ const removeLicenses = async (req, res) => {
     }
 }
 
-// const updateContact = async (req, res) => {
-//     await Contact.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
-//         $set: {
-//             "credentials.fname": req.body.fname,
-//             "credentials.lname": req.body.lname,
-//             "credentials.number": req.body.number,
-//             "credentials.email": req.body.email,
-//         }
-//     }, { returnOriginal: false, useFindAndModify: false },
-//         (err, doc) => {
-//             if (err) return res.status(500).send(err)
-//             const credentials = {
-//                 contact_id: doc._id,
-//                 contact_fname: doc.credentials.fname,
-//                 contact_lname: doc.credentials.lname,
-//                 contact_number: doc.credentials.number,
-//                 contact_email: doc.credentials.email
-//             }
-//             return res.status(200).json({ credentials })
-//         })
-// }
+const updateLicense = async (req, res) => {
+    await DLicense.findOneAndUpdate({ _id: req.params.id, owner: req.user._id }, {
+        $set: {
+            "credentials.name": req.body.name,
+            "credentials.number": req.body.number,
+            "credentials.date_issued": req.body.date_issued,
+            "credentials.exp_date": req.body.exp_date,
+        }
+    }, { returnOriginal: false, useFindAndModify: false },
+        (err, doc) => {
+            if (err) return res.status(500).send(err)
+            const credentials = {
+                license_id: doc._id,
+                license_name: doc.credentials.name,
+                license_number: doc.credentials.number,
+                license_date_issued: doc.credentials.date_issued,
+                license_exp_date: doc.credentials.exp_date
+            }
+            return res.status(200).json({ credentials })
+        })
+}
 
-module.exports = { addDLicense, licenses, removeLicenses }
+module.exports = { addDLicense, licenses, removeLicenses, updateLicense }
