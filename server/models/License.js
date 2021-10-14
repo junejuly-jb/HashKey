@@ -19,7 +19,7 @@ const DLicenseSchema = new Schema({
             type: String
         },
         date_issued: {
-            type: Date
+            type: String
         },
         exp_date: {
             type: String
