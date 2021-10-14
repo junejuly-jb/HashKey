@@ -30,27 +30,25 @@ const addDLicense = async (req, res) => {
     }
 }
 
-// const contacts = async (req, res) => {
-//     try {
-//         const contact = await Contact.find({ owner: req.user._id })
-//         const credentials = [];
-//         for (let i = 0; i < contact.length; i++) {
-//             var toPush = {
-//                 contact_id: contact[i]._id,
-//                 contact_fname: contact[i].credentials.fname,
-//                 contact_lname: contact[i].credentials.lname,
-//                 contact_number: contact[i].credentials.number,
-//                 contact_email: contact[i].credentials.email,
-//                 contact_avatar_color: contact[i].credentials.avatar_color
-//             }
-//             credentials.push(toPush)
-//         }
-//         return res.status(200).json({ credentials })
-//     } catch (error) {
-//         console.log(err)
-//         return res.status(500).json({ error })
-//     }
-// }
+const licenses = async (req, res) => {
+    try {
+        const license = await DLicense.find({ owner: req.user._id })
+        const credentials = [];
+        for (let i = 0; i < license.length; i++) {
+            var toPush = {
+                license_id: license[i]._id,
+                license_name: license[i].credentials.name,
+                license_number: license[i].credentials.number,
+                license_date_issued: license[i].credentials.date_issued,
+                license_exp_date: license[i].credentials.exp_date,
+            }
+            credentials.push(toPush)
+        }
+        return res.status(200).json({ data: credentials.length > 0 ? credentials : [] })
+    } catch (error) {
+        return res.status(500).json({ error })
+    }
+}
 
 // const removeContact = async (req, res) => {
 //     try {
@@ -91,6 +89,4 @@ const addDLicense = async (req, res) => {
 //         })
 // }
 
-module.exports = { addDLicense }
-
-// contacts, removeContact, updateContact
+module.exports = { addDLicense, licenses }
