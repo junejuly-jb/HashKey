@@ -12,25 +12,25 @@ export default {
             }
         },
         fname: {
-            get(){ return this.info.contact_fname },
+            get(){ return this.info.fname },
             set(val){
                 return this.$emit('change_fname', val)
             }
         },
         lname: {
-            get(){ return this.info.contact_lname },
+            get(){ return this.info.lname },
             set(val){
                 return this.$emit('change_lname', val)
             }
         },
         contact: {
-            get(){ return this.info.contact_number },
+            get(){ return this.info.contact },
             set(val){
                 return this.$emit('change_number', val)
             }
         },
         email: {
-            get(){ return this.info.contact_email },
+            get(){ return this.info.email },
             set(val){
                 return this.$emit('change_email', val)
             }
@@ -39,7 +39,43 @@ export default {
     props: ['info', 'editDialogStatus'],
     methods: {
         btnUpdate(){
-            console.log(this.fname,this.lname,this.contact,this.email)
+            this.$store.commit('SET_LOADING_LOCAL')
+            this.$store.dispatch('contact/updateContact', {
+                id: this.info.id,
+                fname: this.fname,
+                lname: this.lname,
+                number: this.contact,
+                email: this.email
+            })
+            .then( res => {
+                if(res === 401){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$emit('error401')
+                }
+                else if( res === 200){
+                    setTimeout( () => {
+                        this.$store.commit('SET_LOADING_LOCAL')
+                        this.dialog = false
+                        this.$vs.notification({
+                            title: 'Success',
+                            color: 'success',
+                            width: 'auto',
+                            text: 'Contact updated successfully',
+                            position: 'top-right',
+                        })
+                    }, 1000)
+                }
+                else{
+                    this.$store.commit('SET_LOADING_LOCAL')
+                    this.$vs.notification({
+                        title: 'Error',
+                        color: 'danger',
+                        width: 'auto',
+                        text: 'Something went wrong',
+                        position: 'top-right',
+                    })
+                }
+            })
         }
     }
 }

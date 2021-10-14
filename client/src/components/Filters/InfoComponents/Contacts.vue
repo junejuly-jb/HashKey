@@ -76,10 +76,11 @@
         :editDialogStatus="editDialogStatus"
         :info="selected_contact"
         @close="editDialogStatus = false"
-        @change_fname="selected_contact.contact_fname = $event"
-        @change_lname="selected_contact.contact_lname = $event"
-        @change_number="selected_contact.contact_number = $event"
-        @change_email="selected_contact.contact_email = $event"
+        @change_fname="selected_contact.fname = $event"
+        @change_lname="selected_contact.lname = $event"
+        @change_number="selected_contact.contact = $event"
+        @change_email="selected_contact.email = $event"
+        @error401="error401"
         />
 
     </div>
@@ -98,7 +99,13 @@ export default {
 
         // edit dialog
         editDialogStatus: false,
-        selected_contact: {}
+        selected_contact: {
+            id: '',
+            fname: '',
+            lname: '',
+            contact: '',
+            email: ''
+        }
     }),
     components: { ConfirmationDialog, EditDialog },
     computed: {
@@ -147,9 +154,20 @@ export default {
             })
         },
         onClickEdit(contact){
-            this.selected_contact = contact
+            this.selected_contact.id = contact.contact_id
+            this.selected_contact.fname = contact.contact_fname
+            this.selected_contact.lname = contact.contact_lname
+            this.selected_contact.contact = contact.contact_number
+            this.selected_contact.email = contact.contact_email
             this.editDialogStatus = true
-        }
+        },
+        error401(){
+            this.dialogStats = true
+            this.message = 'Session has expired pls login to continue'
+            this.width = '400px',
+            this.header = 'Unauthorize'
+            this.status = 'unauthorize'
+        },
     }
 }
 </script>
