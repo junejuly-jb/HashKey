@@ -1,9 +1,10 @@
 <script>
 import UniversalDialog from '../Main/UniversalDialog'
 import Contacts from './InfoComponents/Contacts.vue'
+import Licenses from './InfoComponents/Licenses.vue'
 import Chips from './InfoComponents/Chips.vue'
 export default {
-    components: { UniversalDialog, Contacts, Chips },
+    components: { UniversalDialog, Contacts, Chips, Licenses },
     data: () => ({
         dialogStat: false,
         header: 'Add Personal Information',
@@ -50,7 +51,8 @@ export default {
         <vs-button gradient @click="id_type_picker = true">+ Info</vs-button>
         <Chips :filter="filter" @onChangeFilterValue="filter = $event"/>
         <div class="scroll__view"> 
-            <Contacts v-show="filter === 'contacts'"/>
+            <Contacts v-if="filter === 'contacts'"/>
+            <Licenses v-else/>
         </div>
 
         <UniversalDialog
