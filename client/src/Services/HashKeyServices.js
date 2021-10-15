@@ -209,6 +209,10 @@ export default {
         )
     },
 
+    getCountries() {
+        return axios.get('https://restcountries.com/v3.1/all')
+    },
+
     // Settings Page
     updateTokenTimeout(payload) {
         return apiClient.post('/update-user-timeout/', payload, 
