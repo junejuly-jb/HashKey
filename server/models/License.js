@@ -18,12 +18,12 @@ const DLicenseSchema = new Schema({
         number: {
             type: String
         },
-        date_issued: {
-            type: String
-        },
         exp_date: {
             type: String
-        }
+        },
+        country: {
+            type: String
+        },
     }
 })
 
