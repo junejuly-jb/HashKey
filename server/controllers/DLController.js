@@ -7,8 +7,8 @@ const addDLicense = async (req, res) => {
             credentials: {
                 name: req.body.name,
                 number: req.body.number,
-                date_issued: req.body.date_issued,
-                exp_date: req.body.exp_date
+                exp_date: req.body.exp_date,
+                country: req.body.country
             }
         })
 
@@ -18,8 +18,8 @@ const addDLicense = async (req, res) => {
             license_id: license._id,
             license_name: license.credentials.name,
             license_number: license.credentials.number,
-            license_date_issued: license.credentials.date_issued,
-            license_exp_date: license.credentials.exp_date
+            license_exp_date: license.credentials.exp_date,
+            license_country: license.credentials.country
         }
         return res.status(200).json({ data: creds })
     } catch (error) {
@@ -39,8 +39,8 @@ const licenses = async (req, res) => {
                 license_id: license[i]._id,
                 license_name: license[i].credentials.name,
                 license_number: license[i].credentials.number,
-                license_date_issued: license[i].credentials.date_issued,
                 license_exp_date: license[i].credentials.exp_date,
+                license_country: license[i].credentials.country,
             }
             credentials.push(toPush)
         }
@@ -72,8 +72,8 @@ const updateLicense = async (req, res) => {
         $set: {
             "credentials.name": req.body.name,
             "credentials.number": req.body.number,
-            "credentials.date_issued": req.body.date_issued,
             "credentials.exp_date": req.body.exp_date,
+            "credentials.country": req.body.country,
         }
     }, { returnOriginal: false, useFindAndModify: false },
         (err, doc) => {
@@ -82,8 +82,8 @@ const updateLicense = async (req, res) => {
                 license_id: doc._id,
                 license_name: doc.credentials.name,
                 license_number: doc.credentials.number,
-                license_date_issued: doc.credentials.date_issued,
-                license_exp_date: doc.credentials.exp_date
+                license_exp_date: doc.credentials.exp_date,
+                license_country: doc.credentials.country
             }
             return res.status(200).json({ credentials })
         })
