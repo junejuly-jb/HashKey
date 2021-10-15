@@ -6,6 +6,7 @@
             </h4>
         </template>
         <div class="con-content">
+
             <PasswordInput
             v-show="type == 'password'"
             :l_website="login.l_website"
@@ -23,6 +24,7 @@
             @change_validPassForm="validPassForm = $event"
             @close="dialog = false"
             />
+
             <WifiInput
             v-show="type == 'wifi'"
             :w_ssid="wifi.w_ssid"
@@ -33,6 +35,7 @@
             @change_security="wifi.w_security = $event"
             @change_pass="wifi.w_pass = $event"
             @close="dialog = false"/>
+
             <NoteInput 
             v-show="type == 'note'"
             :n_title="note.n_title"
@@ -59,6 +62,7 @@
             @change_color="card.c_color = $event"
             @close="dialog = false"
             />
+            
             <ContactInput
             v-show="type == 'contact'"
             :c_fname="info_contact.c_fname"
@@ -72,6 +76,21 @@
             @change_email="info_contact.c_email = $event"
             @close="dialog = false"
             />
+
+            <DriverLicenseInput 
+            v-show="type == 'drivers license'"
+            :d_name="info_drivers_license.d_name"
+            :d_lic_number="info_drivers_license.d_lic_number"
+            :d_exp_date="info_drivers_license.d_exp_date"
+            :d_country="info_drivers_license.d_country"
+            :dialog="dialog"
+            @change_name="info_drivers_license.d_name = $event"
+            @change_license_number="info_drivers_license.d_lic_number = $event"
+            @change_exp_date="info_drivers_license.d_exp_date = $event"
+            @change_country="info_drivers_license.d_country = $event"
+            @close="dialog = false"
+            />
+
         </div>
 
         <template #footer>
@@ -94,6 +113,9 @@
             <vs-button @click="addContact" transparent v-show="type == 'contact'">
                 Save Contact
             </vs-button>
+             <vs-button @click="addDLicense" transparent v-show="type == 'drivers license'">
+                Save Driver's License
+            </vs-button>
             <vs-button @click="onClickCancel" dark transparent>
                 Cancel
             </vs-button>
@@ -107,6 +129,7 @@ import WifiInput from '../Inputs/WifiInput'
 import NoteInput from '../Inputs/NoteInput'
 import CardInput from '../Inputs/CardInput'
 import ContactInput from '../Inputs/ContactInput'
+import DriverLicenseInput from '../Inputs/DriverLicenseInput'
 import { bus } from '../../main'
 import { mapState } from 'vuex'
 export default {
@@ -146,9 +169,9 @@ export default {
         },
         info_drivers_license: {
             d_name: '',
-            d_l_number: '',
-            d_d_issued: '',
-            d_d_expiration: ''
+            d_lic_number: '',
+            d_exp_date: '',
+            d_country: ''
         },
         info_id: {
             i_id_no: '',
@@ -156,7 +179,7 @@ export default {
             i_contact: ''
         }
     }),
-    components: { PasswordInput, WifiInput, NoteInput, CardInput, ContactInput },
+    components: { PasswordInput, WifiInput, NoteInput, CardInput, ContactInput, DriverLicenseInput },
     props: ['dialogStat', 'header', 'type'],
     computed: {
         ...mapState(['isLoadingLocal']),
@@ -177,6 +200,7 @@ export default {
         addNote(){ bus.$emit('onSaveNote', this.note) },
         addCard(){ bus.$emit('onSaveCard', this.card) },
         addContact(){ bus.$emit('onSaveContact', this.info_contact) },
+        addDLicense(){ bus.$emit('onSaveLicense', this.info_drivers_license) },
         onClickCancel(){ 
             this.dialog = false
             bus.$emit('onClickCancel') 
