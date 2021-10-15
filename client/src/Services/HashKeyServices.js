@@ -178,6 +178,37 @@ export default {
         )
     },
 
+    // license api
+    addLicense(payload) {
+        return apiClient.post('/add-driver-license/', payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
+
+    fetchLicenses() {
+        return apiClient.get('/licenses', {
+            headers: { Authorization: 'Bearer ' + getToken() }
+        })
+    },
+
+    deleteLicense(payload) {
+        return apiClient.post('/delete-license', { ids: payload },
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
+
+    updateLicense(id, payload) {
+        return apiClient.put('/update-license/' + id, payload,
+            {
+                headers: { Authorization: 'Bearer ' + getToken() }
+            }
+        )
+    },
+
     // Settings Page
     updateTokenTimeout(payload) {
         return apiClient.post('/update-user-timeout/', payload, 
