@@ -83,11 +83,13 @@
             :d_lic_number="info_drivers_license.d_lic_number"
             :d_exp_date="info_drivers_license.d_exp_date"
             :d_country="info_drivers_license.d_country"
+            :d_flag="info_drivers_license.d_flag"
             :dialog="dialog"
             @change_name="info_drivers_license.d_name = $event"
             @change_license_number="info_drivers_license.d_lic_number = $event"
             @change_exp_date="info_drivers_license.d_exp_date = $event"
             @change_country="info_drivers_license.d_country = $event"
+            @change_flag="info_drivers_license.d_flag = $event"
             @close="dialog = false"
             />
 
@@ -170,6 +172,7 @@ export default {
         info_drivers_license: {
             d_name: '',
             d_lic_number: '',
+            d_flag: '',
             d_exp_date: '',
             d_country: ''
         },
