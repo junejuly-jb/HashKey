@@ -41,6 +41,7 @@ const licenses = async (req, res) => {
                 license_id: license[i]._id,
                 license_name: license[i].credentials.name,
                 license_number: license[i].credentials.number,
+                license_flag: license[i].credentials.flag,
                 license_exp_date: license[i].credentials.exp_date,
                 license_country: license[i].credentials.country,
             }
