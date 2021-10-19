@@ -9,12 +9,12 @@
         <div class="mx-2" v-if="licenses.length > 0">
             <masonry
             :cols="{default: 2, 1000: 2, 700: 1, 400: 1}"
-            :gutter="{default: '30px', 700: '10px'}"
+            :gutter="{default: '20px', 700: '10px'}"
             >
                 <v-card elevation="0" v-for="(license, index) in licenses" :key="index" class="neo rounded-lg mb-2">
                     <v-container>
                         <v-row>
-                            <v-col cols="3">
+                            <v-col cols="3 d-flex align-center justify-center">
                                 <v-avatar color="indigo">
                                     <v-icon dark>
                                         mdi-account-circle
@@ -26,13 +26,16 @@
                                     <div class="overline">
                                         {{ license.license_name }}
                                     </div>
-                                    <div class="d-flex">
+                                    <div class="d-flex align-center">
                                         <div>
-                                            <img src="" alt="">
+                                            <img :src="license.license_flag" alt="" width="20">
                                         </div>
-                                        <div class="caption">{{ license.license_number }}</div>
+                                        <div class="caption ml-2">{{ license.license_number }}</div>
                                     </div>
-                                    
+                                    <div class="mt-4">
+                                        <span class="caption red--text">expiry: </span>
+                                        <span class="caption">{{ license.license_exp_date }}</span>
+                                    </div>
                                 </div>
                             </v-col>
                         </v-row>
