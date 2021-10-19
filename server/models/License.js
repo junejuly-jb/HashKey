@@ -18,6 +18,9 @@ const DLicenseSchema = new Schema({
         number: {
             type: String
         },
+        flag: {
+            type: String
+        },
         exp_date: {
             type: String
         },

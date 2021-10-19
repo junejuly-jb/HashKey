@@ -2,8 +2,9 @@
 import { bus } from '../../main'
 import ConfirmationDialog from '../Main/ConfirmationDialog'
 import HashKeyServices from '../../services/HashKeyServices'
+import axios from 'axios'
 export default {
-    props: ['d_name','d_l_number', 'd_d_issued', 'd_d_expiration', 'dialog'],
+    props: ['d_name','d_l_number', 'd_flag', 'd_d_issued', 'd_d_expiration', 'dialog'],
     data: () => ({
         dialogStats: false,
         message: '',
@@ -22,6 +23,10 @@ export default {
         license_number: {
             get(){ return this.d_lic_number },
             set(val){ return this.$emit('change_license_number', val) }
+        },
+        flag: {
+            get(){ return this.d_flag },
+            set(val){ return this.$emit('change_flag', val) }
         },
         exp_date: {
             get(){ return this.d_exp_date },
@@ -45,48 +50,56 @@ export default {
         bus.$on('onSaveLicense', data => {
             this.$store.commit('SET_LOADING_LOCAL')
             console.log(data)
-            this.$store.dispatch('license/addLicense', {
-                name: data.d_name,
-                number: data.d_lic_number,
-                exp_date: data.d_exp_date,
-                country: data.d_country
-            })
-            .then( res => {
-                if(res === 200){
-                    setTimeout(() => {
-                        this.$refs.form.reset()
-                        this.$vs.notification({
-                            title: 'Success',
-                            color: 'success',
-                            width: 'auto',
-                            text: 'License added successfully',
-                            position: 'top-right',
-                        })
-                        this.$store.commit('SET_LOADING_LOCAL')
-                        this.dialogStat = false
-                    }, 500)
-                }
-                else if(res === 401){
-                    this.dialogStats = true
-                    this.message = 'Session has expired pls login to continue'
-                    this.width = '400px',
-                    this.header = 'Unauthorize'
-                    this.status = 'unauthorize'
-                }
-                else{
-                    this.$vs.notification({
-                        title: 'Error',
-                        color: 'danger',
-                        width: 'auto',
-                        text: 'Error occured',
-                        position: 'top-right',
-                    })
-                    setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 500)
-                    this.dialogStat = false
-                    this.$refs.form.reset()
-                }
-            })
+            // this.$store.dispatch('license/addLicense', {
+            //     name: data.d_name,
+            //     number: data.d_lic_number,
+            //     exp_date: data.d_exp_date,
+            //     country: data.d_country
+            // })
+            // .then( res => {
+            //     if(res === 200){
+            //         setTimeout(() => {
+            //             this.$refs.form.reset()
+            //             this.$vs.notification({
+            //                 title: 'Success',
+            //                 color: 'success',
+            //                 width: 'auto',
+            //                 text: 'License added successfully',
+            //                 position: 'top-right',
+            //             })
+            //             this.$store.commit('SET_LOADING_LOCAL')
+            //             this.dialogStat = false
+            //         }, 500)
+            //     }
+            //     else if(res === 401){
+            //         this.dialogStats = true
+            //         this.message = 'Session has expired pls login to continue'
+            //         this.width = '400px',
+            //         this.header = 'Unauthorize'
+            //         this.status = 'unauthorize'
+            //     }
+            //     else{
+            //         this.$vs.notification({
+            //             title: 'Error',
+            //             color: 'danger',
+            //             width: 'auto',
+            //             text: 'Error occured',
+            //             position: 'top-right',
+            //         })
+            //         setTimeout(() => { this.$store.commit('SET_LOADING_LOCAL') }, 500)
+            //         this.dialogStat = false
+            //         this.$refs.form.reset()
+            //     }
+            // })
         })
+    },
+    methods: {
+        async onChangeCountry(e){
+            await axios.get('https://restcountries.com/v3.1/name/' + e)
+            .then( res => {
+                this.flag = res.data[0].flags.svg
+            })
+        }
     },
     mounted(){
         if(this.countries.length <= 0){
@@ -133,6 +146,7 @@ export default {
             item-text="name"
             item-value="name"
             :loading="isFetching"
+            @change="onChangeCountry"
             >
                 <template slot="item" slot-scope="data">
                     <v-list-item-avatar>

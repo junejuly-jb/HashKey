@@ -7,6 +7,7 @@ const addDLicense = async (req, res) => {
             credentials: {
                 name: req.body.name,
                 number: req.body.number,
+                flag: req.body.flag,
                 exp_date: req.body.exp_date,
                 country: req.body.country
             }
@@ -18,6 +19,7 @@ const addDLicense = async (req, res) => {
             license_id: license._id,
             license_name: license.credentials.name,
             license_number: license.credentials.number,
+            license_flag: license.credentials.flag,
             license_exp_date: license.credentials.exp_date,
             license_country: license.credentials.country
         }
