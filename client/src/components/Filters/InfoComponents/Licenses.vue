@@ -9,36 +9,39 @@
         <div class="mx-2" v-if="licenses.length > 0">
             <masonry
             :cols="{default: 2, 1000: 2, 700: 1, 400: 1}"
-            :gutter="{default: '20px', 700: '10px'}"
+            :gutter="{default: '15px', 700: '10px'}"
             >
                 <v-card elevation="0" v-for="(license, index) in licenses" :key="index" class="neo rounded-lg mb-2">
                     <v-container>
-                        <v-row>
-                            <v-col cols="3 d-flex align-center justify-center">
+                        <div class="d-flex float-right">
+                            <v-btn icon x-small color="green">
+                                <v-icon>mdi-pencil-outline</v-icon>
+                            </v-btn>
+                            <div class="mx-1"></div>
+                            <v-btn icon x-small color="red">
+                                <v-icon>mdi-close-circle-outline</v-icon>
+                            </v-btn>
+                        </div>
+                        <div class="license__container">
+                            <div class="avatar">
                                 <v-avatar color="indigo">
                                     <v-icon dark>
                                         mdi-account-circle
                                     </v-icon>
                                 </v-avatar>
-                            </v-col>
-                            <v-col class="d-flex align-center">
-                                <div>
-                                    <div class="overline">
-                                        {{ license.license_name }}
-                                    </div>
-                                    <div class="d-flex align-center">
-                                        <div>
-                                            <img :src="license.license_flag" alt="" width="20">
-                                        </div>
-                                        <div class="caption ml-2">{{ license.license_number }}</div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <span class="caption red--text">expiry: </span>
-                                        <span class="caption">{{ license.license_exp_date }}</span>
-                                    </div>
+                            </div>
+                            <div class="details">
+                                <div class="overline">
+                                    {{ license.license_name }}
                                 </div>
-                            </v-col>
-                        </v-row>
+                                <div class="d-flex align-center">
+                                    <div>
+                                        <img :src="license.license_flag" alt="" width="20">
+                                    </div>
+                                    <div class="caption ml-2">{{ license.license_number }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </v-container>
                 </v-card>
             </masonry>
@@ -89,5 +92,49 @@ export default {
     }
     .no_content_found > div > h1 {
         color: rgb(87, 87, 87);
+    }
+    .license__container{
+        display: flex;
+        padding: 20px 0px;
+    }
+    .avatar{
+        width: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background: chocolate; */
+    }
+    .details{
+        margin-left: 15px;
+    }
+    .action__btn{
+        float: right;
+    }
+    @media screen and (min-width: 20px) and (max-width: 426px){
+        .license__container{
+            display: block;
+        }
+        .avatar{
+            width: 100%;
+            margin: 10px 0px;
+        }
+    }
+    @media screen and (min-width: 427px) and (max-width: 767px){
+        .license__container{
+            display: block;
+        }
+        .avatar{
+            width: 100%;
+            margin: 10px 0px;
+        }
+    }
+    @media screen and (min-width: 768px) and (max-width: 1024px){
+        .license__container{
+            display: block;
+        }
+        .avatar{
+            width: 100%;
+            margin: 10px 0px;
+        }
     }
 </style>
