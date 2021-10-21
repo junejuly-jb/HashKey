@@ -50,7 +50,6 @@ export const actions = {
                 return response.status
             })
             .catch(err => {
-                console.log(err)
                 return err.response.status
             })
     },
