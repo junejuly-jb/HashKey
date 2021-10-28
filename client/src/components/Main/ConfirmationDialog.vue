@@ -23,7 +23,7 @@
             </vs-button>
             <vs-button v-show="status !== 'logout' && status !== 'unauthorize'" @click="dialog=false" dark transparent>
                 Cancel
-            </vs-button>
+            </vs-button> 
             </div>
         </template>
     </vs-dialog>
