@@ -4,6 +4,8 @@ const JWT = require('jsonwebtoken')
 const Cryptr = require('cryptr')
 const cryptr = new Cryptr('HellNaw!')
 const bcrypt = require('bcryptjs')
+const nodemailer = require('nodemailer')
+require('dotenv').config()
 
 const register = async (req, res) => {
 
@@ -26,7 +28,7 @@ const register = async (req, res) => {
         method: 'local',
         local: {
             email: email,
-            password: password
+            password: password,
         },
         name: name,
         initials: getInitials(name),
@@ -36,16 +38,36 @@ const register = async (req, res) => {
         }
      })
 
+    newUser.local.auth_key = cryptr.encrypt(newUser._id)
+
     try {
-        await newUser.save()
-        if (remember_me) {
-            const token = JWT.sign({ _id: newUser._id }, process.env.PASS_PHRASE,{ expiresIn: newUser.user_settings.vault_timeout })
-            const exp = JWT.decode(token)
-            return res.status(200).json({ token, user: newUser, exp: exp.exp })
-        }
-        else {
-            return res.status(200).json({ msg: 'Registered Successfully' })
-        }
+        await newUser.save(async (err, user) => {
+            if (err) {
+                return res.status(400, 'Bad request')
+            }
+            else {
+                // create reusable transporter object using the default SMTP transport
+                let transporter = nodemailer.createTransport({
+                    host: "smtp.ethereal.email",
+                    port: 587,
+                    secure: false, // true for 465, false for other ports
+                    auth: {
+                        user: 'ernest.heidenreich@ethereal.email',
+                        pass: 'ed1Y7Jvgee2ryCT73e',
+                    },
+                });
+
+                // send mail with defined transport object
+                let info = await transporter.sendMail({
+                    from: '"Hashkey" <hashkey@sample.com>', // sender address
+                    to: user.local.email, // list of receivers
+                    subject: "Authentication Request", 
+                    html: html(user.local.auth_key)
+                });
+            }
+
+        })
+        return res.status(200).json({ msg: 'Registered Successfully' })
     } catch (err) {
         return res.status(400).send('Error occured unexpectedly')
     }
@@ -178,6 +200,52 @@ const updatePassword = async (req, res) => {
     } catch (error) {
         return res.status(500).send(error)
     }
+}
+
+const html = (auth_key) => {
+    return `
+        <div style="width: 100%; background-color: light-grey">
+            <div style="width: 400px; height: 400px; background-color: white">
+                <div>
+                    <h1>Welcome to <b>Hashkey ****</b></h1>
+                    <div style="margin-bottom: 30px;">
+                        <p>Please verify your email to start using the app.<br>
+                            Please click the button to verify
+                        </p>
+                    </div>
+                    <a style="
+                    background-color: blue;
+                    text-decoration: none;
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    " href="#" value="${auth_key}">Vefiry Account</a>
+                </div>
+            </div>
+        </div>
+    `
+}
+
+const sendEmail = (receiver, auth_string) => {
+    // let transporter = nodemailer.createTransport({
+    //     service: "gmail",
+    //     auth: {
+    //         user: process.env.EMAIL,
+    //         pass: process.env.PASSWORD
+    //     },
+    // });
+
+    // let mailOptions = {
+    //     from: 'junearagons@gmail.com',
+    //     to: user.local.email,
+    //     subject: "Authentication",
+    //     // html: html(user.local.auth_key),
+    // };
+
+    // transporter.sendMail(mailOptions, function (err, data) {
+    //     if (err) { console.log(err) }
+    //     else { console.log('email sent!') }
+    // })
 }
 module.exports = {
     register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto, authenticatePin,

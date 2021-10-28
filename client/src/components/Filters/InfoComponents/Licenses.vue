@@ -14,11 +14,11 @@
                 <v-card elevation="0" v-for="(license, index) in licenses" :key="index" class="neo rounded-lg mb-2">
                     <v-container>
                         <div class="d-flex float-right">
-                            <v-btn icon x-small color="green">
+                            <v-btn icon x-small @click="editLicense(license.license_id)">
                                 <v-icon>mdi-pencil-outline</v-icon>
                             </v-btn>
                             <div class="mx-1"></div>
-                            <v-btn icon x-small color="red">
+                            <v-btn icon x-small @click="deleteLicense(license.license_id)">
                                 <v-icon>mdi-close-circle-outline</v-icon>
                             </v-btn>
                         </div>
@@ -66,8 +66,22 @@ export default {
         dialogStats: false,
         message: '',
         header: '',
-        status: ''
+        status: '',
+
+        toDeleteId: '',
     }),
+    methods: {
+        editLicense(id){
+            console.log(id)
+        },
+        deleteLicense(id){
+            this.toDeleteId = id
+            this.dialogStats = false
+            this.message = ''
+            this.header = ''
+            this.status = ''
+        }
+    },
     mounted(){
         this.$store.dispatch('license/fetchLicenses')
         .then( res => {

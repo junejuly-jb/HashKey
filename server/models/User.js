@@ -15,6 +15,14 @@ const userSchema = new Schema({
         },
         password: {
             type: String,
+        },
+        authentication: {
+            type: Boolean,
+            default: false
+        },
+        auth_key: {
+            type: String,
+            default: ''
         }
     },
     google: {
