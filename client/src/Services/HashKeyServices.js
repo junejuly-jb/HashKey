@@ -7,11 +7,7 @@ const getToken = function () {
 }
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:5000/api',
-    // headers: {
-    //     Accept: 'application/json',
-    //     'Content-type': 'application/json'
-    // }
+    baseURL: 'http://192.168.18.25:5000/api',
 })
 
 export default {
@@ -34,7 +30,11 @@ export default {
                 headers: { Authorization: 'Bearer ' + getToken() }
             })
     },
+    verifyAccount(id, payload) {
+        return apiClient.post('/verify_account/' + id, { auth_key: payload })
+    },
 
+    // passwords
     addPassword(payload) {
         return apiClient.post('/add-password', payload,
             {

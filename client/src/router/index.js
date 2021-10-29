@@ -11,6 +11,12 @@ const routes = [
     meta: { forVisitors: true }
   },
   {
+    path: '/auth',
+    name: 'Authentication',
+    component: () => import('../views/Auth.vue'),
+    meta: { forVisitors: true }
+  },
+  {
     path: '/home',
     name: 'Home',
     component: () => import('../views/Home.vue'),
