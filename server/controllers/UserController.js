@@ -19,16 +19,23 @@ const register = async (req, res) => {
         return initials;
     };
     
-    const { email, password, name, remember_me } = req.body
-
+    const { email, password, name } = req.body
+    
     const foundUser = await User.findOne({ 'local.email': email })
     if (foundUser) return res.status(403).send('User already exists')
+    
+    const auth_key = cryptr.encrypt(email)
+
+    // password hashing
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
 
     const newUser = new User({ 
         method: 'local',
         local: {
             email: email,
-            password: password,
+            password: hashedPassword,
+            auth_key
         },
         name: name,
         initials: getInitials(name),
@@ -37,14 +44,6 @@ const register = async (req, res) => {
             profile_photo: ''
         }
      })
-
-    const salt = await bcrypt.genSalt(10)
-    let user_id = newUser._id
-    user_id = user_id.toString()
-    
-    const auth_key = await bcrypt.hash(user_id, salt)
-    newUser.local.auth_key = auth_key
-    
      
     try {
         await newUser.save(async (err, user) => {
@@ -52,40 +51,49 @@ const register = async (req, res) => {
                 return res.status(400, 'Bad request')
             }
             else {
-                // create reusable transporter object using the default SMTP transport
                 let transporter = nodemailer.createTransport({
                     host: "smtp.ethereal.email",
                     port: 587,
-                    secure: false, // true for 465, false for other ports
+                    secure: false,
                     auth: {
                         user: 'ernest.heidenreich@ethereal.email',
                         pass: 'ed1Y7Jvgee2ryCT73e',
                     },
                 });
 
-                let info = await transporter.sendMail({
+                await transporter.sendMail({
                     from: '"Hashkey" <hashkey@sample.com>',
                     to: user.local.email,
                     subject: "Authentication Request", 
                     html: html(user.local.auth_key, user._id)
                 });
+                return res.status(200).json({ msg: 'Registered Successfully' })
             }
-
         })
-        return res.status(200).json({ msg: 'Registered Successfully' })
     } catch (err) {
         return res.status(400).send('Error occured unexpectedly')
     }
 
 }
 
-const login = (req, res) => {
-    
-    const token = JWT.sign({ _id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: req.user.user_settings.vault_timeout })
-    // const token = JWT.sign({ _id: req.user._id }, process.env.PASS_PHRASE, { expiresIn: '2h' })
-    const exp = JWT.decode(token)
-    return res.status(200).json({ token, exp: exp.exp, user: req.user })
-    
+const login = async (req, res) => {
+
+    const { email, password } = req.body
+
+    const isFound = await User.findOne({ 'local.email': email })
+    if (isFound) {
+        if (isFound.local.authentication) {
+            const isMatch = await bcrypt.compare(password, isFound.local.password)
+            if (isMatch) {
+                const token = JWT.sign({ _id: isFound._id }, process.env.PASS_PHRASE, { expiresIn: isFound.user_settings.vault_timeout })
+                const exp = JWT.decode(token)
+                return res.status(200).json({ token, exp: exp.exp, user: isFound })
+            }
+            return res.status(401).json({ message: 'Invalid user credentials' })
+        }
+        return res.status(401).json({ message: 'Please verify your account first' })
+    }
+    return res.status(401).json({ message: 'Invalid user credentials'})
 }
 
 const googleAuth = async (req, res) => {
