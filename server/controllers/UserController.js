@@ -38,8 +38,14 @@ const register = async (req, res) => {
         }
      })
 
-    newUser.local.auth_key = cryptr.encrypt(newUser._id)
-
+    const salt = await bcrypt.genSalt(10)
+    let user_id = newUser._id
+    user_id = user_id.toString()
+    
+    const auth_key = await bcrypt.hash(user_id, salt)
+    newUser.local.auth_key = auth_key
+    
+     
     try {
         await newUser.save(async (err, user) => {
             if (err) {
@@ -57,12 +63,11 @@ const register = async (req, res) => {
                     },
                 });
 
-                // send mail with defined transport object
                 let info = await transporter.sendMail({
-                    from: '"Hashkey" <hashkey@sample.com>', // sender address
-                    to: user.local.email, // list of receivers
+                    from: '"Hashkey" <hashkey@sample.com>',
+                    to: user.local.email,
                     subject: "Authentication Request", 
-                    html: html(user.local.auth_key)
+                    html: html(user.local.auth_key, user._id)
                 });
             }
 
@@ -202,7 +207,7 @@ const updatePassword = async (req, res) => {
     }
 }
 
-const html = (auth_key) => {
+const html = (auth_key, id) => {
     return `
         <div style="width: 100%; background-color: light-grey">
             <div style="width: 400px; height: 400px; background-color: white">
@@ -219,11 +224,26 @@ const html = (auth_key) => {
                     color: white;
                     padding: 15px 25px;
                     border-radius: 10px;
-                    " href="#" value="${auth_key}">Vefiry Account</a>
+                    " href="http://192.168.18.25:8080?key=${auth_key}&id=${id}" value="${ auth_key } ">Vefiry Account</a>
                 </div>
             </div>
         </div>
     `
+}
+
+const verifyAccount = async (req, res) => {
+    
+    const user = await User.findOne({ _id: req.params.id })
+    if (user.local.auth_key !== req.body.auth_key) { return res.status(401).json({ message: 'Unable to verify account' }) }
+    else {
+        user.local.authentication = true
+        user.local.auth_key = null
+        user.save(function (err, data){
+            if(err) { return res.status(500).json({message: 'Something went wrong'})}
+            return res.status(200).json({ message: 'Account successfully verified ✔️ Please login to continue.' })
+        })
+    }
+
 }
 
 const sendEmail = (receiver, auth_string) => {
@@ -249,4 +269,4 @@ const sendEmail = (receiver, auth_string) => {
 }
 module.exports = {
     register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto, authenticatePin,
-    checkIfMatchPass, updatePassword }
+    checkIfMatchPass, updatePassword, verifyAccount }

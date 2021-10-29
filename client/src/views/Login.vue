@@ -14,14 +14,50 @@
 <script>
 import Left from '../components/Login/Left'
 import Right from '../components/Login/Right'
+import HashkeyServices from '../services/HashKeyServices'
   export default {
     name: 'Login',
     components: {
       Left, Right
     },
     data: () => ({
-      
+      loading: ''
     }),
+    mounted(){
+      if(this.$route.query.key){
+        console.log(this.$route.query.key)
+        this.loading = this.$vs.loading({
+          type: 'circles',
+          background: '#003ECB',
+          text: 'Verifying account please wait...',
+          color: '#fff'
+        })
+        HashkeyServices.verifyAccount(this.$route.query.id, this.$route.query.key)
+        .then( res => {
+          this.loading.close()
+          this.$vs.notification({
+            title: 'Success',
+            color: 'success',
+            width: 'auto',
+            text: res.data.message,
+            position: 'top-right',
+          })
+        })
+        .catch( err => {
+          this.loading.close()
+          this.$vs.notification({
+            title: 'Error',
+            color: 'danger',
+            width: 'auto',
+            text: err.response.data.message,
+            position: 'top-right',
+          })
+        })
+      }
+      else{
+        console.log('wala')
+      }
+    }
   }
 </script>
 <style scoped>
