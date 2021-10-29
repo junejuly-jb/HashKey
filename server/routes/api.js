@@ -13,7 +13,7 @@ const passportConf = require('../passport')
 const auth = require('../auth')
 
 api.post('/register', UserController.register)
-api.post('/login', passport.authenticate('local', { session: false }), UserController.login)
+api.post('/login', UserController.login)
 api.post('/oauth/googleplus', UserController.googleAuth)
 api.post('/oauth/facebook', passport.authenticate('facebookToken', { session: false }), UserController.facebookAuth)
 api.post('/verify_account/:id', UserController.verifyAccount)

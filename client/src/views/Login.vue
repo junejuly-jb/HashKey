@@ -54,9 +54,6 @@ import HashkeyServices from '../services/HashKeyServices'
           })
         })
       }
-      else{
-        console.log('wala')
-      }
     }
   }
 </script>

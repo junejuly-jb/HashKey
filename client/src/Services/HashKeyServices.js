@@ -7,7 +7,7 @@ const getToken = function () {
 }
 
 const apiClient = axios.create({
-    baseURL: 'http://192.168.18.25:5000/api',
+    baseURL: 'http://localhost:5000/api',
 })
 
 export default {
