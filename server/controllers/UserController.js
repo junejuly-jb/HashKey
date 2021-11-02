@@ -82,16 +82,16 @@ const login = async (req, res) => {
 
     const isFound = await User.findOne({ 'local.email': email })
     if (isFound) {
-        if (isFound.local.authentication) {
-            const isMatch = await bcrypt.compare(password, isFound.local.password)
-            if (isMatch) {
+        const isMatch = await bcrypt.compare(password, isFound.local.password)
+        if (isMatch) {
+            if (isFound.local.authentication) {
                 const token = JWT.sign({ _id: isFound._id }, process.env.PASS_PHRASE, { expiresIn: isFound.user_settings.vault_timeout })
                 const exp = JWT.decode(token)
                 return res.status(200).json({ token, exp: exp.exp, user: isFound })
             }
-            return res.status(401).json({ message: 'Invalid user credentials' })
+            return res.status(401).json({ message: 'Please verify your account first' })
         }
-        return res.status(401).json({ message: 'Please verify your account first' })
+        return res.status(401).json({ message: 'Invalid user credentials' })
     }
     return res.status(401).json({ message: 'Invalid user credentials'})
 }

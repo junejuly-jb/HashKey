@@ -42,6 +42,7 @@ import HashkeyServices from '../services/HashKeyServices'
             text: res.data.message,
             position: 'top-right',
           })
+          this.$router.replace('/')
         })
         .catch( err => {
           this.loading.close()
@@ -52,6 +53,7 @@ import HashkeyServices from '../services/HashKeyServices'
             text: err.response.data.message,
             position: 'top-right',
           })
+          this.$router.replace('/')
         })
       }
     }
