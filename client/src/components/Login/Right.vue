@@ -139,7 +139,8 @@ export default {
                     console.log(err.response)
                     this.$vs.notification({
                         title: 'Error',
-                        text: err.response.data,
+                        color: 'danger',
+                        text: err.response.data.message,
                         position: 'top-center',
                     })
                     this.closeLoading()

@@ -56,7 +56,6 @@
                         @click:append="show3 = !show3"
                     ></v-text-field>
                 </v-form>
-                <vs-checkbox v-model="direct_login">Direct log-in</vs-checkbox>
             </div>
             <template #footer>
                 <div class="footer-dialog">
@@ -77,7 +76,6 @@ export default {
         reg_email: '',
         reg_password: '',
         reg_cpassword: '',
-        direct_login: true,
         show2: false,
         show3: false,
         isValid: false,
@@ -116,57 +114,28 @@ export default {
         doRegister(){
             this.openLoading()
             if(this.$refs.form.validate()){
-                if(this.direct_login){
-                    HashKeyServices.register({
-                        name: this.reg_name, 
-                        email: this.reg_email, 
-                        password: this.reg_password, 
-                        remember_me: this.direct_login
+                HashKeyServices.register({
+                    name: this.reg_name, 
+                    email: this.reg_email, 
+                    password: this.reg_password, 
+                    remember_me: this.direct_login
+                })
+                .then(res => {
+                    this.$store.commit('SET_REGISTRATION_DIALOG')
+                    this.$vs.notification({
+                        title: 'Success',
+                        text: res.data.msg,
+                        position: 'top-center',
                     })
-                    .then(res => {
-                        this.$store.commit('user/SET_USER_INFO', res.data.user)
-                        this.$auth.setToken(res.data.token, res.data.exp)
-                        this.$router.push('/home')
-                        if(res.data.user.safety_pin !== null){
-                            this.$router.push('/home')
-                        }
-                        else{
-                            this.$router.push('/pin')
-                        }
-                        this.closeLoading()
+                })
+                .catch((err) => {
+                    this.$vs.notification({
+                        title: 'Error',
+                        text: err.response.data,
+                        position: 'top-center',
                     })
-                    .catch(err => {
-                        this.$vs.notification({
-                            title: 'Error',
-                            text: err.response,
-                            position: 'top-center',
-                        })
-                    })
-                }
-                else{
-                    HashKeyServices.register({
-                        name: this.reg_name, 
-                        email: this.reg_email, 
-                        password: this.reg_password, 
-                        remember_me: this.direct_login
-                    })
-                    .then(res => {
-                        this.$store.commit('SET_REGISTRATION_DIALOG')
-                        this.$vs.notification({
-                            title: 'Success',
-                            text: res.data.msg,
-                            position: 'top-center',
-                        })
-                    })
-                    .catch((err) => {
-                        this.$vs.notification({
-                            title: 'Error',
-                            text: err.response.data,
-                            position: 'top-center',
-                        })
-                    })
-                    .finally(() => this.closeLoading())
-                }
+                })
+                .finally(() => this.closeLoading())
             }
             else{
                 this.closeLoading()
