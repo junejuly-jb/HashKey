@@ -23,6 +23,10 @@ export const mutations = {
     ADD_LOCKDOWN_ACCOUNT(state, payload) {
         state.lockdown.lockdown = true
         state.lockdown.email = payload
+    },
+    TURN_OFF_LOCKDOWN(state) {
+        state.lockdown.lockdown = false
+        state.lockdown.email = ''
     }
 }
 
