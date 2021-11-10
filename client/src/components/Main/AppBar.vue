@@ -22,8 +22,8 @@
                 <v-btn icon fab dense class="bg-secondary mx-2" small @click="refresh">
                 <v-icon>mdi-refresh</v-icon>
                 </v-btn>
-                <v-btn icon fab dense class="bg-secondary mx-2" small>
-                <v-icon>mdi-account-lock</v-icon>
+                <v-btn @click="lockdown" icon fab dense class="bg-secondary mx-2" small>
+                    <v-icon>mdi-account-lock</v-icon>
                 </v-btn>
                 <v-btn fab depressed class="mx-2" color="red lighten-2" small @click="logout">
                 <v-icon color="white">mdi-logout</v-icon>
@@ -154,6 +154,13 @@ export default {
                     }
                 })
             }
+        },
+        lockdown(){
+            this.dialogStats = true
+            this.message = 'Do you want to lock your vault?'
+            this.width = '400px',
+            this.header = 'Logout'
+            this.status = 'lockdown'
         }
     }
 }

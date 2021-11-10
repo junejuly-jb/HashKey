@@ -10,7 +10,8 @@ import VueQRCodeComponent from 'vue-qr-generator'
 
 
 export const bus = new Vue()
-// component
+
+// components
 Vue.component('AppBar', () => import('./components/Main/AppBar'))
 Vue.component('SideBar', () => import('./components/Main/SideBar'))
 Vue.component('ConfirmationDialog', () => import('./components/Main/ConfirmationDialog'))
@@ -31,6 +32,9 @@ router.beforeEach((to, from, next) => {
       if (Vue.auth.isAuthenticated()) {
         next('/home')
       }
+      else if(store.state.access.lockdown.lockdown) {
+        next('/lock')
+      }
       else next()
     }
     else if (to.matched.some(record => record.meta.requireAuth)) {
@@ -38,6 +42,12 @@ router.beforeEach((to, from, next) => {
         next('/')
       }
       else next()
+    }
+    else if (to.matched.some(record => record.meta.forLockdown)) {
+      if (store.state.access.lockdown.lockdown) {
+        next()
+      }
+      else next('/')
     }
     else next()
 })

@@ -20,9 +20,9 @@ export const mutations = {
     //         state.contacts.splice(idx, 1)
     //     }
     // },
-    // REMOVE_CONTACTS(state) {
-    //     state.contacts = []
-    // },
+    REMOVE_LICENSES(state) {
+        state.licenses = []
+    },
     // SET_CONTACT_LOADING_TRUE(state) {
     //     state.contacts_isLoading = true
     // },

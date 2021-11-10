@@ -2,7 +2,11 @@ export const namespaced = true
 
 export const state = {
     easy_access_list: [],
-    selected_profile: {}
+    selected_profile: {},
+    lockdown: {
+        lockdown: false,
+        email: ''
+    }
 }
 
 export const mutations = {
@@ -15,6 +19,10 @@ export const mutations = {
     REMOVE_USER_EASY_ACCESS(state, payload) {
         var idx = state.easy_access_list.findIndex(i => i.id === payload)
         state.easy_access_list.splice(idx, 1)
+    },
+    ADD_LOCKDOWN_ACCOUNT(state, payload) {
+        state.lockdown.lockdown = true
+        state.lockdown.email = payload
     }
 }
 
