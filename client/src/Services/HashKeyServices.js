@@ -1,5 +1,4 @@
 import axios from 'axios'
-// import { updatePassword } from '../../../server/controllers/UserController'
 
 const getToken = function () {
     const token = localStorage.getItem('token')
@@ -7,7 +6,7 @@ const getToken = function () {
 }
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'http://192.168.18.25:5000/api',
 })
 
 export default {

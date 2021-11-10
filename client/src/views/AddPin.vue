@@ -80,11 +80,6 @@ export default {
         ...mapState(['isLoadingLocal'])
     },
     methods: {
-        checkIfHavePin(){
-            if(this.user_info.pin){
-                this.$router.push('/home')
-            }
-        },
         secure(){
             this.$store.commit('SET_LOADING_LOCAL')
             if(this.$refs.form.validate()){
@@ -109,9 +104,6 @@ export default {
                 this.$store.commit('SET_LOADING_LOCAL')
             }
         }
-    },
-    mounted(){
-        
     }
 }
 </script>

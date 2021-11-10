@@ -95,6 +95,7 @@ export default {
             v => /(?=.*?[#?!@$%^&*-])/.test(v) || 'password must contain special character',
         ]
     }),
+    props: ['alert'],
     computed: {
         registration_dialog: {
             get(){
@@ -106,6 +107,13 @@ export default {
         },
         isMatch() {
             return () => (this.reg_password === this.reg_cpassword) || 'Password mismatch'
+        },
+
+        alert_state:{
+            get(){
+                return this.alert
+            },
+            set(val){ if(!val){ return this.$emit('close_alert') }}
         }
 
     },
@@ -120,13 +128,9 @@ export default {
                     password: this.reg_password, 
                     remember_me: this.direct_login
                 })
-                .then(res => {
+                .then(() => {
                     this.$store.commit('SET_REGISTRATION_DIALOG')
-                    this.$vs.notification({
-                        title: 'Success',
-                        text: res.data.msg,
-                        position: 'top-center',
-                    })
+                    this.alert_state = false
                 })
                 .catch((err) => {
                     this.$vs.notification({

@@ -18,10 +18,13 @@
             <vs-button @click="doIgnore" transparent v-else-if="status === 'ignore'">
                 Continue anyway
             </vs-button>
+            <vs-button @click="doLockdown" transparent v-else-if="status === 'lockdown'">
+                Lockdown {{user_info.email}}
+            </vs-button>
             <vs-button @click="doDeleteCard" transparent v-else>
                 Delete
             </vs-button>
-            <vs-button v-show="status !== 'logout' && status !== 'unauthorize'" @click="dialog=false" dark transparent>
+            <vs-button v-show="status !== 'unauthorize'" @click="dialog=false" dark transparent>
                 Cancel
             </vs-button> 
             </div>
@@ -46,6 +49,7 @@ export default {
     }),
     computed:{
         ...mapState(['isLoadingLocal']),
+        ...mapState('user', ['user_info']),
         dialog:{
             get(){
                 return this.dialogStats
@@ -72,8 +76,29 @@ export default {
                 this.$store.commit('note/REMOVE_NOTES')
                 this.$store.commit('contact/REMOVE_CONTACTS')
                 this.$store.commit('card/REMOVE_CARDS')
+                this.$store.commit('license/REMOVE_LICENSES')
                 this.$auth.destroyToken()
                 this.$router.push('/')
+            }, 1000)
+        },
+        doLockdown(){
+            this.isLoading = true
+            setTimeout( () => {
+                if(this.isLoadingLocal == true){
+                    this.$store.commit('SET_LOADING_LOCAL')
+                }
+                this.dialog = false
+                this.$store.commit('access/ADD_LOCKDOWN_ACCOUNT', this.user_info.email)
+                this.$store.commit('user/REMOVE_USER_INFO')
+                this.$store.commit('password/REMOVE_PASSWORD')
+                this.$store.commit('password/REMOVE_ALL_UNSECURED_CREDENTIALS')
+                this.$store.commit('wifi/REMOVE_WIFIS')
+                this.$store.commit('note/REMOVE_NOTES')
+                this.$store.commit('contact/REMOVE_CONTACTS')
+                this.$store.commit('card/REMOVE_CARDS')
+                this.$store.commit('license/REMOVE_LICENSES')
+                this.$auth.destroyToken()
+                this.$router.push('/lock')
             }, 1000)
         },
         doDeleteCard(){

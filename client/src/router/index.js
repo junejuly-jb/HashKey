@@ -28,6 +28,12 @@ const routes = [
     name: 'Pin',
     component: () => import('../views/AddPin.vue'),
     meta: { requireAuth: true }
+  },
+  {
+    path: '/lock',
+    name: 'Lock',
+    component: () => import('../views/Lock.vue'),
+    meta: { forLockdown: true }
   }
 ]
 

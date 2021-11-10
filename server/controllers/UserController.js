@@ -52,22 +52,41 @@ const register = async (req, res) => {
             }
             else {
                 let transporter = nodemailer.createTransport({
-                    host: "smtp.ethereal.email",
-                    port: 587,
-                    secure: false,
+                    service: "gmail",
                     auth: {
-                        user: 'ernest.heidenreich@ethereal.email',
-                        pass: 'ed1Y7Jvgee2ryCT73e',
+                        user: process.env.EMAIL,
+                        pass: process.env.PASSWORD
                     },
                 });
 
-                await transporter.sendMail({
-                    from: '"Hashkey" <hashkey@sample.com>',
+                let mailOptions = {
+                    from: 'junearagons@gmail.com',
                     to: user.local.email,
-                    subject: "Authentication Request", 
-                    html: html(user.local.auth_key, user._id)
-                });
-                return res.status(200).json({ msg: 'Registered Successfully' })
+                    subject: "Authentication",
+                    html: html(user.local.auth_key, user._id),
+                };
+
+                transporter.sendMail(mailOptions, function (err, data) {
+                    if (err) { console.log(err) }
+                    else { console.log('email sent!') }
+                })
+                return res.status(200).json({ msg: 'Registered Successfully. Please verify your account by opening your email from HashKey' })
+                // let transporter = nodemailer.createTransport({
+                //     host: "smtp.ethereal.email",
+                //     port: 587,
+                //     secure: false,
+                //     auth: {
+                //         user: 'ernest.heidenreich@ethereal.email',
+                //         pass: 'ed1Y7Jvgee2ryCT73e',
+                //     },
+                // });
+                // await transporter.sendMail({
+                //     from: '"Hashkey" <hashkey@sample.com>',
+                //     to: user.local.email,
+                //     subject: "Authentication Request", 
+                //     html: html(user.local.auth_key, user._id)
+                // });
+                
             }
         })
     } catch (err) {

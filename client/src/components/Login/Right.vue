@@ -1,5 +1,17 @@
 <template>
     <v-app>
+        <v-container>
+            <v-alert
+            v-model="alert"
+            dense
+            outlined
+            type="success"
+            dismissible
+            icon="mdi-check"
+            >
+                You have successfully registered to HashKey. Please open your email to verify your account.
+            </v-alert>
+        </v-container>
         <v-container class="right-body d-flex align-center justify-center">
             <v-card class="rounded-xl">
                 <div class="text-center" style="padding: 50px 50px 20px 50px">
@@ -63,7 +75,10 @@
             </v-card>
 
             <!-- dialog -->
-            <RegistrationDialog />
+            <RegistrationDialog
+            :alert="alert"
+            @close_alert="alert = $event"
+            />
 
         </v-container>
     </v-app>
@@ -102,7 +117,9 @@ export default {
         ],
         password_rules: [
             v => !!v || 'Password is required'
-        ]
+        ],
+
+        alert: false,
     }),
 
 
