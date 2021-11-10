@@ -71,22 +71,6 @@ const register = async (req, res) => {
                     else { console.log('email sent!') }
                 })
                 return res.status(200).json({ msg: 'Registered Successfully. Please verify your account by opening your email from HashKey' })
-                // let transporter = nodemailer.createTransport({
-                //     host: "smtp.ethereal.email",
-                //     port: 587,
-                //     secure: false,
-                //     auth: {
-                //         user: 'ernest.heidenreich@ethereal.email',
-                //         pass: 'ed1Y7Jvgee2ryCT73e',
-                //     },
-                // });
-                // await transporter.sendMail({
-                //     from: '"Hashkey" <hashkey@sample.com>',
-                //     to: user.local.email,
-                //     subject: "Authentication Request", 
-                //     html: html(user.local.auth_key, user._id)
-                // });
-                
             }
         })
     } catch (err) {
@@ -97,11 +81,18 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
 
-    const { email, password } = req.body
+    const { email, password, type } = req.body
 
     const isFound = await User.findOne({ 'local.email': email })
     if (isFound) {
-        const isMatch = await bcrypt.compare(password, isFound.local.password)
+        var isMatch
+        if (type == 'pin') {
+            storedPin = cryptr.decrypt(isFound.safety_pin)
+            isMatch = storedPin == password
+        }
+        else {
+            isMatch = await bcrypt.compare(password, isFound.local.password)
+        }
         if (isMatch) {
             if (isFound.local.authentication) {
                 const token = JWT.sign({ _id: isFound._id }, process.env.PASS_PHRASE, { expiresIn: isFound.user_settings.vault_timeout })

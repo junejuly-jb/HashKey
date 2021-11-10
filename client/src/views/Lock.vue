@@ -16,13 +16,13 @@
                         </div>
                         <div  class="text-left my-4">
                               <v-chip class="mr-2" color="primary" :outlined="chipState !== 'password'"
-                              @click="chipState = 'password'" small
+                              @click="chipState = 'password'" small :disabled="isLoadingLocal"
                               > Password </v-chip>
                               <v-chip class="mr-2" color="primary" :outlined="chipState !== 'pin'"
-                              @click="chipState = 'pin'" small
+                              @click="chipState = 'pin'" small :disabled="isLoadingLocal"
                               > Pin </v-chip>
                         </div>
-                        <v-form ref="form">
+                        <v-form ref="form" v-model="valid" lazy-validation>
                             <v-text-field
                                v-show="chipState == 'password'"
                                 v-model="password"
@@ -30,6 +30,7 @@
                                 rounded
                                 :type="show1 ? 'text' : 'password'"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :rules="[v => !!v || 'Password is required']"
                                 @click:append="show1 = !show1"
                             ></v-text-field>
                             <div class="my-8" v-show="chipState == 'pin'">
@@ -71,11 +72,13 @@
 </template>
 <script>
 import PincodeInput from 'vue-pincode-input';
+import HashKeyServices from '../services/HashKeyServices'
 import { mapState } from 'vuex'
 export default {
      data: () => ({
           chipState: 'password',
           show1: false,
+          valid: true,
           password: '',
           pin: ''
      }),
@@ -87,6 +90,33 @@ export default {
      methods: {
           login(){
                this.$store.commit('SET_LOADING_LOCAL')
+               HashKeyServices.loginLocal({ email: this.lockdown.email, password: this.chipState == 'password' ? this.password : this.pin, type: this.chipState })
+               .then( (res) => {
+                    this.$auth.setToken(res.data.token, res.data.exp)
+                    this.$store.commit('user/SET_USER_INFO', res.data.user)
+                    this.$store.commit('access/TURN_OFF_LOCKDOWN')
+                    if(res.data.user.user_settings.easy_access){
+                    this.$store.commit('access/ADD_USER_EASY_ACCESS', {
+                         id: res.data.user._id,
+                         name: res.data.user.name,
+                         profile: res.data.user.profile.profile_photo === '' ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg' : res.data.user.profile.profile_photo,
+                         email: res.data.user.local.email
+                    })
+                    }
+                    if(res.data.user.safety_pin !== null){ this.$router.push('/home') }
+                    else{ this.$router.push('/pin') }
+               })
+               .catch((err)=> {
+                    this.$vs.notification({
+                         title: 'Error',
+                         color: 'danger',
+                         text: err.response.data.message,
+                         position: 'top-center',
+                    })
+               })
+               .finally(() => {
+                    this.$store.commit('SET_LOADING_LOCAL')
+               })
           }
      }
 }

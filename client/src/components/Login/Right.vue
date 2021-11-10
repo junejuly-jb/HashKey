@@ -133,7 +133,7 @@ export default {
             if(this.$refs.form.validate()){
                 this.$store.commit('SET_LOADING_LOCAL')
                 this.openLoading()
-                HashKeyServices.loginLocal({ email: this.login_email, password: this.login_password })
+                HashKeyServices.loginLocal({ email: this.login_email, password: this.login_password, type: 'password' })
                 .then( (res) => {
                     this.$auth.setToken(res.data.token, res.data.exp)
                     this.$store.commit('user/SET_USER_INFO', res.data.user)
