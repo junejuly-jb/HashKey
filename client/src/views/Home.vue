@@ -54,6 +54,7 @@ import ConfirmationDialog from '@/components/Main/ConfirmationDialog'
 
 import { bus } from '../main'
 import { mapState } from 'vuex'
+import store from '../store/index'
 
   export default {
     components: { Passwords, Wifi, Notes, Info, Card, ConfirmationDialog, PassGenerator, Settings, PassStatus },
@@ -78,6 +79,13 @@ import { mapState } from 'vuex'
       bus.$on('onChangeFilter', () => {
         this.fetchData()
       })
+    },
+    beforeRouteEnter(to, from, next){
+        if(!store.state.user.user_info.pin){
+            next('/pin')
+        }else{
+            next()
+        }
     },
     methods: {
       fetchData(){

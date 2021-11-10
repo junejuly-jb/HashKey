@@ -19,7 +19,7 @@
                 Continue anyway
             </vs-button>
             <vs-button @click="doLockdown" transparent v-else-if="status === 'lockdown'">
-                Lockdown {{user_info.email}}
+                Lockdown
             </vs-button>
             <vs-button @click="doDeleteCard" transparent v-else>
                 Delete
