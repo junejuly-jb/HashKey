@@ -235,7 +235,7 @@ export default {
             })
         },
         closeLoading(){
-            setTimeout(() => { this.loading.close() }, 1000)
+            setTimeout(() => { this.loading.close() }, 500)
         }
     }
 }

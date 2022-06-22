@@ -7,6 +7,14 @@ const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
 require('dotenv').config()
 
+//models
+const Password = require('../models/Password')
+const Wifi = require('../models/Wifi')
+const Card = require('../models/Card')
+const Contact = require('../models/Contact')
+const License = require('../models/License')
+const Note = require('../models/Note')
+
 const register = async (req, res) => {
 
     var getInitials = function (string) {
@@ -22,9 +30,13 @@ const register = async (req, res) => {
     const { email, password, name } = req.body
     
     const foundUser = await User.findOne({ 'local.email': email })
-    if (foundUser) return res.status(403).send('User already exists')
+    if (foundUser) return res.status(403).json({
+        success: false,
+        status: 403,
+        message: 'User already exists'
+    })
     
-    const auth_key = cryptr.encrypt(email)
+    // const auth_key = cryptr.encrypt(email)
 
     // password hashing
     const salt = await bcrypt.genSalt(10)
@@ -35,7 +47,7 @@ const register = async (req, res) => {
         local: {
             email: email,
             password: hashedPassword,
-            auth_key
+            // auth_key
         },
         name: name,
         initials: getInitials(name),
@@ -48,35 +60,27 @@ const register = async (req, res) => {
     try {
         await newUser.save(async (err, user) => {
             if (err) {
-                return res.status(400, 'Bad request')
+                return res.status(500).json(({
+                    success: false,
+                    status: 500,
+                    message: 'Error occured'
+                }))
             }
             else {
-                let transporter = nodemailer.createTransport({
-                    service: "gmail",
-                    auth: {
-                        user: process.env.EMAIL,
-                        pass: process.env.PASSWORD
-                    },
-                });
-
-                let mailOptions = {
-                    from: 'junearagons@gmail.com',
-                    to: user.local.email,
-                    subject: "Authentication",
-                    html: html(user.local.auth_key, user._id),
-                };
-
-                transporter.sendMail(mailOptions, function (err, data) {
-                    if (err) { console.log(err) }
-                    else { console.log('email sent!') }
+                return res.status(200).json({
+                    success: true,
+                    status: 200,
+                    message: 'You have successfully registered.' 
                 })
-                return res.status(200).json({ msg: 'Registered Successfully. Please verify your account by opening your email from HashKey' })
             }
         })
     } catch (err) {
-        return res.status(400).send('Error occured unexpectedly')
+        return res.status(500).json({
+            success: false,
+            status: 500,
+            message: 'Server error'
+        })
     }
-
 }
 
 const login = async (req, res) => {
@@ -97,13 +101,32 @@ const login = async (req, res) => {
             if (isFound.local.authentication) {
                 const token = JWT.sign({ _id: isFound._id }, process.env.PASS_PHRASE, { expiresIn: isFound.user_settings.vault_timeout })
                 const exp = JWT.decode(token)
-                return res.status(200).json({ token, exp: exp.exp, user: isFound })
+                return res.status(200).json({ 
+                    success: true,
+                    status: 200,
+                    message: 'You have successfully logged in.',
+                    token, 
+                    exp: exp.exp, 
+                    user: isFound 
+                })
             }
-            return res.status(401).json({ message: 'Please verify your account first' })
+            return res.status(401).json({
+                success: false,
+                status: 401,
+                message: 'Please verify your email address'
+            })
         }
-        return res.status(401).json({ message: 'Invalid user credentials' })
+        return res.status(401).json({
+            success: false,
+            status: 401,
+            message: 'Invalid user credentials'
+        })
     }
-    return res.status(401).json({ message: 'Invalid user credentials'})
+    return res.status(401).json({
+        success: false,
+        status: 401,
+        message: 'Invalid user credentials'
+    })
 }
 
 const googleAuth = async (req, res) => {
@@ -285,6 +308,50 @@ const sendEmail = (receiver, auth_string) => {
     //     else { console.log('email sent!') }
     // })
 }
+
+
+const getCollectionLength = async (req, res)  => {
+    try {
+        const pass = await Password.find({owner: req.user._id});
+        const wifi = await Wifi.find({owner: req.user._id});
+        const card = await Card.find({owner: req.user._id});
+        const contact = await Contact.find({owner: req.user._id});
+        const license = await License.find({owner: req.user._id});
+        const note = await Note.find({owner: req.user._id});
+
+
+        return res.status(200).json({
+            success: true,
+            status: 200,
+            categories: [
+                {
+                    name: "Passwords",
+                    category: "password",
+                    icon: 'lock',
+                    content: `${pass.length} ${pass.length > 1 ? 'passwords' : 'password'}`
+                },
+                {
+                    name: "Wifi",
+                    category: "wifi",
+                    icon: "wifi",
+                    content: `${wifi.length} wifi`
+                },
+                {
+                    name: "Payments",
+                    category: "payment",
+                    icon: "card",
+                    content: `${card.length} ${card.length > 1 ? 'cards' : 'card'}`
+                }
+            ]
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            status: 500,
+            message: "Server error. Please try again later."
+        })
+    }
+}
 module.exports = {
     register, login, googleAuth, facebookAuth, addPin, updateProfile, removeProfilePhoto, authenticatePin,
-    checkIfMatchPass, updatePassword, verifyAccount }
+    checkIfMatchPass, updatePassword, verifyAccount, getCollectionLength}

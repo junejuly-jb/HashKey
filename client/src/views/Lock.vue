@@ -14,56 +14,57 @@
                             <div id="header">Vault is locked.</div>
                             <p class="sub">Login your back by using your 6 digit pin<br>  or your master password.</p>
                         </div>
-                        <div  class="text-left my-4">
-                              <v-chip class="mr-2" color="primary" :outlined="chipState !== 'password'"
-                              @click="chipState = 'password'" small :disabled="isLoadingLocal"
-                              > Password </v-chip>
-                              <v-chip class="mr-2" color="primary" :outlined="chipState !== 'pin'"
-                              @click="chipState = 'pin'" small :disabled="isLoadingLocal"
-                              > Pin </v-chip>
-                        </div>
-                        <v-form ref="form" v-model="valid" lazy-validation>
-                            <v-text-field
-                               v-show="chipState == 'password'"
-                                v-model="password"
-                                filled
-                                rounded
-                                :type="show1 ? 'text' : 'password'"
-                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                :rules="[v => !!v || 'Password is required']"
-                                @click:append="show1 = !show1"
-                            ></v-text-field>
-                            <div class="my-8" v-show="chipState == 'pin'">
-                                 <PincodeInput
-                                   v-model="pin"
-                                   :secure = true
-                                   :autofocus= true
-                                   :length="6"
-                                   placeholder="*"
-                                   />
-                            </div>
-                        </v-form>
-                        <div class="text-left">
-                         <small>Currently logged in as: <b>{{lockdown.email}}</b></small>
-                        </div>
-                        <div class="d-flex align-center justify-center mt-5">
-                              <vs-button circle size="xl" gradient :disabled="isLoadingLocal"> Logout </vs-button>
-                            <vs-button
-                            circle
-                            icon
-                            size="xl"
-                            gradient
-                            :loading="isLoadingLocal"
-                            @click="login"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="35" height="35" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <line x1="5" y1="12" x2="19" y2="12" />
-                                <line x1="15" y1="16" x2="19" y2="12" />
-                                <line x1="15" y1="8" x2="19" y2="12" />
-                                </svg>
-                            </vs-button>
-                        </div>
+                        <div class="function__container">
+                              <div  class="text-left my-4">
+                                        <v-chip class="mr-2" color="primary" :outlined="chipState !== 'password'"
+                                        @click="chipState = 'password'" small :disabled="isLoadingLocal"
+                                        > Password </v-chip>
+                                        <v-chip class="mr-2" color="primary" :outlined="chipState !== 'pin'"
+                                        @click="chipState = 'pin'" small :disabled="isLoadingLocal"
+                                        > Pin </v-chip>
+                              </div>
+                              <v-form ref="form" v-model="valid" lazy-validation>
+                                   <v-text-field
+                                        v-show="chipState == 'password'"
+                                        v-model="password"
+                                        filled
+                                        rounded
+                                        :type="show1 ? 'text' : 'password'"
+                                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                        :rules="[v => !!v || 'Password is required']"
+                                        @click:append="show1 = !show1"
+                                   ></v-text-field>
+                                   <div class="my-8" v-show="chipState == 'pin'">
+                                        <PincodeInput
+                                             v-model="pin"
+                                             :secure = true
+                                             :autofocus= true
+                                             :length="6"
+                                             placeholder="*"
+                                             />
+                                   </div>
+                              </v-form>
+                              <div class="text-left">
+                                   <small>Currently logged in as: <b>{{lockdown.email}}</b></small>
+                              </div>
+                              <div class="d-flex align-center justify-end mt-5">
+                                   <vs-button @click="logout" circle gradient :disabled="isLoadingLocal"> Logout </vs-button>
+                                   <vs-button
+                                   circle
+                                   icon
+                                   gradient
+                                   :loading="isLoadingLocal"
+                                   @click="login"
+                                   >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                        <line x1="15" y1="16" x2="19" y2="12" />
+                                        <line x1="15" y1="8" x2="19" y2="12" />
+                                        </svg>
+                                   </vs-button>
+                              </div>
+                         </div>
                     </div>
                 </div>
             </v-container>
@@ -79,6 +80,7 @@ export default {
           chipState: 'password',
           show1: false,
           valid: true,
+          loading: '',
           password: '',
           pin: ''
      }),
@@ -90,6 +92,7 @@ export default {
      methods: {
           login(){
                this.$store.commit('SET_LOADING_LOCAL')
+               this.openLoading()
                HashKeyServices.loginLocal({ email: this.lockdown.email, password: this.chipState == 'password' ? this.password : this.pin, type: this.chipState })
                .then( (res) => {
                     this.$auth.setToken(res.data.token, res.data.exp)
@@ -116,7 +119,27 @@ export default {
                })
                .finally(() => {
                     this.$store.commit('SET_LOADING_LOCAL')
+                    this.closeLoading()
                })
+          },
+          
+          logout(){
+               this.openLoading()
+               this.$store.commit('access/TURN_OFF_LOCKDOWN')
+               this.$router.push('/')
+               this.closeLoading()
+          },
+
+          openLoading(){
+               this.loading = this.$vs.loading({
+                    type: 'circles',
+                    background: '#003ECB',
+                    color: '#fff'
+               })
+          },
+
+          closeLoading(){
+               setTimeout(() => { this.loading.close() }, 500)
           }
      }
 }
@@ -129,5 +152,10 @@ export default {
     }
     .sub{
         padding: 5px 0px;
+    }
+    .function__container{
+         background: white;
+         padding: 10px 30px;
+         border-radius: 30px;
     }
 </style>
