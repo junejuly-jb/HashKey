@@ -12,6 +12,7 @@ const passport = require('passport')
 const passportConf = require('../passport')
 const auth = require('../auth')
 
+
 api.post('/register', UserController.register)
 api.post('/login', UserController.login)
 api.post('/oauth/googleplus', UserController.googleAuth)
@@ -21,6 +22,7 @@ api.post('/add-pin', auth, UserController.addPin)
 api.get('/fetch-secured-credentials', auth, PasswordController.fetchSecuredCredentials)
 api.put('/ignore-password/:id', auth, PasswordController.changeSecurity)
 api.put('/change-weak-password/:id', auth, PasswordController.changeWeakPassword)
+api.get('/collection-length', auth, UserController.getCollectionLength)
 
 // password route
 api.post('/add-password', auth, PasswordController.addPass)

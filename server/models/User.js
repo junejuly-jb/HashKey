@@ -18,7 +18,7 @@ const userSchema = new Schema({
         },
         authentication: {
             type: Boolean,
-            default: false
+            default: true
         },
         auth_key: {
             type: String,

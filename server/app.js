@@ -3,7 +3,6 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const dotevn = require('dotenv')
 const cors = require('cors')
-
 const app = express();
 const apiRoutes = require('./routes/api')
 
@@ -23,6 +22,13 @@ app.use(cors())
 
 //Routes
 app.use('/api', apiRoutes)
+app.use(function(req, res) {
+    return res.status(404).json({
+        success: false,
+        status: 404,
+        message: 'Route not found'
+    })
+});
 
 //Server
 const port = process.env.PORT || 5000 

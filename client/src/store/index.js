@@ -29,12 +29,15 @@ export default new Vuex.Store({
   actions: {
 
   },
+
   modules: {
     user, password, wifi, note, card, access, contact, license
   },
+
   plugins: [
     createPersistedState({
       paths: ['user', 'access']
     })
   ]
+  
 })
