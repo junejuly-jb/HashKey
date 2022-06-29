@@ -51,9 +51,9 @@ export default {
     created(){
         bus.$on('onSavePassword', (data) => {
             if(this.$refs.form.validate()){
-                let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
-                if (!strongPassword.test(data.l_pass)) { data.isSecure = false }
-                else{ data.isSecure = true }
+                // let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+                // if (!strongPassword.test(data.l_pass)) { data.isSecure = false }
+                // else{ data.isSecure = true }
                 this.$store.commit('SET_LOADING_LOCAL')
                 this.$store.dispatch('password/addPassword', data)
                 .then( res => {

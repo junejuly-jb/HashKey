@@ -1,11 +1,14 @@
 const Password = require('../models/Password')
 const Wifi = require('../models/Wifi')
 const Cryptr = require('cryptr')
+const Recent = require('../models/Recent')
 const cryptr = new Cryptr('HellNaw!')
 
 const addPass = async (req, res) => {
     try {
-        const { l_logname, l_website, l_url, l_user, isSecure } = req.body
+        const { l_logname, l_website, l_url, l_user } = req.body
+        let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+        const isSecure = strongPassword.test(req.body.l_pass) ? true : false
         const l_pass = cryptr.encrypt(req.body.l_pass)
         const password = new Password({
             owner: req.user._id,
@@ -28,9 +31,17 @@ const addPass = async (req, res) => {
             log_email: password.credentials.log_email,
             log_password: password.credentials.log_password,
         }
-        return res.status(200).json({ data: creds })
+        const recent = new Recent({
+            credential_type: "password",
+            parentID: password._id,
+            owner: req.user._id,
+            name: password.credentials.log_name,
+            icon: password.credentials.log_website
+        })
+        await recent.save()
+        return res.status(200).json({ success: true, status: 200, data: creds, recent: recent })
     } catch (error) {
-        return res.status(500).send(error)
+        return res.status(500).json({ success: false, status: 500, message: error.message })
     }
 }
 const deletePass = async (req, res) => {
