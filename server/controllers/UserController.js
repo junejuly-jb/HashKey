@@ -341,6 +341,24 @@ const getCollectionLength = async (req, res)  => {
                     category: "payment",
                     icon: "card",
                     content: `${card.length} ${card.length > 1 ? 'cards' : 'card'}`
+                },
+                {
+                    name: "Contacts",
+                    category: "contact",
+                    icon: "contact",
+                    content: `${contact.length} ${contact.length > 1 ? 'contacts' : 'contact'}`
+                },
+                {
+                    name: "License",
+                    category: "license",
+                    icon: "license",
+                    content: `${license.length} ${license.length > 1 ? 'licenses' : 'license'}`
+                },
+                {
+                    name: "Notes",
+                    category: "notes",
+                    icon: "notes",
+                    content: `${note.length} ${note.length > 1 ? 'notes' : 'note'}`
                 }
             ]
         })
