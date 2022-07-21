@@ -100,7 +100,7 @@ export default {
 </template>
 
 <style scoped>
-    .input-container{
+    :deep(.input-container){
         width: 60%;
         margin: auto;
     }

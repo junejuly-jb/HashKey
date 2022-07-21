@@ -116,12 +116,8 @@ export default {
     .sub{
         padding: 5px 0px;
     }
-    .centered-input >>> input{
+    .centered-input :deep(input){
         text-align: center;
     }
-    /* .centered-input ::-webkit-outer-spin-button,
-    .centered-input ::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-    } */
     
 </style>
