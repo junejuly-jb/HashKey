@@ -58,13 +58,14 @@ import { mapState } from 'vuex'
 import store from '../store/index'
 export default {
     data: () => ({
-        max: 6,
+        max: 4,
         pin: '',
         isValid: false,
         show1: false,
         rules: [
             v => /^[0-9]*$/.test(v) || 'Characters is not allowed',
-            v => !!v || 'Pin is required'
+            v => !!v || 'Pin is required',
+            v => v.length == 4 || 'Pin must be 4 digits.',
         ]
     }),
     beforeRouteEnter(to, from, next){
@@ -85,8 +86,16 @@ export default {
             if(this.$refs.form.validate()){
                 this.$store.dispatch('user/addPin', { pin: this.pin })
                 .then((res) => {
-                    if(res == 200){
-                        this.$router.push('/home')
+                    if(res.status == 200){
+                        if(!res.success){
+                            this.$vs.notification({
+                                title: 'Error',
+                                text: res.message,
+                                position: 'top-center',
+                            })
+                        }else{
+                            this.$router.push('/home')
+                        }
                     }
                     else{
                         this.$vs.notification({
