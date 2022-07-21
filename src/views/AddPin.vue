@@ -12,7 +12,7 @@
                             <path d="M8 11v-4a4 4 0 0 1 8 0v4" />
                             </svg>
                             <div id="header">Secure with pin.</div>
-                            <p class="sub">Let's get started by nominating your <br> 6 digit pin.</p>
+                            <p class="sub">Let's get started by nominating your <br> 4 digit pin.</p>
                         </div>
                         <v-form ref="form" v-model="isValid">
                             <v-text-field
