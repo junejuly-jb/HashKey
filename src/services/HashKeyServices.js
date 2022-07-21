@@ -6,8 +6,8 @@ const getToken = function () {
 }
 
 const apiClient = axios.create({
-    // baseURL: 'https://hashkey-api.vercel.app/api/v2',
-    baseURL: 'http://localhost:5000/api/v2',
+    baseURL: 'https://hashkey-api.vercel.app/api/v2',
+    // baseURL: 'http://localhost:5000/api/v2',
 })
 
 export default {
