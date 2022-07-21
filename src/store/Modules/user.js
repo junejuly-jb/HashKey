@@ -90,7 +90,7 @@ export const actions = {
         .then((res) => {
             console.log('api response from mutation', res)
             commit('SET_PIN_STATUS')
-            return res.status
+            return res.data
         })
         .catch((err) => {
             return err
