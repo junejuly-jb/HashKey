@@ -46,7 +46,7 @@ export const actions = {
     fetchContacts({ commit }) {
         return HashKeyServices.fetchContacts()
             .then(response => {
-                commit('FETCH_CONTACTS', response.data.credentials)
+                commit('FETCH_CONTACTS', response.data.data)
                 return response.status
             })
             .catch(err => {

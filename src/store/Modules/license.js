@@ -48,6 +48,7 @@ export const actions = {
             .then(response => {
                 commit('FETCH_LICENSES', response.data.data)
                 return response.status
+                
             })
             .catch(err => {
                 return err.response.status

@@ -46,8 +46,7 @@ export const actions = {
     fetchWifis({ commit }) {
         return HashKeyServices.fetchWifis()
             .then(response => {
-            // commit('REMOVE_WIFIS')
-            commit('FETCH_WIFI', response.data.credentials)
+            commit('FETCH_WIFI', response.data.data)
             return response.status
         })
             .catch(err => {
