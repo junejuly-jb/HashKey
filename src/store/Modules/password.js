@@ -66,8 +66,9 @@ export const actions = {
     fetchPasswords({ commit }) {
         return HashKeyServices.fetchPassword()
             .then(response => {
-            commit('SET_PASSWORD', response.data.credentials)
-            return response.status
+            console.log(response)
+            commit('SET_PASSWORD', response.data.data)
+            return response.data.data.status
         })
             .catch(err => {
             return err.response.status

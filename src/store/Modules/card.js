@@ -51,7 +51,7 @@ export const actions = {
         return HashKeyServices.fetchCards()
             .then(response => {
                 // commit('REMOVE_WIFIS')
-                commit('FETCH_CARD', response.data.credentials)
+                commit('FETCH_CARD', response.data.data)
                 return response.status
             })
             .catch(err => {

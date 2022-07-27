@@ -46,7 +46,7 @@ export const actions = {
     fetchNotes({ commit }) {
         return HashKeyServices.fetchNotes()
             .then(response => {
-            commit('FETCH_NOTES', response.data.credentials)
+            commit('FETCH_NOTES', response.data.data)
             return response.status
         })
             .catch(err => {
