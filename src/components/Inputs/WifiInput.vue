@@ -36,9 +36,6 @@ export default {
     created(){
         bus.$on('onSaveWifi', (data) => {
             this.$store.commit('SET_LOADING_LOCAL')
-            let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
-            if (!strongPassword.test(data.w_pass)) { data.isSecure = false }
-            else{ data.isSecure = true }
             var sec
             if(data.w_security == '' || data.w_security == undefined){
                 sec = ''
@@ -51,8 +48,7 @@ export default {
                 w_ssid: this.ssid, 
                 w_pass: this.pass,
                 w_security: sec, 
-                w_status: this.hidden,
-                isSecure: data.isSecure
+                w_status: this.hidden
             })
             .then( res => {
                 if(res === 200){
